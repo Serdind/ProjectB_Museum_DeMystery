@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\serdi\\Desktop\\ProjectB\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery.csproj",
+      "projectUniqueName": "C:\\Users\\serdi\\Desktop\\ProjectB\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery.csproj",
       "projectName": "ProjectB_Museum_DeMystery",
-      "projectPath": "C:\\Users\\serdi\\Desktop\\ProjectB\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery.csproj",
+      "projectPath": "C:\\Users\\serdi\\Desktop\\ProjectB\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery.csproj",
       "packagesPath": "C:\\Users\\serdi\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\serdi\\Desktop\\ProjectB\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery\\obj\\",
+      "outputPath": "C:\\Users\\serdi\\Desktop\\ProjectB\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\serdi\\AppData\\Roaming\\NuGet\\NuGet.Config"
