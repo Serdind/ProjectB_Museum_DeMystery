@@ -1,0 +1,14 @@
+C:\Users\Serdi\Desktop\Project B\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery\bin\Debug\net7.0\ProjectB_Museum_DeMystery.exe
+C:\Users\Serdi\Desktop\Project B\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery\bin\Debug\net7.0\ProjectB_Museum_DeMystery.deps.json
+C:\Users\Serdi\Desktop\Project B\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery\bin\Debug\net7.0\ProjectB_Museum_DeMystery.runtimeconfig.json
+C:\Users\Serdi\Desktop\Project B\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery\bin\Debug\net7.0\ProjectB_Museum_DeMystery.dll
+C:\Users\Serdi\Desktop\Project B\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery\bin\Debug\net7.0\ProjectB_Museum_DeMystery.pdb
+C:\Users\Serdi\Desktop\Project B\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery\obj\Debug\net7.0\ProjectB_Museum_DeMystery.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Serdi\Desktop\Project B\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery\obj\Debug\net7.0\ProjectB_Museum_DeMystery.AssemblyInfoInputs.cache
+C:\Users\Serdi\Desktop\Project B\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery\obj\Debug\net7.0\ProjectB_Museum_DeMystery.AssemblyInfo.cs
+C:\Users\Serdi\Desktop\Project B\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery\obj\Debug\net7.0\ProjectB_Museum_DeMystery.csproj.CoreCompileInputs.cache
+C:\Users\Serdi\Desktop\Project B\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery\obj\Debug\net7.0\ProjectB_Museum_DeMystery.dll
+C:\Users\Serdi\Desktop\Project B\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery\obj\Debug\net7.0\refint\ProjectB_Museum_DeMystery.dll
+C:\Users\Serdi\Desktop\Project B\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery\obj\Debug\net7.0\ProjectB_Museum_DeMystery.pdb
+C:\Users\Serdi\Desktop\Project B\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery\obj\Debug\net7.0\ProjectB_Museum_DeMystery.genruntimeconfig.cache
+C:\Users\Serdi\Desktop\Project B\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery\obj\Debug\net7.0\ref\ProjectB_Museum_DeMystery.dll

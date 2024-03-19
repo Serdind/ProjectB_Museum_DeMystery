@@ -7,7 +7,6 @@ class GuidedTour
     public string Language;
     public List <Visitor> WaitingList;
     public List <Visitor> ReservedVisitors;
-    public List <GuidedTour> guidedTour;
 
     public GuidedTour(string name, DateTime date, string language)
     {

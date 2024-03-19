@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v7.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v7.0": {
+      "ProjectB_Museum_DeMystery/1.0.0": {
+        "runtime": {
+          "ProjectB_Museum_DeMystery.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "ProjectB_Museum_DeMystery/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
