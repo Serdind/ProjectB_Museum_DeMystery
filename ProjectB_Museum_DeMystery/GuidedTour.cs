@@ -13,5 +13,7 @@ class GuidedTour
         Name = name;
         Date = date;
         Language = language;
+        WaitingList = new List<Visitor>();
+        ReservedVisitors = new List<Visitor>();
     }
 }
