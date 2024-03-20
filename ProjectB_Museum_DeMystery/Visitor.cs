@@ -1,6 +1,6 @@
 class Visitor
 {
-    public long Code;
+    public int Code;
     public string Name;
     public string Email;
     public string Phonenumber;
@@ -8,6 +8,10 @@ class Visitor
 
     public Visitor(string name, string email, string phonenumber)
     {
+        Random random = new Random();
+        int uniqueCode = random.Next();
+        
+        Code = uniqueCode;
         Name = name;
         Email = email;
         Phonenumber = phonenumber;

@@ -7,13 +7,11 @@ class Program
     {
         string connectionString = "Data Source=MyDatabase.db";
 
-        // Create a connection
         using (var connection = new SqliteConnection(connectionString))
         {
-            // Open the connection
             connection.Open();
 
-            string createTableCommand = @"
+            string createTourTableCommand = @"
                 CREATE TABLE IF NOT EXISTS Tours (
                     Id INTEGER PRIMARY KEY,
                     Name TEXT NOT NULL,
@@ -22,18 +20,31 @@ class Program
                     EndPoint TEXT NOT NULL,
                     Language TEXT NOT NULL
                 );";
-            using (var createTable = new SqliteCommand(createTableCommand, connection))
+
+            string createVisitorInTourTableCommand = @"
+                CREATE TABLE IF NOT EXISTS VisitorInTour (
+                    Id_Visitor INTEGER,
+                    Id_Tour INTEGER,
+                    PRIMARY KEY (Id_Visitor, Id_Tour)
+                );";
+
+            using (var createTable = new SqliteCommand(createTourTableCommand, connection))
+            {
+                createTable.ExecuteNonQuery();
+            }
+
+            using (var createTable = new SqliteCommand(createVisitorInTourTableCommand, connection))
             {
                 createTable.ExecuteNonQuery();
             }
 
             foreach (GuidedTour tour in Tours.guidedTour)
             {
-                string insertDataCommand = @"
-                    INSERT INTO Tours (Id, Name, Date, StartingPoint, EndPoint, Language) VALUES 
+                string insertTourDataCommand = @"
+                    INSERT OR IGNORE INTO Tours (Id, Name, Date, StartingPoint, EndPoint, Language) VALUES 
                         (@Id, @Name, @Date, @StartingPoint, @EndPoint, @Language);";
 
-                using (var insertData = new SqliteCommand(insertDataCommand, connection))
+                using (var insertData = new SqliteCommand(insertTourDataCommand, connection))
                 {
                     insertData.Parameters.AddWithValue("@Id", tour.ID);
                     insertData.Parameters.AddWithValue("@Name", tour.Name);
@@ -54,20 +65,19 @@ class Program
             Console.WriteLine("Reservate(R)\nQuit(Q)");
             string option = Console.ReadLine();
 
-            Console.WriteLine("Insert your full name:");
-            string name = Console.ReadLine();
-            Console.WriteLine("Insert your email:");
-            string email = Console.ReadLine();
-            Console.WriteLine("Insert your phonenumber:");
-            string phonenumber = Console.ReadLine();
-
-
-            Visitor visitor = new Visitor(name, email, phonenumber);
-            
-            Tours.OverviewTours();
-
             if (option.ToLower() == "r")
             {
+                Console.WriteLine("Insert your full name:");
+                string name = Console.ReadLine();
+                Console.WriteLine("Insert your email:");
+                string email = Console.ReadLine();
+                Console.WriteLine("Insert your phonenumber:");
+                string phonenumber = Console.ReadLine();
+
+
+                Visitor visitor = new Visitor(name, email, phonenumber);
+                
+                Tours.OverviewTours();
                 Console.WriteLine("Which tour? (ID)");
                 int tourID = Convert.ToInt32(Console.ReadLine());
                 bool tourFound = false;
@@ -77,6 +87,25 @@ class Program
                     if (tourID == tour.ID)
                     {
                         tour.PlaceReservation(tourID, visitor);
+
+                        using (var connection = new SqliteConnection(connectionString))
+                        {
+                            connection.Open();
+                            string insertVisitorInTourDataCommand = @"
+                                INSERT OR IGNORE INTO VisitorInTour (Id_Visitor, Id_Tour) VALUES 
+                                    (@Id_Visitor, @Id_Tour);";
+
+                            using (var insertData = new SqliteCommand(insertVisitorInTourDataCommand, connection))
+                            {
+                                foreach (Visitor vis in tour.ReservedVisitors)
+                                {
+                                    insertData.Parameters.AddWithValue("@Id_Visitor", vis.Code);
+                                    insertData.Parameters.AddWithValue("@Id_Tour", tour.ID);
+
+                                    insertData.ExecuteNonQuery();
+                                }
+                            }
+                        }
                         tourFound = true;
                         break;
                     }
