@@ -1,7 +1,52 @@
-﻿class Program
+﻿using System;
+using Microsoft.Data.Sqlite;
+
+class Program
 {
     public static void Main()
     {
+        string connectionString = "Data Source=MyDatabase.db";
+
+        // Create a connection
+        using (var connection = new SqliteConnection(connectionString))
+        {
+            // Open the connection
+            connection.Open();
+
+            string createTableCommand = @"
+                CREATE TABLE IF NOT EXISTS Tours (
+                    Id INTEGER PRIMARY KEY,
+                    Name TEXT NOT NULL,
+                    Date INTEGER,
+                    StartingPoint TEXT NOT NULL,
+                    EndPoint TEXT NOT NULL,
+                    Language TEXT NOT NULL
+                );";
+            using (var createTable = new SqliteCommand(createTableCommand, connection))
+            {
+                createTable.ExecuteNonQuery();
+            }
+
+            foreach (GuidedTour tour in Tours.guidedTour)
+            {
+                string insertDataCommand = @"
+                    INSERT INTO Tours (Id, Name, Date, StartingPoint, EndPoint, Language) VALUES 
+                        (@Id, @Name, @Date, @StartingPoint, @EndPoint, @Language);";
+
+                using (var insertData = new SqliteCommand(insertDataCommand, connection))
+                {
+                    insertData.Parameters.AddWithValue("@Id", tour.ID);
+                    insertData.Parameters.AddWithValue("@Name", tour.Name);
+                    insertData.Parameters.AddWithValue("@Date", tour.Date);
+                    insertData.Parameters.AddWithValue("@StartingPoint", GuidedTour.StartingPoint);
+                    insertData.Parameters.AddWithValue("@EndPoint", GuidedTour.EndPoint);
+                    insertData.Parameters.AddWithValue("@Language", tour.Language);
+
+                    insertData.ExecuteNonQuery();
+                }
+            }
+        }
+        
         bool running = true;
 
         while (running)
@@ -41,6 +86,11 @@
                 {
                     Console.WriteLine("Tour not found.\n");
                 }
+            }
+            else if (option.ToLower() == "q")
+            {
+                running = false;
+                continue;
             }
         }
     }
