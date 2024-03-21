@@ -423,19 +423,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\serdi\\.nuget\\packages\\": {}
+    "C:\\Users\\miray\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\serdi\\Desktop\\ProjectB\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery.csproj",
+      "projectUniqueName": "C:\\Users\\miray\\OneDrive\\Masaüstü\\git\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery.csproj",
       "projectName": "ProjectB_Museum_DeMystery",
-      "projectPath": "C:\\Users\\serdi\\Desktop\\ProjectB\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery.csproj",
-      "packagesPath": "C:\\Users\\serdi\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\serdi\\Desktop\\ProjectB\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery\\obj\\",
+      "projectPath": "C:\\Users\\miray\\OneDrive\\Masaüstü\\git\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery.csproj",
+      "packagesPath": "C:\\Users\\miray\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\miray\\OneDrive\\Masaüstü\\git\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\serdi\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\miray\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net7.0"
@@ -488,8 +488,16 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.405\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.407\\RuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "Undefined",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Problem reading the cache file C:\\Users\\miray\\OneDrive\\Masaüstü\\git\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
+    }
+  ]
 }

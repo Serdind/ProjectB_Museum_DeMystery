@@ -9,6 +9,7 @@ class GuidedTour
     public string Language;
     public List <Visitor> WaitingList;
     public List <Visitor> ReservedVisitors;
+    public int MaxParticipants { get; set; } = 13;
 
     public GuidedTour(string name, DateTime date, string language)
     {
@@ -24,7 +25,7 @@ class GuidedTour
     {
         if (tourId == ID)
         {
-            if (ReservedVisitors.Count < 13)
+            if (ReservedVisitors.Count < MaxParticipants)
             {
                 ReservedVisitors.Add(visitor);
                 string timeOnly = Date.ToString("HH:mm");
@@ -44,7 +45,8 @@ class GuidedTour
             }
             else
             {
-                Console.WriteLine("The tour you tried to attend is full.\n");
+                WaitingList.Add(visitor);
+                Console.WriteLine("Sorry, the tour is fully booked. You have been added to the waiting list.\n");
                 return false;
             }
         }
