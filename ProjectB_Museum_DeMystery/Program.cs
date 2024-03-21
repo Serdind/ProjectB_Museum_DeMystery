@@ -87,27 +87,6 @@ class Program
                     if (tourID == tour.ID)
                     {
                         tour.PlaceReservation(tourID, visitor);
-
-                        using (var connection = new SqliteConnection(connectionString))
-                        {
-                            connection.Open();
-                            string insertVisitorInTourDataCommand = @"
-                                INSERT OR IGNORE INTO VisitorInTour (Id_Visitor, Id_Tour) VALUES 
-                                    (@Id_Visitor, @Id_Tour);";
-
-                            using (var insertData = new SqliteCommand(insertVisitorInTourDataCommand, connection))
-                            {
-                                foreach (Visitor vis in tour.ReservedVisitors)
-                                {
-                                    insertData.Parameters.AddWithValue("@Id_Visitor", vis.Code);
-                                    insertData.Parameters.AddWithValue("@Id_Tour", tour.ID);
-
-                                    insertData.ExecuteNonQuery();
-
-                                    insertData.Parameters.Clear();
-                                }
-                            }
-                        }
                         tourFound = true;
                         break;
                     }

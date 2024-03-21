@@ -1,9 +1,14 @@
 {
   "version": 2,
+<<<<<<< HEAD
   "dgSpecHash": "/EgxUTpzrzAPxECAuLfAWmiEZRHUErk0mdmZvL+BG9Zt3S03P9BPULakQcCRmOXxyXeAdaSKU1NVaBtk/mQzIw==",
+=======
+  "dgSpecHash": "zd0fYyJjyWVFFTA+vebmM1UJrYqU1i2JphrnLDOgiNO9oIh34ju+jr8znYGIZXIZ1mnbT8IAoxRgT6DkAvpQVA==",
+>>>>>>> 32ca8cf24215038b4e2cbbf7911dbd57d70b49dc
   "success": true,
-  "projectFilePath": "C:\\Users\\Serdi\\Desktop\\Project B\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery.csproj",
+  "projectFilePath": "C:\\Users\\serdi\\Desktop\\ProjectB\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery.csproj",
   "expectedPackageFiles": [
+<<<<<<< HEAD
     "C:\\Users\\Serdi\\.nuget\\packages\\microsoft.data.sqlite\\8.0.3\\microsoft.data.sqlite.8.0.3.nupkg.sha512",
     "C:\\Users\\Serdi\\.nuget\\packages\\microsoft.data.sqlite.core\\8.0.3\\microsoft.data.sqlite.core.8.0.3.nupkg.sha512",
     "C:\\Users\\Serdi\\.nuget\\packages\\spectre.console\\0.48.0\\spectre.console.0.48.0.nupkg.sha512",
@@ -13,6 +18,15 @@
     "C:\\Users\\Serdi\\.nuget\\packages\\sqlitepclraw.lib.e_sqlite3\\2.1.6\\sqlitepclraw.lib.e_sqlite3.2.1.6.nupkg.sha512",
     "C:\\Users\\Serdi\\.nuget\\packages\\sqlitepclraw.provider.e_sqlite3\\2.1.6\\sqlitepclraw.provider.e_sqlite3.2.1.6.nupkg.sha512",
     "C:\\Users\\Serdi\\.nuget\\packages\\system.memory\\4.5.5\\system.memory.4.5.5.nupkg.sha512"
+=======
+    "C:\\Users\\serdi\\.nuget\\packages\\microsoft.data.sqlite\\8.0.3\\microsoft.data.sqlite.8.0.3.nupkg.sha512",
+    "C:\\Users\\serdi\\.nuget\\packages\\microsoft.data.sqlite.core\\8.0.3\\microsoft.data.sqlite.core.8.0.3.nupkg.sha512",
+    "C:\\Users\\serdi\\.nuget\\packages\\sqlitepclraw.bundle_e_sqlite3\\2.1.6\\sqlitepclraw.bundle_e_sqlite3.2.1.6.nupkg.sha512",
+    "C:\\Users\\serdi\\.nuget\\packages\\sqlitepclraw.core\\2.1.6\\sqlitepclraw.core.2.1.6.nupkg.sha512",
+    "C:\\Users\\serdi\\.nuget\\packages\\sqlitepclraw.lib.e_sqlite3\\2.1.6\\sqlitepclraw.lib.e_sqlite3.2.1.6.nupkg.sha512",
+    "C:\\Users\\serdi\\.nuget\\packages\\sqlitepclraw.provider.e_sqlite3\\2.1.6\\sqlitepclraw.provider.e_sqlite3.2.1.6.nupkg.sha512",
+    "C:\\Users\\serdi\\.nuget\\packages\\system.memory\\4.5.3\\system.memory.4.5.3.nupkg.sha512"
+>>>>>>> 32ca8cf24215038b4e2cbbf7911dbd57d70b49dc
   ],
   "logs": []
 }
