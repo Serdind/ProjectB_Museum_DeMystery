@@ -1,3 +1,6 @@
+using Spectre.Console;
+using System;
+
 static class Tours
 {
     public static readonly List<GuidedTour> guidedTour = new List<GuidedTour>();
@@ -40,19 +43,36 @@ static class Tours
             string timeOnly = tour.Date.ToString("HH:mm");
             string dateOnly = tour.Date.ToShortDateString();
 
-            Console.WriteLine($"ID: {tour.ID}");
-            Console.WriteLine($"Name: {tour.Name}");
-            Console.WriteLine($"Language: {tour.Language}");
-            Console.WriteLine($"Date: {dateOnly}");
-            Console.WriteLine($"Time: {timeOnly}");
-            if (tour.ReservedVisitors.Count() == 13)
-            {
-                Console.WriteLine($"Visitors: {tour.ReservedVisitors.Count()} (Full)\n");
-            }
-            else
-            {
-                Console.WriteLine($"Visitors: {tour.ReservedVisitors.Count()}\n");
-            }
+            var table = new Table().LeftAligned();
+
+            AnsiConsole.Live(table)
+                .AutoClear(false)
+                .Overflow(VerticalOverflow.Ellipsis)
+                .Cropping(VerticalOverflowCropping.Top)
+                .Start(ctx =>
+                {
+                    table.AddColumn("ID");
+                    table.AddColumn("Name");
+                    table.AddColumn("Date");
+                    table.AddColumn("Time");
+                    table.AddColumn("StartingPoint");
+                    table.AddColumn("EndPoint");
+                    table.AddColumn("Language");
+                    table.AddColumn("Visitors");
+                    ctx.Refresh();
+
+                    table.AddRow(
+                        tour.ID.ToString(),
+                        tour.Name,
+                        dateOnly,
+                        timeOnly,
+                        GuidedTour.StartingPoint,
+                        GuidedTour.EndPoint,
+                        tour.Language,
+                        tour.ReservedVisitors.Count() < 13 ? tour.ReservedVisitors.Count().ToString() : "Full");
+                        
+                    ctx.Refresh();                    
+                });
         }
     }
 }

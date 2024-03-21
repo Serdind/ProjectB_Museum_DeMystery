@@ -31,6 +31,49 @@
           }
         }
       },
+      "Spectre.Console/0.48.0": {
+        "type": "package",
+        "dependencies": {
+          "System.Memory": "4.5.5"
+        },
+        "compile": {
+          "lib/net7.0/Spectre.Console.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net7.0/Spectre.Console.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "Spectre.Console.Cli/0.48.0": {
+        "type": "package",
+        "dependencies": {
+          "Spectre.Console": "0.48.0"
+        },
+        "compile": {
+          "lib/net7.0/Spectre.Console.Cli.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net7.0/Spectre.Console.Cli.dll": {
+            "related": ".xml"
+          }
+        },
+        "resource": {
+          "lib/net7.0/de/Spectre.Console.Cli.resources.dll": {
+            "locale": "de"
+          },
+          "lib/net7.0/fr/Spectre.Console.Cli.resources.dll": {
+            "locale": "fr"
+          },
+          "lib/net7.0/sv/Spectre.Console.Cli.resources.dll": {
+            "locale": "sv"
+          }
+        }
+      },
       "SQLitePCLRaw.bundle_e_sqlite3/2.1.6": {
         "type": "package",
         "dependencies": {
@@ -162,7 +205,7 @@
           "lib/net6.0/SQLitePCLRaw.provider.e_sqlite3.dll": {}
         }
       },
-      "System.Memory/4.5.3": {
+      "System.Memory/4.5.5": {
         "type": "package",
         "compile": {
           "ref/netcoreapp2.1/_._": {}
@@ -205,6 +248,58 @@
         "lib/netstandard2.0/Microsoft.Data.Sqlite.xml",
         "microsoft.data.sqlite.core.8.0.3.nupkg.sha512",
         "microsoft.data.sqlite.core.nuspec"
+      ]
+    },
+    "Spectre.Console/0.48.0": {
+      "sha512": "4Mc1UT7Azgtyb8FyNwK5FZmoZbKuT5PmY7ZwaKUytjD5kGFMNBACpOZTwYtkuY377YkYtZYBeDDTJUwTW86QXw==",
+      "type": "package",
+      "path": "spectre.console/0.48.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net6.0/Spectre.Console.dll",
+        "lib/net6.0/Spectre.Console.xml",
+        "lib/net7.0/Spectre.Console.dll",
+        "lib/net7.0/Spectre.Console.xml",
+        "lib/net8.0/Spectre.Console.dll",
+        "lib/net8.0/Spectre.Console.xml",
+        "lib/netstandard2.0/Spectre.Console.dll",
+        "lib/netstandard2.0/Spectre.Console.xml",
+        "small-logo.png",
+        "spectre.console.0.48.0.nupkg.sha512",
+        "spectre.console.nuspec"
+      ]
+    },
+    "Spectre.Console.Cli/0.48.0": {
+      "sha512": "HNoDxAOTODQ9h+4K5Cs2caW8kIicRKw5SS4vgEEkJtnTp7/4XR8OIGvCjVi09w3m+xn4lTlkS0ENy2ktGz4HRw==",
+      "type": "package",
+      "path": "spectre.console.cli/0.48.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net6.0/Spectre.Console.Cli.dll",
+        "lib/net6.0/Spectre.Console.Cli.xml",
+        "lib/net6.0/de/Spectre.Console.Cli.resources.dll",
+        "lib/net6.0/fr/Spectre.Console.Cli.resources.dll",
+        "lib/net6.0/sv/Spectre.Console.Cli.resources.dll",
+        "lib/net7.0/Spectre.Console.Cli.dll",
+        "lib/net7.0/Spectre.Console.Cli.xml",
+        "lib/net7.0/de/Spectre.Console.Cli.resources.dll",
+        "lib/net7.0/fr/Spectre.Console.Cli.resources.dll",
+        "lib/net7.0/sv/Spectre.Console.Cli.resources.dll",
+        "lib/net8.0/Spectre.Console.Cli.dll",
+        "lib/net8.0/Spectre.Console.Cli.xml",
+        "lib/net8.0/de/Spectre.Console.Cli.resources.dll",
+        "lib/net8.0/fr/Spectre.Console.Cli.resources.dll",
+        "lib/net8.0/sv/Spectre.Console.Cli.resources.dll",
+        "lib/netstandard2.0/Spectre.Console.Cli.dll",
+        "lib/netstandard2.0/Spectre.Console.Cli.xml",
+        "lib/netstandard2.0/de/Spectre.Console.Cli.resources.dll",
+        "lib/netstandard2.0/fr/Spectre.Console.Cli.resources.dll",
+        "lib/netstandard2.0/sv/Spectre.Console.Cli.resources.dll",
+        "small-logo.png",
+        "spectre.console.cli.0.48.0.nupkg.sha512",
+        "spectre.console.cli.nuspec"
       ]
     },
     "SQLitePCLRaw.bundle_e_sqlite3/2.1.6": {
@@ -296,22 +391,24 @@
         "sqlitepclraw.provider.e_sqlite3.nuspec"
       ]
     },
-    "System.Memory/4.5.3": {
-      "sha512": "3oDzvc/zzetpTKWMShs1AADwZjQ/36HnsufHRPcOjyRAAMLDlu2iD33MBI2opxnezcVUtXyqDXXjoFMOU9c7SA==",
+    "System.Memory/4.5.5": {
+      "sha512": "XIWiDvKPXaTveaB7HVganDlOCRoj03l+jrwNvcge/t8vhGYKvqV+dMv6G4SAX2NoNmN0wZfVPTAlFwZcZvVOUw==",
       "type": "package",
-      "path": "system.memory/4.5.3",
+      "path": "system.memory/4.5.5",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "LICENSE.TXT",
         "THIRD-PARTY-NOTICES.TXT",
+        "lib/net461/System.Memory.dll",
+        "lib/net461/System.Memory.xml",
         "lib/netcoreapp2.1/_._",
         "lib/netstandard1.1/System.Memory.dll",
         "lib/netstandard1.1/System.Memory.xml",
         "lib/netstandard2.0/System.Memory.dll",
         "lib/netstandard2.0/System.Memory.xml",
         "ref/netcoreapp2.1/_._",
-        "system.memory.4.5.3.nupkg.sha512",
+        "system.memory.4.5.5.nupkg.sha512",
         "system.memory.nuspec",
         "useSharedDesignerContext.txt",
         "version.txt"
@@ -320,7 +417,9 @@
   },
   "projectFileDependencyGroups": {
     "net7.0": [
-      "Microsoft.Data.Sqlite >= 8.0.3"
+      "Microsoft.Data.Sqlite >= 8.0.3",
+      "Spectre.Console >= 0.48.0",
+      "Spectre.Console.Cli >= 0.48.0"
     ]
   },
   "packageFolders": {
@@ -363,6 +462,14 @@
           "Microsoft.Data.Sqlite": {
             "target": "Package",
             "version": "[8.0.3, )"
+          },
+          "Spectre.Console": {
+            "target": "Package",
+            "version": "[0.48.0, )"
+          },
+          "Spectre.Console.Cli": {
+            "target": "Package",
+            "version": "[0.48.0, )"
           }
         },
         "imports": [
