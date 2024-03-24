@@ -18,7 +18,8 @@ class Program
                     Date INTEGER,
                     StartingPoint TEXT NOT NULL,
                     EndPoint TEXT NOT NULL,
-                    Language TEXT NOT NULL
+                    Language TEXT NOT NULL,
+                    Visitors INTEGER
                 );";
 
             string createVisitorInTourTableCommand = @"
@@ -87,8 +88,8 @@ class Program
             foreach (GuidedTour tour in Tours.guidedTour)
             {
                 string insertTourDataCommand = @"
-                    INSERT OR IGNORE INTO Tours (Id, Name, Date, StartingPoint, EndPoint, Language) VALUES 
-                        (@Id, @Name, @Date, @StartingPoint, @EndPoint, @Language);";
+                    INSERT OR IGNORE INTO Tours (Id, Name, Date, StartingPoint, EndPoint, Language, Visitors) VALUES 
+                        (@Id, @Name, @Date, @StartingPoint, @EndPoint, @Language, @Visitors);";
 
                 using (var insertData = new SqliteCommand(insertTourDataCommand, connection))
                 {
@@ -98,6 +99,7 @@ class Program
                     insertData.Parameters.AddWithValue("@StartingPoint", GuidedTour.StartingPoint);
                     insertData.Parameters.AddWithValue("@EndPoint", GuidedTour.EndPoint);
                     insertData.Parameters.AddWithValue("@Language", tour.Language);
+                    insertData.Parameters.AddWithValue("@Visitors", tour.ReservedVisitors.Count());
 
                     insertData.ExecuteNonQuery();
                 }

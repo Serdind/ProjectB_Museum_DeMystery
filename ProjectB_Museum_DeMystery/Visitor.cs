@@ -15,6 +15,23 @@ class Visitor : Person
                 if (tour.ReservedVisitors.Count() < tour.MaxParticipants)
                 {
                     tour.ReservedVisitors.Add(visitor);
+                    
+                    using (var connection = new SqliteConnection(connectionString))
+                    {
+                        connection.Open();
+
+                        string updateVisitorsCountCommand = @"
+                            UPDATE Tours
+                            SET Visitors = Visitors + 1
+                            WHERE Id = @TourID;";
+
+                        using (var updateCommand = new SqliteCommand(updateVisitorsCountCommand, connection))
+                        {
+                            updateCommand.Parameters.AddWithValue("@TourID", tourID);
+                            updateCommand.ExecuteNonQuery();
+                        }
+                    }
+
                     string timeOnly = tour.Date.ToString("HH:mm");
                     string dateOnly = tour.Date.ToShortDateString();
 
