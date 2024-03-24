@@ -38,6 +38,16 @@ class Program
                     Phonenumber TEXT NOT NULL,
                     PRIMARY KEY (ID)
                 );";
+            
+            string createDepartmentHeadTableCommand = @"
+                CREATE TABLE IF NOT EXISTS DepartmentHead (
+                    Id INTEGER,
+                    Name TEXT NOT NULL,
+                    Email TEXT NOT NULL,
+                    Password TEXT NOT NULL,
+                    Phonenumber TEXT NOT NULL,
+                    PRIMARY KEY (ID)
+                );";
 
             using (var createTable = new SqliteCommand(createTourTableCommand, connection))
             {
@@ -53,6 +63,26 @@ class Program
             {
                 createTable.ExecuteNonQuery();
             }
+
+            using (var createTable = new SqliteCommand(createDepartmentHeadTableCommand, connection))
+            {
+                createTable.ExecuteNonQuery();
+            }
+
+            string insertDepartmentHeadDataCommand = @"
+                    INSERT OR IGNORE INTO DepartmentHead (Id, Name, Email, Password, Phonenumber) VALUES 
+                        (@Id, @Name, @Email, @Password, @Phonenumber);";
+
+                using (var insertData = new SqliteCommand(insertDepartmentHeadDataCommand, connection))
+                {
+                    insertData.Parameters.AddWithValue("@Id", 1);
+                    insertData.Parameters.AddWithValue("@Name", "John");
+                    insertData.Parameters.AddWithValue("@Email", "John@hetdepot.com");
+                    insertData.Parameters.AddWithValue("@Password", "Password123");
+                    insertData.Parameters.AddWithValue("@Phonenumber", 01111132);
+
+                    insertData.ExecuteNonQuery();
+                }
 
             foreach (GuidedTour tour in Tours.guidedTour)
             {
@@ -96,45 +126,12 @@ class Program
             string option = Console.ReadLine();
 
             if (option.ToLower() == "r")
-            {              
+            {
                 Tours.OverviewTours();
                 Console.WriteLine("Which tour? (ID)");
                 int tourID = Convert.ToInt32(Console.ReadLine());
-                bool tourFound = false;
 
-                foreach (GuidedTour tour in Tours.guidedTour)
-                {
-                    if (tourID == tour.ID)
-                    {
-                        tour.PlaceReservation(tourID, visitor);
-                        tourFound = true;
-
-                        using (var connection = new SqliteConnection(connectionString))
-                        {
-                            connection.Open();
-
-                            string insertVisitorDataCommand = @"
-                            INSERT OR IGNORE INTO VisitorInTour (Id_Visitor, Id_Tour, Date) VALUES 
-                                (@Id_Visitor, @Id_Tour, @Date);";
-
-                            using (var insertData = new SqliteCommand(insertVisitorDataCommand, connection))
-                            {
-                                insertData.Parameters.AddWithValue("@Id_Visitor", visitor.Id);
-                                insertData.Parameters.AddWithValue("@Id_Tour", tour.ID);
-                                insertData.Parameters.AddWithValue("@Date", tour.Date);
-
-                                insertData.ExecuteNonQuery();
-                            }
-                        }
-
-                        break;
-                    }
-                }
-
-                if (!tourFound)
-                {
-                    Console.WriteLine("Tour not found.\n");
-                }
+                visitor.Reservate(tourID, visitor);
             }
             else if (option.ToLower() == "q")
             {

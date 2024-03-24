@@ -1,97 +1,64 @@
 using Microsoft.Data.Sqlite;
 
-class Visitor
+class Visitor : Person
 {
-    public int Id;
-    public string Name;
-    public string Email;
-    public string Password;
-    public string Phonenumber;
-    public GuidedTour guidedTour;
     string connectionString = "Data Source=MyDatabase.db";
+    
+    public Visitor(string name, string email, string password, string phonenumber) : base(name, email, password, phonenumber){}
 
-    public Visitor(string name, string email, string password, string phonenumber)
+    public bool Reservate(int tourID, Visitor visitor)
     {
-        Random random = new Random();
-        int uniqueCode = random.Next();
-
-        Id = uniqueCode;
-        Name = name;
-        Email = email;
-        Password = password;
-        Phonenumber = phonenumber;
-    }
-
-    public void CreateAccount()
-    {
-        Console.WriteLine("Insert your full name:");
-        string name = Console.ReadLine();
-        Console.WriteLine("Insert your email:");
-        string email = Console.ReadLine();
-        Console.WriteLine("Insert your password:");
-        string password = Console.ReadLine();
-        Console.WriteLine("Insert your phonenumber:");
-        string phonenumber = Console.ReadLine();
-
-        Visitor visitor = new Visitor(name, email, password, phonenumber);
-
-        using (var connection = new SqliteConnection(connectionString))
+        foreach (GuidedTour tour in Tours.guidedTour)
         {
-            connection.Open();
-
-            string insertVisitorDataCommand = @"
-            INSERT OR IGNORE INTO Visitors (Id, Name, Email, Password, Phonenumber) VALUES 
-                (@Id, @Name, @Email, @Password, @Phonenumber);";
-
-            using (var insertData = new SqliteCommand(insertVisitorDataCommand, connection))
+            if (tourID == tour.ID)
             {
-                insertData.Parameters.AddWithValue("@Id", visitor.Id);
-                insertData.Parameters.AddWithValue("@Name", visitor.Name);
-                insertData.Parameters.AddWithValue("@Email", visitor.Email);
-                insertData.Parameters.AddWithValue("@Password", visitor.Password);
-                insertData.Parameters.AddWithValue("@Phonenumber", visitor.Phonenumber);
-
-                insertData.ExecuteNonQuery();
-            }
-        }
-        Console.WriteLine($"Logged in as: {visitor.Name}");
-    }
-
-    public void Login()
-    {
-        Console.WriteLine("Insert your email:");
-        string email = Console.ReadLine();
-        Console.WriteLine("Insert your password:");
-        string password = Console.ReadLine();
-
-        using (var connection = new SqliteConnection(connectionString))
-        {
-            connection.Open();
-
-            string selectVisitorDataCommand = @"
-                SELECT * FROM Visitors WHERE Email = @Email AND Password = @Password;";
-
-            using (var selectData = new SqliteCommand(selectVisitorDataCommand, connection))
-            {
-                selectData.Parameters.AddWithValue("@Email", email);
-                selectData.Parameters.AddWithValue("@Password", password);
-
-                using (var reader = selectData.ExecuteReader())
+                if (tour.ReservedVisitors.Count() < tour.MaxParticipants)
                 {
-                    if (reader.Read())
+                    tour.ReservedVisitors.Add(visitor);
+                    string timeOnly = tour.Date.ToString("HH:mm");
+                    string dateOnly = tour.Date.ToShortDateString();
+
+                    Console.WriteLine($"Reservation made by:");
+                    Console.WriteLine($"Name: {visitor.Name}");
+                    Console.WriteLine($"Email: {visitor.Email}");
+                    Console.WriteLine($"Phonenumber: {visitor.Phonenumber}\n");
+                    Console.WriteLine("Reservation made for tour:");
+                    Console.WriteLine($"ID: {tour.ID}");
+                    Console.WriteLine($"Name: {tour.Name}");
+                    Console.WriteLine($"Language: {tour.Language}");
+                    Console.WriteLine($"Date: {dateOnly}");
+                    Console.WriteLine($"Time: {timeOnly}\n");
+
+                    using (var connection = new SqliteConnection(connectionString))
                     {
-                        if (email == reader["Email"].ToString() && password == reader["Password"].ToString())
+                        connection.Open();
+
+                        string insertVisitorDataCommand = @"
+                        INSERT OR IGNORE INTO VisitorInTour (Id_Visitor, Id_Tour, Date) VALUES 
+                            (@Id_Visitor, @Id_Tour, @Date);";
+
+                        using (var insertData = new SqliteCommand(insertVisitorDataCommand, connection))
                         {
-                            Console.WriteLine($"Logged in as: {reader["Name"]}");
-                        }
-                        else
-                        {
-                            Console.WriteLine("You dont have an account");
-                            CreateAccount();
+                            insertData.Parameters.AddWithValue("@Id_Visitor", visitor.Id);
+                            insertData.Parameters.AddWithValue("@Id_Tour", tour.ID);
+                            insertData.Parameters.AddWithValue("@Date", tour.Date);
+
+                            insertData.ExecuteNonQuery();
                         }
                     }
+
+                    return true;
+                }
+                else
+                {
+                    tour.WaitingList.Add(visitor);
+                    Console.WriteLine("Sorry, the tour is fully booked. You have been added to the waiting list.\n");
+                    return false;
                 }
             }
         }
+        
+        Console.WriteLine("Tour not found. Try again!");
+        return false;
     }
 }

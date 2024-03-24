@@ -1,10 +1,6 @@
-class Guide
+class Guide : Person
 {
-    public string Name;
     public GuidedTour guidedTour;
 
-    public Guide(string name)
-    {
-        Name = name;
-    }
+    public Guide(string name, string email, string password, string phonenumber) : base(name, email, password, phonenumber){}
 }

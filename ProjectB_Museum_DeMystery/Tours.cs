@@ -69,7 +69,7 @@ static class Tours
                         GuidedTour.StartingPoint,
                         GuidedTour.EndPoint,
                         tour.Language,
-                        tour.ReservedVisitors.Count() < 13 ? tour.ReservedVisitors.Count().ToString() : "Full");
+                        tour.ReservedVisitors.Count() < tour.MaxParticipants ? tour.ReservedVisitors.Count().ToString() : "Full");
                         
                     ctx.Refresh();                    
                 });

@@ -1,6 +1,5 @@
 {
   "version": 2,
-<<<<<<< HEAD
   "dgSpecHash": "/EgxUTpzrzAPxECAuLfAWmiEZRHUErk0mdmZvL+BG9Zt3S03P9BPULakQcCRmOXxyXeAdaSKU1NVaBtk/mQzIw==",
   "success": true,
   "projectFilePath": "C:\\Users\\Serdi\\Desktop\\Project B\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery.csproj",
@@ -14,32 +13,13 @@
     "C:\\Users\\Serdi\\.nuget\\packages\\sqlitepclraw.lib.e_sqlite3\\2.1.6\\sqlitepclraw.lib.e_sqlite3.2.1.6.nupkg.sha512",
     "C:\\Users\\Serdi\\.nuget\\packages\\sqlitepclraw.provider.e_sqlite3\\2.1.6\\sqlitepclraw.provider.e_sqlite3.2.1.6.nupkg.sha512",
     "C:\\Users\\Serdi\\.nuget\\packages\\system.memory\\4.5.5\\system.memory.4.5.5.nupkg.sha512"
-=======
-  "dgSpecHash": "7E/l/LAbn6wpftDgW9rbnChFLuYo3SjGWokrsQWJdMawMRqqBLRCkvl18yrUmOSN8AbARylhRaIUXGySIVe2iQ==",
-  "success": true,
-  "projectFilePath": "C:\\Users\\miray\\OneDrive\\Masaüstü\\git\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery.csproj",
-  "expectedPackageFiles": [
-    "C:\\Users\\miray\\.nuget\\packages\\microsoft.data.sqlite\\8.0.3\\microsoft.data.sqlite.8.0.3.nupkg.sha512",
-    "C:\\Users\\miray\\.nuget\\packages\\microsoft.data.sqlite.core\\8.0.3\\microsoft.data.sqlite.core.8.0.3.nupkg.sha512",
-    "C:\\Users\\miray\\.nuget\\packages\\spectre.console\\0.48.0\\spectre.console.0.48.0.nupkg.sha512",
-    "C:\\Users\\miray\\.nuget\\packages\\spectre.console.cli\\0.48.0\\spectre.console.cli.0.48.0.nupkg.sha512",
-    "C:\\Users\\miray\\.nuget\\packages\\sqlitepclraw.bundle_e_sqlite3\\2.1.6\\sqlitepclraw.bundle_e_sqlite3.2.1.6.nupkg.sha512",
-    "C:\\Users\\miray\\.nuget\\packages\\sqlitepclraw.core\\2.1.6\\sqlitepclraw.core.2.1.6.nupkg.sha512",
-    "C:\\Users\\miray\\.nuget\\packages\\sqlitepclraw.lib.e_sqlite3\\2.1.6\\sqlitepclraw.lib.e_sqlite3.2.1.6.nupkg.sha512",
-    "C:\\Users\\miray\\.nuget\\packages\\sqlitepclraw.provider.e_sqlite3\\2.1.6\\sqlitepclraw.provider.e_sqlite3.2.1.6.nupkg.sha512",
-    "C:\\Users\\miray\\.nuget\\packages\\system.memory\\4.5.5\\system.memory.4.5.5.nupkg.sha512"
->>>>>>> 471429845ecdab567327e4c5a73edba1b0d31657
   ],
   "logs": [
     {
       "code": "Undefined",
       "level": "Warning",
       "warningLevel": 1,
-<<<<<<< HEAD
       "message": "Problem reading the cache file C:\\Users\\Serdi\\Desktop\\Project B\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
-=======
-      "message": "Problem reading the cache file C:\\Users\\miray\\OneDrive\\Masaüstü\\git\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
->>>>>>> 471429845ecdab567327e4c5a73edba1b0d31657
     }
   ]
 }
