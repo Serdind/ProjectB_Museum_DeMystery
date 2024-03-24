@@ -423,19 +423,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\serdi\\.nuget\\packages\\": {}
+    "C:\\Users\\Serdi\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\serdi\\Desktop\\ProjectB\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery.csproj",
+      "projectUniqueName": "C:\\Users\\Serdi\\Desktop\\Project B\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery.csproj",
       "projectName": "ProjectB_Museum_DeMystery",
-      "projectPath": "C:\\Users\\serdi\\Desktop\\ProjectB\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery.csproj",
-      "packagesPath": "C:\\Users\\serdi\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\serdi\\Desktop\\ProjectB\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery\\obj\\",
+      "projectPath": "C:\\Users\\Serdi\\Desktop\\Project B\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery.csproj",
+      "packagesPath": "C:\\Users\\Serdi\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Serdi\\Desktop\\Project B\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\serdi\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\Serdi\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net7.0"
@@ -491,5 +491,13 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.405\\RuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "Undefined",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Problem reading the cache file C:\\Users\\Serdi\\Desktop\\Project B\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
+    }
+  ]
 }

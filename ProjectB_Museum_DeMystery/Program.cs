@@ -25,7 +25,18 @@ class Program
                 CREATE TABLE IF NOT EXISTS VisitorInTour (
                     Id_Visitor INTEGER,
                     Id_Tour INTEGER,
+                    Date TEXT NOT NULL,
                     PRIMARY KEY (Id_Visitor, Id_Tour)
+                );";
+
+            string createVisitorTableCommand = @"
+                CREATE TABLE IF NOT EXISTS Visitors (
+                    Id INTEGER,
+                    Name TEXT NOT NULL,
+                    Email TEXT NOT NULL,
+                    Password TEXT NOT NULL,
+                    Phonenumber TEXT NOT NULL,
+                    PRIMARY KEY (ID)
                 );";
 
             using (var createTable = new SqliteCommand(createTourTableCommand, connection))
@@ -34,6 +45,11 @@ class Program
             }
 
             using (var createTable = new SqliteCommand(createVisitorInTourTableCommand, connection))
+            {
+                createTable.ExecuteNonQuery();
+            }
+
+            using (var createTable = new SqliteCommand(createVisitorTableCommand, connection))
             {
                 createTable.ExecuteNonQuery();
             }
@@ -62,21 +78,25 @@ class Program
 
         while (running)
         {
+            Visitor visitor = new Visitor(null,null,null,null);
+            Console.WriteLine("Welcome to Het Depot!");
+            Console.WriteLine("Create account(C)\nLogin(L)\nQuit(Q)");
+            string choice = Console.ReadLine();
+
+            if (choice.ToLower() == "c")
+            {
+                visitor.CreateAccount();
+            }
+            else if (choice.ToLower() == "l")
+            {
+                visitor.Login();
+            }
+
             Console.WriteLine("Reservate(R)\nQuit(Q)");
             string option = Console.ReadLine();
 
             if (option.ToLower() == "r")
-            {
-                Console.WriteLine("Insert your full name:");
-                string name = Console.ReadLine();
-                Console.WriteLine("Insert your email:");
-                string email = Console.ReadLine();
-                Console.WriteLine("Insert your phonenumber:");
-                string phonenumber = Console.ReadLine();
-
-
-                Visitor visitor = new Visitor(name, email, phonenumber);
-                
+            {              
                 Tours.OverviewTours();
                 Console.WriteLine("Which tour? (ID)");
                 int tourID = Convert.ToInt32(Console.ReadLine());
@@ -88,6 +108,25 @@ class Program
                     {
                         tour.PlaceReservation(tourID, visitor);
                         tourFound = true;
+
+                        using (var connection = new SqliteConnection(connectionString))
+                        {
+                            connection.Open();
+
+                            string insertVisitorDataCommand = @"
+                            INSERT OR IGNORE INTO VisitorInTour (Id_Visitor, Id_Tour, Date) VALUES 
+                                (@Id_Visitor, @Id_Tour, @Date);";
+
+                            using (var insertData = new SqliteCommand(insertVisitorDataCommand, connection))
+                            {
+                                insertData.Parameters.AddWithValue("@Id_Visitor", visitor.Id);
+                                insertData.Parameters.AddWithValue("@Id_Tour", tour.ID);
+                                insertData.Parameters.AddWithValue("@Date", tour.Date);
+
+                                insertData.ExecuteNonQuery();
+                            }
+                        }
+
                         break;
                     }
                 }
