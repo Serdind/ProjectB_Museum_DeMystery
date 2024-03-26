@@ -9,6 +9,7 @@
       "ProjectB_Museum_DeMystery/1.0.0": {
         "dependencies": {
           "Microsoft.Data.Sqlite": "8.0.3",
+          "QRCoder": "1.4.3",
           "Spectre.Console": "0.48.0",
           "Spectre.Console.Cli": "0.48.0"
         },
@@ -30,6 +31,14 @@
           "lib/net6.0/Microsoft.Data.Sqlite.dll": {
             "assemblyVersion": "8.0.3.0",
             "fileVersion": "8.0.324.11510"
+          }
+        }
+      },
+      "QRCoder/1.4.3": {
+        "runtime": {
+          "lib/net6.0/QRCoder.dll": {
+            "assemblyVersion": "1.4.3.0",
+            "fileVersion": "1.4.3.0"
           }
         }
       },
@@ -226,6 +235,13 @@
       "sha512": "sha512-1euU97SivROH7nVIh2c/V63e0nQ73Txr/YlysB7fJuTV8LcfeL9WO1gdiJWcRIDoq8/McxcTc7evY6JJ1pD95w==",
       "path": "microsoft.data.sqlite.core/8.0.3",
       "hashPath": "microsoft.data.sqlite.core.8.0.3.nupkg.sha512"
+    },
+    "QRCoder/1.4.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-fWuFqjm8GTlEb2GqBl3Hi8HZZeZQwBSHxvRPtPjyNbT82H0ff0JwavKRBmMaXCno1Av6McPC8aJzri0Mj2w9Jw==",
+      "path": "qrcoder/1.4.3",
+      "hashPath": "qrcoder.1.4.3.nupkg.sha512"
     },
     "Spectre.Console/0.48.0": {
       "type": "package",

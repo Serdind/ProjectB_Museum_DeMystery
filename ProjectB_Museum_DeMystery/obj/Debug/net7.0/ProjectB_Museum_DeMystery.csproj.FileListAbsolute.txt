@@ -131,3 +131,4 @@ C:\Users\miray\OneDrive\Masaüstü\git\ProjectB_Museum_DeMystery\ProjectB_Museum
 C:\Users\miray\OneDrive\Masaüstü\git\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery\obj\Debug\net7.0\ProjectB_Museum_DeMystery.pdb
 C:\Users\miray\OneDrive\Masaüstü\git\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery\obj\Debug\net7.0\ProjectB_Museum_DeMystery.genruntimeconfig.cache
 C:\Users\miray\OneDrive\Masaüstü\git\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery\obj\Debug\net7.0\ref\ProjectB_Museum_DeMystery.dll
+C:\Users\Serdi\Desktop\Project B\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery\bin\Debug\net7.0\QRCoder.dll

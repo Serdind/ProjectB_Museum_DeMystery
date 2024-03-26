@@ -12,10 +12,22 @@ class Person
 
     public Person(string name, string email, string password, string phonenumber)
     {
-        Random random = new Random();
-        int uniqueCode = random.Next();
+        int lastId = 0;
 
-        Id = uniqueCode;
+        using (var connection = new SqliteConnection(connectionString))
+        {
+            connection.Open();
+
+            string query = "SELECT MAX(Id) FROM Visitors";
+            using (SqliteCommand command = new SqliteCommand(query, connection))
+            {
+                var result = command.ExecuteScalar();
+                if (result != DBNull.Value)
+                    lastId = Convert.ToInt32(result);
+            }
+        }
+        
+        Id = lastId + 1;
         Name = name;
         Email = email;
         Password = password;

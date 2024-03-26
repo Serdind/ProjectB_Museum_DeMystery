@@ -1,9 +1,11 @@
 using Spectre.Console;
 using System;
+using Microsoft.Data.Sqlite;
 
 static class Tours
 {
     public static readonly List<GuidedTour> guidedTour = new List<GuidedTour>();
+    public static string connectionString = "Data Source=MyDatabase.db";
     public static GuidedTour tour;
 
     static Tours()
@@ -38,41 +40,60 @@ static class Tours
 
     public static void OverviewTours()
     {
-        foreach (GuidedTour tour in guidedTour)
+        DateTime currentDate = DateTime.Today;
+        using (var connection = new SqliteConnection(connectionString))
         {
-            string timeOnly = tour.Date.ToString("HH:mm");
-            string dateOnly = tour.Date.ToShortDateString();
+            connection.Open();
 
-            var table = new Table().LeftAligned();
+            string selectToursDataCommand = @"
+                SELECT * FROM Tours WHERE Date = @Date";
 
-            AnsiConsole.Live(table)
-                .AutoClear(false)
-                .Overflow(VerticalOverflow.Ellipsis)
-                .Cropping(VerticalOverflowCropping.Top)
-                .Start(ctx =>
+            using (var selectData = new SqliteCommand(selectToursDataCommand, connection))
+            {
+                selectData.Parameters.AddWithValue("@Date", currentDate);
+
+                using (var reader = selectData.ExecuteReader())
                 {
-                    table.AddColumn("ID");
-                    table.AddColumn("Name");
-                    table.AddColumn("Date");
-                    table.AddColumn("Time");
-                    table.AddColumn("StartingPoint");
-                    table.AddColumn("EndPoint");
-                    table.AddColumn("Language");
-                    table.AddColumn("Visitors");
-                    ctx.Refresh();
+                    var table = new Table().LeftAligned();
 
-                    table.AddRow(
-                        tour.ID.ToString(),
-                        tour.Name,
-                        dateOnly,
-                        timeOnly,
-                        GuidedTour.StartingPoint,
-                        GuidedTour.EndPoint,
-                        tour.Language,
-                        tour.ReservedVisitors.Count() < tour.MaxParticipants ? tour.ReservedVisitors.Count().ToString() : "Full");
-                        
-                    ctx.Refresh();                    
-                });
+                    AnsiConsole.Live(table)
+                        .AutoClear(false)
+                        .Overflow(VerticalOverflow.Ellipsis)
+                        .Cropping(VerticalOverflowCropping.Top)
+                        .Start(ctx =>
+                        {
+                            table.AddColumn("ID");
+                            table.AddColumn("Name");
+                            table.AddColumn("Date");
+                            table.AddColumn("Time");
+                            table.AddColumn("StartingPoint");
+                            table.AddColumn("EndPoint");
+                            table.AddColumn("Language");
+                            table.AddColumn("Visitors");
+
+                            while (reader.Read())
+                            {
+                                DateTime dateValue = Convert.ToDateTime(reader["Date"]);
+                                string timeOnly = dateValue.ToString("HH:mm");
+                                string dateOnly = dateValue.ToShortDateString();
+                                string visitors = reader["Visitors"].ToString() == "13" ? "Full" : reader["Visitors"].ToString();
+
+                                table.AddRow(
+                                    reader["Id"].ToString(),
+                                    reader["Name"].ToString(),
+                                    dateOnly,
+                                    timeOnly,
+                                    reader["StartingPoint"].ToString(),
+                                    reader["EndPoint"].ToString(),
+                                    reader["Language"].ToString(),
+                                    visitors
+                                );
+
+                                ctx.Refresh();
+                            }
+                        });
+                }
+            }
         }
     }
 }
