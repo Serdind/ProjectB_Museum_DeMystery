@@ -69,7 +69,7 @@ class Person
         Console.WriteLine($"Logged in as: {visitor.Name}");
     }
 
-    public void Login()
+    public string Login()
     {
         Console.WriteLine("Insert your email:");
         string email = Console.ReadLine();
@@ -95,8 +95,9 @@ class Person
                 {
                     if (reader.Read())
                     {
+                        Id = Convert.ToInt32(reader["Id"]);
                         Console.WriteLine($"Logged in as: {reader["Name"]}");
-                        return;
+                        return "Visitor";
                     }
                 }
             }
@@ -110,8 +111,9 @@ class Person
                 {
                     if (reader2.Read())
                     {
-                        Console.WriteLine($"Logged in as: {reader2["Name"]} admin");
-                        return;
+                        Id = Convert.ToInt32(reader2["Id"]);
+                        Console.WriteLine($"Logged in as: {reader2["Name"]}");
+                        return "Admin";
                     }
                 }
             }
@@ -119,5 +121,6 @@ class Person
             Console.WriteLine("You don't have an account");
             CreateAccount();
         }
+        return "None";
     }
 }

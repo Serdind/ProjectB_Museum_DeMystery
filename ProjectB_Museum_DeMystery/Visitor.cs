@@ -12,70 +12,65 @@ class Visitor : Person
         {
             if (tourID == tour.ID)
             {
-                if (tour.ReservedVisitors.Count() < tour.MaxParticipants)
+                using (var connection = new SqliteConnection(connectionString))
                 {
-                    tour.ReservedVisitors.Add(visitor);
-                    
-                    using (var connection = new SqliteConnection(connectionString))
+                    connection.Open();
+
+                    string selectToursDataCommand = @"
+                        SELECT * FROM Tours WHERE Id = @TourID";
+
+                    using (var selectData = new SqliteCommand(selectToursDataCommand, connection))
                     {
-                        connection.Open();
+                        selectData.Parameters.AddWithValue("@TourID", tourID);
 
-                        string updateVisitorsCountCommand = @"
-                            UPDATE Tours
-                            SET Visitors = Visitors + 1
-                            WHERE Id = @TourID;";
-
-                        using (var updateCommand = new SqliteCommand(updateVisitorsCountCommand, connection))
+                        using (var reader = selectData.ExecuteReader())
                         {
-                            updateCommand.Parameters.AddWithValue("@TourID", tourID);
-                            updateCommand.ExecuteNonQuery();
+                            if (reader.Read())
+                            {
+                                int currentVisitors = reader.GetInt32(reader.GetOrdinal("Visitors"));
+
+                                if (currentVisitors != 13)
+                                {
+                                    string updateVisitorsCountCommand = @"
+                                        UPDATE Tours
+                                        SET Visitors = Visitors + 1
+                                        WHERE Id = @TourID;";
+
+                                    using (var updateCommand = new SqliteCommand(updateVisitorsCountCommand, connection))
+                                    {
+                                        updateCommand.Parameters.AddWithValue("@TourID", tourID);
+                                        updateCommand.ExecuteNonQuery();
+                                    }
+
+                                    string insertVisitorDataCommand = @"
+                                        INSERT OR IGNORE INTO VisitorInTour (Id_Visitor, Id_Tour, Date) VALUES 
+                                            (@Id_Visitor, @Id_Tour, @Date);";
+
+                                    using (var insertData = new SqliteCommand(insertVisitorDataCommand, connection))
+                                    {
+                                        insertData.Parameters.AddWithValue("@Id_Visitor", visitor.Id);
+                                        insertData.Parameters.AddWithValue("@Id_Tour", tour.ID);
+                                        insertData.Parameters.AddWithValue("@Date", tour.Date);
+
+                                        insertData.ExecuteNonQuery();
+                                    }
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Tour is full");
+                                    Tours.ReservateTour(visitor);
+                                }
+                            }
                         }
                     }
-
-                    string timeOnly = tour.Date.ToString("HH:mm");
-                    string dateOnly = tour.Date.ToShortDateString();
-
-                    Console.WriteLine($"Reservation made by:");
-                    Console.WriteLine($"Name: {visitor.Name}");
-                    Console.WriteLine($"Email: {visitor.Email}");
-                    Console.WriteLine($"Phonenumber: {visitor.Phonenumber}\n");
-                    Console.WriteLine("Reservation made for tour:");
-                    Console.WriteLine($"ID: {tour.ID}");
-                    Console.WriteLine($"Name: {tour.Name}");
-                    Console.WriteLine($"Language: {tour.Language}");
-                    Console.WriteLine($"Date: {dateOnly}");
-                    Console.WriteLine($"Time: {timeOnly}\n");
-
-                    using (var connection = new SqliteConnection(connectionString))
-                    {
-                        connection.Open();
-
-                        string insertVisitorDataCommand = @"
-                        INSERT OR IGNORE INTO VisitorInTour (Id_Visitor, Id_Tour, Date) VALUES 
-                            (@Id_Visitor, @Id_Tour, @Date);";
-
-                        using (var insertData = new SqliteCommand(insertVisitorDataCommand, connection))
-                        {
-                            insertData.Parameters.AddWithValue("@Id_Visitor", visitor.Id);
-                            insertData.Parameters.AddWithValue("@Id_Tour", tour.ID);
-                            insertData.Parameters.AddWithValue("@Date", tour.Date);
-
-                            insertData.ExecuteNonQuery();
-                        }
-                    }
+                }
 
                     return true;
-                }
-                else
-                {
-                    tour.WaitingList.Add(visitor);
-                    Console.WriteLine("Sorry, the tour is fully booked. You have been added to the waiting list.\n");
-                    return false;
-                }
             }
         }
         
         Console.WriteLine("Tour not found. Try again!");
+        Tours.ReservateTour(visitor);
         return false;
     }
 }

@@ -46,11 +46,11 @@ static class Tours
             connection.Open();
 
             string selectToursDataCommand = @"
-                SELECT * FROM Tours WHERE Date = @Date";
+                SELECT * FROM Tours WHERE Date(Date) = Date(@Date)";
 
             using (var selectData = new SqliteCommand(selectToursDataCommand, connection))
             {
-                selectData.Parameters.AddWithValue("@Date", currentDate);
+                selectData.Parameters.AddWithValue("@Date", currentDate.Date);
 
                 using (var reader = selectData.ExecuteReader())
                 {
@@ -95,5 +95,14 @@ static class Tours
                 }
             }
         }
+    }
+
+    public static void ReservateTour(Visitor visitor)
+    {
+        OverviewTours();
+        Console.WriteLine("Which tour? (ID)");
+        int tourID = Convert.ToInt32(Console.ReadLine());
+
+        visitor.Reservate(tourID, visitor);
     }
 }
