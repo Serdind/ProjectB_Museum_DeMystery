@@ -124,7 +124,7 @@ class Program
                 visitor.Login();
             }
 
-            Console.WriteLine("Reservate(R)\nQuit(Q)");
+            Console.WriteLine("Make reservation(R)\nQuit(Q)");
             string option = Console.ReadLine();
 
             if (option.ToLower() == "r")
