@@ -119,7 +119,6 @@ class Person
             }
 
             Console.WriteLine("You don't have an account");
-            CreateAccount();
         }
         return "None";
     }

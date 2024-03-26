@@ -355,6 +355,11 @@ class Program
                                 }
                             }
                         }
+                        else if (option.ToLower() == "q")
+                        {
+                            adminRunning = false;
+                            continue;
+                        }
                     }
                 }
             }
