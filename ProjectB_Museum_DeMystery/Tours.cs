@@ -6,7 +6,8 @@ static class Tours
 {
     public static readonly List<GuidedTour> guidedTour = new List<GuidedTour>();
     public static string connectionString = "Data Source=MyDatabase.db";
-    public static GuidedTour tour;
+    public static Guide guide = new Guide("Casper", "Casper@depotgids.com", "Password123", "987328954");
+    public static string maxParticipants = "2";
 
     static Tours()
     {
@@ -15,6 +16,10 @@ static class Tours
 
     public static void UpdateTours(int numberOfDays)
     {
+        DateTime yesterday = DateTime.Today.AddDays(-1);
+        RemoveToursFromDate(yesterday);
+        RemoveVisitorInTourFromDate(yesterday);
+
         DateTime currentDate = DateTime.Today;
 
         for (int day = 0; day < numberOfDays; day++)
@@ -27,15 +32,15 @@ static class Tours
 
     private static void ToursDay(DateTime date)
     {
-        guidedTour.Add(new GuidedTour("Museum tour", new DateTime(date.Year, date.Month, date.Day, 11, 30, 0), "English"));
-        guidedTour.Add(new GuidedTour("Museum tour", new DateTime(date.Year, date.Month, date.Day, 13, 00, 0), "Engels"));
-        guidedTour.Add(new GuidedTour("Museum tour", new DateTime(date.Year, date.Month, date.Day, 13, 30, 0), "Engels"));
-        guidedTour.Add(new GuidedTour("Museum tour", new DateTime(date.Year, date.Month, date.Day, 14, 00, 0), "Engels"));
-        guidedTour.Add(new GuidedTour("Museum tour", new DateTime(date.Year, date.Month, date.Day, 14, 30, 0), "Engels"));
-        guidedTour.Add(new GuidedTour("Museum tour", new DateTime(date.Year, date.Month, date.Day, 15, 00, 0), "Engels"));
-        guidedTour.Add(new GuidedTour("Museum tour", new DateTime(date.Year, date.Month, date.Day, 16, 00, 0), "Engels"));
-        guidedTour.Add(new GuidedTour("Museum tour", new DateTime(date.Year, date.Month, date.Day, 16, 30, 0), "Engels"));
-        guidedTour.Add(new GuidedTour("Museum tour", new DateTime(date.Year, date.Month, date.Day, 17, 00, 0), "Engels"));
+        guidedTour.Add(new GuidedTour("Museum tour", new DateTime(date.Year, date.Month, date.Day, 11, 30, 0), "English", guide.Name));
+        guidedTour.Add(new GuidedTour("Museum tour", new DateTime(date.Year, date.Month, date.Day, 13, 00, 0), "English", guide.Name));
+        guidedTour.Add(new GuidedTour("Museum tour", new DateTime(date.Year, date.Month, date.Day, 13, 30, 0), "English", guide.Name));
+        guidedTour.Add(new GuidedTour("Museum tour", new DateTime(date.Year, date.Month, date.Day, 14, 00, 0), "English", guide.Name));
+        guidedTour.Add(new GuidedTour("Museum tour", new DateTime(date.Year, date.Month, date.Day, 14, 30, 0), "English", guide.Name));
+        guidedTour.Add(new GuidedTour("Museum tour", new DateTime(date.Year, date.Month, date.Day, 15, 00, 0), "English", guide.Name));
+        guidedTour.Add(new GuidedTour("Museum tour", new DateTime(date.Year, date.Month, date.Day, 16, 00, 0), "English", guide.Name));
+        guidedTour.Add(new GuidedTour("Museum tour", new DateTime(date.Year, date.Month, date.Day, 16, 30, 0), "English", guide.Name));
+        guidedTour.Add(new GuidedTour("Museum tour", new DateTime(date.Year, date.Month, date.Day, 17, 00, 0), "English", guide.Name));
     }
 
     public static void OverviewTours()
@@ -70,13 +75,14 @@ static class Tours
                             table.AddColumn("EndPoint");
                             table.AddColumn("Language");
                             table.AddColumn("Visitors");
+                            table.AddColumn("Guide");
 
                             while (reader.Read())
                             {
                                 DateTime dateValue = Convert.ToDateTime(reader["Date"]);
                                 string timeOnly = dateValue.ToString("HH:mm");
                                 string dateOnly = dateValue.ToShortDateString();
-                                string visitors = reader["Visitors"].ToString() == "13" ? "Full" : reader["Visitors"].ToString();
+                                string visitors = reader["Visitors"].ToString() == Tours.maxParticipants ? "Full" : reader["Visitors"].ToString();
 
                                 table.AddRow(
                                     reader["Id"].ToString(),
@@ -86,13 +92,48 @@ static class Tours
                                     reader["StartingPoint"].ToString(),
                                     reader["EndPoint"].ToString(),
                                     reader["Language"].ToString(),
-                                    visitors
+                                    visitors,
+                                    reader["Guide"].ToString()
                                 );
 
                                 ctx.Refresh();
                             }
                         });
                 }
+            }
+        }
+    }
+
+    private static void RemoveToursFromDate(DateTime date)
+    {
+        using (var connection = new SqliteConnection(connectionString))
+        {
+            connection.Open();
+
+            string deleteToursDataCommand = @"
+                DELETE FROM Tours WHERE Date(Date) = Date(@Date)";
+
+            using (var deleteData = new SqliteCommand(deleteToursDataCommand, connection))
+            {
+                deleteData.Parameters.AddWithValue("@Date", date.Date);
+                deleteData.ExecuteNonQuery();
+            }
+        }
+    }
+
+    private static void RemoveVisitorInTourFromDate(DateTime date)
+    {
+        using (var connection = new SqliteConnection(connectionString))
+        {
+            connection.Open();
+
+            string deleteVisitorInTourDataCommand = @"
+                DELETE FROM VisitorInTour WHERE Date(Date) = Date(@Date)";
+
+            using (var deleteData = new SqliteCommand(deleteVisitorInTourDataCommand, connection))
+            {
+                deleteData.Parameters.AddWithValue("@Date", date.Date);
+                deleteData.ExecuteNonQuery();
             }
         }
     }

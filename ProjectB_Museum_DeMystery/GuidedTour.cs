@@ -7,16 +7,17 @@ class GuidedTour
     public const string StartingPoint = "Begin";
     public const string EndPoint = "Eind";
     public string Language;
+    public string NameGuide;
     public List <Visitor> WaitingList;
     public List <Visitor> ReservedVisitors;
-    public int MaxParticipants = 13;
 
-    public GuidedTour(string name, DateTime date, string language)
+    public GuidedTour(string name, DateTime date, string language, string nameGuide)
     {
         ID = nextID++;
         Name = name;
         Date = date;
         Language = language;
+        NameGuide = nameGuide;
         WaitingList = new List<Visitor>();
         ReservedVisitors = new List<Visitor>();
     }
