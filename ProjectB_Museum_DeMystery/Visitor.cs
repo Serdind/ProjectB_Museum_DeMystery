@@ -1,14 +1,3 @@
-<<<<<<< HEAD
-class Visitor
-{
-    public long Code;
-    public string Name;
-    public string Email;
-    public string Phonenumber;
-    public GuidedTour guidedTour;
-
-    public Visitor(string name, string email, string phonenumber)
-=======
 using Microsoft.Data.Sqlite;
 using Spectre.Console;
 
@@ -19,7 +8,6 @@ class Visitor : Person
     public Visitor(string name) : base(name){}
 
     public bool Reservate(int tourID, Visitor visitor)
->>>>>>> reservation_visitor
     {
         using (var connection = new SqliteConnection(connectionString))
         {
@@ -79,7 +67,7 @@ class Visitor : Person
         return false;
     }
 
-    public void ViewReservationsMade(int visitorID)
+    public bool ViewReservationsMade(int visitorID)
     {
         using (var connection = new SqliteConnection(connectionString))
         {
@@ -135,16 +123,18 @@ class Visitor : Person
                                     );
                                 }
                                 AnsiConsole.Render(table);
+                                return true;
                             }
                         }
                     }
 
                     if (!reservationsExist)
                     {
-                        Console.WriteLine("No reservations made.");
+                        return false;
                     }
                 }
             }
         }
+        return false;
     }
 }
