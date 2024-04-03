@@ -75,3 +75,11 @@ class Guide : Person
         }
     }
 }
+public class test
+{
+    public void Main()
+    {
+        Console.WriteLine("Hallo iedereen dit is een test!");
+    }
+
+}
