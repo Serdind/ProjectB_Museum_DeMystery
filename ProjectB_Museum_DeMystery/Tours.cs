@@ -6,8 +6,8 @@ static class Tours
 {
     public static readonly List<GuidedTour> guidedTour = new List<GuidedTour>();
     public static string connectionString = "Data Source=MyDatabase.db";
-    public static Guide guide = new Guide("Casper", "Casper@depotgids.com", "Password123", "987328954");
-    public static string maxParticipants = "2";
+    public static Guide guide = new Guide("Casper");
+    public static string maxParticipants = "13";
 
     static Tours()
     {

@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "nVtYAJzUxJxJS9e1JpU688zWTut0GKuZ4G0rK2uA7vq4E4RH1+sC+2K4Tiz1hJRKa8M9LbEoFENhTrWLIrSfSQ==",
+  "dgSpecHash": "YDJyi2ALzoKxyrNHyCfAnbdnlbPQOT1cwHMVnwm5V9ZLacS6FmR5SCUZFM9dLpo7pmUCxvFw4SUVqXF+nQxbfQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\serdi\\Desktop\\ProjectB\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\serdi\\.nuget\\packages\\microsoft.data.sqlite\\8.0.3\\microsoft.data.sqlite.8.0.3.nupkg.sha512",
     "C:\\Users\\serdi\\.nuget\\packages\\microsoft.data.sqlite.core\\8.0.3\\microsoft.data.sqlite.core.8.0.3.nupkg.sha512",
+    "C:\\Users\\serdi\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
     "C:\\Users\\serdi\\.nuget\\packages\\qrcoder\\1.4.3\\qrcoder.1.4.3.nupkg.sha512",
     "C:\\Users\\serdi\\.nuget\\packages\\spectre.console\\0.48.0\\spectre.console.0.48.0.nupkg.sha512",
     "C:\\Users\\serdi\\.nuget\\packages\\spectre.console.cli\\0.48.0\\spectre.console.cli.0.48.0.nupkg.sha512",

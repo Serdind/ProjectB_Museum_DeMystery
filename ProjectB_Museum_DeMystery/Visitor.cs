@@ -5,7 +5,7 @@ class Visitor : Person
 {
     string connectionString = "Data Source=MyDatabase.db";
     
-    public Visitor(string name, string email, string password, string phonenumber) : base(name, email, password, phonenumber){}
+    public Visitor(string name) : base(name){}
 
     public bool Reservate(int tourID, Visitor visitor)
     {
@@ -26,7 +26,7 @@ class Visitor : Person
                     {
                         int currentVisitors = reader.GetInt32(reader.GetOrdinal("Visitors"));
 
-                        if (currentVisitors != 2)
+                        if (currentVisitors != 13)
                         {
                             string updateVisitorsCountCommand = @"
                                 UPDATE Tours

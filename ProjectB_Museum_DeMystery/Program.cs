@@ -38,9 +38,6 @@ class Program
                 CREATE TABLE IF NOT EXISTS Visitors (
                     Id INTEGER,
                     Name TEXT NOT NULL,
-                    Email TEXT NOT NULL,
-                    Password TEXT NOT NULL,
-                    Phonenumber TEXT NOT NULL,
                     PRIMARY KEY (ID)
                 );";
             
@@ -48,9 +45,6 @@ class Program
                 CREATE TABLE IF NOT EXISTS DepartmentHead (
                     Id INTEGER,
                     Name TEXT NOT NULL,
-                    Email TEXT NOT NULL,
-                    Password TEXT NOT NULL,
-                    Phonenumber TEXT NOT NULL,
                     PRIMARY KEY (ID)
                 );";
             
@@ -58,9 +52,6 @@ class Program
                 CREATE TABLE IF NOT EXISTS Guide (
                     Id INTEGER,
                     Name TEXT NOT NULL,
-                    Email TEXT NOT NULL,
-                    Password TEXT NOT NULL,
-                    Phonenumber TEXT NOT NULL,
                     PRIMARY KEY (ID)
                 );";
             
@@ -103,20 +94,17 @@ class Program
             }
 
             string insertDepartmentHeadDataCommand = @"
-                    INSERT OR IGNORE INTO DepartmentHead (Id, Name, Email, Password, Phonenumber) VALUES 
-                        (@Id, @Name, @Email, @Password, @Phonenumber);";
+                    INSERT OR IGNORE INTO DepartmentHead (Id, Name) VALUES 
+                        (@Id, @Name);";
             
             string insertGuideDataCommand = @"
-                    INSERT OR IGNORE INTO Guide (Id, Name, Email, Password, Phonenumber) VALUES 
-                        (@Id, @Name, @Email, @Password, @Phonenumber);";
+                    INSERT OR IGNORE INTO Guide (Id, Name) VALUES 
+                        (@Id, @Name);";
 
                 using (var insertData = new SqliteCommand(insertGuideDataCommand, connection))
                 {
                     insertData.Parameters.AddWithValue("@Id", Tours.guide.Id);
                     insertData.Parameters.AddWithValue("@Name", Tours.guide.Name);
-                    insertData.Parameters.AddWithValue("@Email", Tours.guide.Email);
-                    insertData.Parameters.AddWithValue("@Password", Tours.guide.Password);
-                    insertData.Parameters.AddWithValue("@Phonenumber", Tours.guide.Phonenumber);
 
                     insertData.ExecuteNonQuery();
                 }
@@ -169,33 +157,32 @@ class Program
 
         while (running)
         {
+            Visitor visitor = new Visitor(null);
             Console.WriteLine("Welcome to Het Depot!");
-            Console.WriteLine("Create account(C)\nLogin(L)\nQuit(Q)");
+            Console.WriteLine("Login(L)\nQuit(Q)");
             string choice = Console.ReadLine();
 
-            if (choice.ToLower() == "c")
+            if (choice.ToLower() == "l")
             {
-                Visitor visitor = new Visitor(null,null,null,null);
-                visitor.CreateAccount();
-            }
-            else if (choice.ToLower() == "l")
-            {
-                Visitor visitor = new Visitor(null,null,null,null);
                 string loginStatus = visitor.Login();
                 if (loginStatus == "Visitor")
                 {
-                    Console.WriteLine("Make reservation (R)\nMy reservations (M)\nQuit (Q)");
-                    string option = Console.ReadLine();
+                    Console.WriteLine("Make reservation with QR(1)\nMake reservation(2)\nMy reservations(3)\nQuit(4)");
+                    int option = Convert.ToInt32(Console.ReadLine());
 
-                    if (option.ToLower() == "r")
+                    if (option == 1)
+                    {
+                        visitor.MakeReservationQR();
+                    }
+                    else if (option == 2)
                     {
                         Tours.ReservateTour(visitor);
                     }
-                    else if (option.ToLower() == "m")
+                    else if (option == 3)
                     {
                         visitor.ViewReservationsMade(visitor.Id);
                     }
-                    else if (option.ToLower() == "q")
+                    else if (option == 4)
                     {
                         running = false;
                         break;

@@ -9,6 +9,7 @@
       "ProjectB_Museum_DeMystery/1.0.0": {
         "dependencies": {
           "Microsoft.Data.Sqlite": "8.0.3",
+          "Newtonsoft.Json": "13.0.3",
           "QRCoder": "1.4.3",
           "Spectre.Console": "0.48.0",
           "Spectre.Console.Cli": "0.48.0"
@@ -31,6 +32,14 @@
           "lib/net6.0/Microsoft.Data.Sqlite.dll": {
             "assemblyVersion": "8.0.3.0",
             "fileVersion": "8.0.324.11510"
+          }
+        }
+      },
+      "Newtonsoft.Json/13.0.3": {
+        "runtime": {
+          "lib/net6.0/Newtonsoft.Json.dll": {
+            "assemblyVersion": "13.0.0.0",
+            "fileVersion": "13.0.3.27908"
           }
         }
       },
@@ -235,6 +244,13 @@
       "sha512": "sha512-1euU97SivROH7nVIh2c/V63e0nQ73Txr/YlysB7fJuTV8LcfeL9WO1gdiJWcRIDoq8/McxcTc7evY6JJ1pD95w==",
       "path": "microsoft.data.sqlite.core/8.0.3",
       "hashPath": "microsoft.data.sqlite.core.8.0.3.nupkg.sha512"
+    },
+    "Newtonsoft.Json/13.0.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-HrC5BXdl00IP9zeV+0Z848QWPAoCr9P3bDEZguI+gkLcBKAOxix/tLEAAHC+UvDNPv4a2d18lOReHMOagPa+zQ==",
+      "path": "newtonsoft.json/13.0.3",
+      "hashPath": "newtonsoft.json.13.0.3.nupkg.sha512"
     },
     "QRCoder/1.4.3": {
       "type": "package",
