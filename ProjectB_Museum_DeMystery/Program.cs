@@ -172,7 +172,7 @@ class Program
 
                     if (option == 1)
                     {
-                        visitor.MakeReservationQR();
+                        visitor.MakeReservationQR("1");
                     }
                     else if (option == 2)
                     {

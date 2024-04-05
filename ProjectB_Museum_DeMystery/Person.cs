@@ -30,11 +30,6 @@ class Person
         Name = name;
     }
 
-    public void MakeReservationQR()
-    {
-        
-    }
-
     public void CreateAccount(string name)
     {
         Visitor visitor = new Visitor(name);
