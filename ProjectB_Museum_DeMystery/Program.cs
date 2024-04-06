@@ -142,15 +142,16 @@ class Program
                 }
             }
 
-            AddGuide(1);
-            AddGuide(2);
-            AddGuide(3);
-            AddGuide(4);
-            AddGuide(5);
-            AddGuide(6);
-            AddGuide(7);
-            AddGuide(8);
-            AddGuide(9);
+                                                                                                AddGuide(8754312874);
+            AddGuide(8754312875);
+            AddGuide(8754312876);
+            AddGuide(8754312877);
+            AddGuide(8754312878);
+            AddGuide(8754312879);
+            AddGuide(8754312880);
+            AddGuide(8754312881);
+            AddGuide(8754312882);
+            
         }
         
         bool running = true;
@@ -167,22 +168,22 @@ class Program
                 string loginStatus = visitor.Login();
                 if (loginStatus == "Visitor")
                 {
-                    Console.WriteLine("Make reservation with QR(1)\nMake reservation(2)\nMy reservations(3)\nQuit(4)");
-                    int option = Convert.ToInt32(Console.ReadLine());
+                    Console.WriteLine("Make reservation with QR(R)\nMake reservation(E)\nMy reservations(M)\nQuit(Q)");
+                    string option = Console.ReadLine();
 
-                    if (option == 1)
+                    if (option.ToLower() == "r")
                     {
-                        visitor.MakeReservationQR("1");
+                        
                     }
-                    else if (option == 2)
+                    else if (option.ToLower() == "e")
                     {
                         Tours.ReservateTour(visitor);
                     }
-                    else if (option == 3)
+                    else if (option.ToLower() == "m")
                     {
                         visitor.ViewReservationsMade(visitor.Id);
                     }
-                    else if (option == 4)
+                    else if (option.ToLower() == "q")
                     {
                         running = false;
                         break;
@@ -490,7 +491,7 @@ class Program
         }
     }
 
-    public static void AddGuide(int tourID)
+    public static void AddGuide(long tourID)
     {
         string connectionString = "Data Source=MyDatabase.db";
 

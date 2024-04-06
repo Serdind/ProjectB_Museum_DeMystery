@@ -8,7 +8,7 @@ class Visitor : Person
     
     public Visitor(string name) : base(name){}
 
-    public bool Reservate(int tourID, Visitor visitor)
+    public bool Reservate(string tourID, Visitor visitor)
     {
         using (var connection = new SqliteConnection(connectionString))
         {
@@ -134,26 +134,6 @@ class Visitor : Person
                     }
                 }
             }
-        }
-    }
-
-    public void MakeReservationQR(string number)
-    {
-        string jsonFilePath = @"C:\Users\Serdi\Desktop\Project B\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery\UniqueCodes.json";
-        string jsonText = File.ReadAllText(jsonFilePath);
-
-        dynamic jsonData = JsonConvert.DeserializeObject(jsonText);
-
-        var item = jsonData[number];
-
-        if (item != null)
-        {
-            string name = item["name"];
-            Console.WriteLine("Name: " + name);
-        }
-        else
-        {
-            Console.WriteLine("No item found with the provided number.");
         }
     }
 }

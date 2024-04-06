@@ -1,6 +1,7 @@
 using Spectre.Console;
 using System;
 using Microsoft.Data.Sqlite;
+using System.Text.Json;
 
 static class Tours
 {
@@ -142,7 +143,7 @@ static class Tours
     {
         OverviewTours();
         Console.WriteLine("Which tour? (ID)");
-        int tourID = Convert.ToInt32(Console.ReadLine());
+        string tourID = Console.ReadLine();
 
         visitor.Reservate(tourID, visitor);
     }
