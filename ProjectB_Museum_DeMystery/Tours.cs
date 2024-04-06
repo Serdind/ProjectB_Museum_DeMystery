@@ -12,7 +12,7 @@ static class Tours
 
     static Tours()
     {
-        UpdateTours(1);
+        UpdateTours(2);
     }
 
     public static void UpdateTours(int numberOfDays)
@@ -44,9 +44,15 @@ static class Tours
         guidedTour.Add(new GuidedTour("Museum tour", new DateTime(date.Year, date.Month, date.Day, 17, 00, 0), "English", guide.Name));
     }
 
-    public static void OverviewTours()
+    public static void OverviewTours(bool edit)
     {
         DateTime currentDate = DateTime.Today;
+
+        if (edit == true)
+        {
+            currentDate = DateTime.Today.AddDays(1);
+        }
+
         using (var connection = new SqliteConnection(connectionString))
         {
             connection.Open();
@@ -141,7 +147,7 @@ static class Tours
 
     public static void ReservateTour(Visitor visitor)
     {
-        OverviewTours();
+        OverviewTours(false);
         Console.WriteLine("Which tour? (ID)");
         string tourID = Console.ReadLine();
 
