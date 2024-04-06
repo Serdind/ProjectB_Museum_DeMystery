@@ -123,6 +123,7 @@ class Visitor : Person
                                         reader2["Language"].ToString()
                                     );
                                 }
+
                                 AnsiConsole.Render(table);
                             }
                         }

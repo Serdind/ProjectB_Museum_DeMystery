@@ -154,73 +154,78 @@ class Program
             
         }
         
-        bool running = true;
+        Visitor visitor = new Visitor(null);
 
-        while (running)
+        using (var connection = new SqliteConnection(connectionString))
         {
-            Visitor visitor = new Visitor(null);
             Console.WriteLine("Welcome to Het Depot!");
             Console.WriteLine("Login(L)\nQuit(Q)");
             string choice = Console.ReadLine();
 
-            if (choice.ToLower() == "l")
+            bool running = true;
+
+            while (running)
             {
-                string loginStatus = visitor.Login();
-                if (loginStatus == "Visitor")
+                if (choice.ToLower() == "l")
                 {
-                    Console.WriteLine("Make reservation with QR(R)\nMake reservation(E)\nMy reservations(M)\nQuit(Q)");
-                    string option = Console.ReadLine();
-
-                    if (option.ToLower() == "r")
+                    Console.WriteLine("Insert your full name:");
+                    string username = Console.ReadLine();
+                    
+                    string loginStatus = visitor.Login(username);
+                    
+                    if (loginStatus == "Visitor")
                     {
-                        
-                    }
-                    else if (option.ToLower() == "e")
-                    {
-                        Tours.ReservateTour(visitor);
-                    }
-                    else if (option.ToLower() == "m")
-                    {
-                        visitor.ViewReservationsMade(visitor.Id);
-                    }
-                    else if (option.ToLower() == "q")
-                    {
-                        running = false;
-                        break;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Wrong input. Try again.");
-                    }
-                }
-                else if (loginStatus == "Admin")
-                {
-                    bool adminRunning = true;
-
-                    while (adminRunning)
-                    {
-                        Console.WriteLine("Add tour (A)\nEdit tour (E)\nRemove tour (R)\nQuit (Q)");
+                        Console.WriteLine("Make reservation with QR(R)\nMake reservation(E)\nMy reservations(M)\nQuit(Q)");
                         string option = Console.ReadLine();
 
-                        if (option.ToLower() == "a")
+                        if (option.ToLower() == "r")
                         {
-                            Console.WriteLine("Name: ");
-                            string name = Console.ReadLine();
-                            Console.WriteLine("Date (Y-M-D H:M:S): ");
-                            string dateString = Console.ReadLine();
+                            
+                        }
+                        else if (option.ToLower() == "e")
+                        {
+                            Tours.ReservateTour(visitor);
+                        }
+                        else if (option.ToLower() == "m")
+                        {
+                            visitor.ViewReservationsMade(visitor.Id);
+                        }
+                        else if (option.ToLower() == "q")
+                        {
+                            running = false;
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Wrong input. Try again.");
+                        }
+                    }
+                    else if (loginStatus == "Admin")
+                    {
+                        bool adminRunning = true;
 
-                            DateTime date;
-                            if (!DateTime.TryParse(dateString, out date))
+                        while (adminRunning)
+                        {
+                            Console.WriteLine("Add tour (A)\nEdit tour (E)\nRemove tour (R)\nQuit (Q)");
+                            string option = Console.ReadLine();
+
+                            if (option.ToLower() == "a")
                             {
-                                Console.WriteLine("Invalid date format. Please enter a valid date.");
-                                return;
-                            }
+                                Console.WriteLine("Name: ");
+                                string name = Console.ReadLine();
+                                Console.WriteLine("Date (Y-M-D H:M:S): ");
+                                string dateString = Console.ReadLine();
 
-                            Console.WriteLine("Language: ");
-                            string language = Console.ReadLine();
+                                DateTime date;
+                                if (!DateTime.TryParse(dateString, out date))
+                                {
+                                    Console.WriteLine("Invalid date format. Please enter a valid date.");
+                                    return;
+                                }
 
-                            using (var connection = new SqliteConnection(connectionString))
-                            {
+                                Console.WriteLine("Language: ");
+                                string language = Console.ReadLine();
+
                                 connection.Open();
 
                                 string insertTourDataCommand = @"
@@ -240,15 +245,12 @@ class Program
                                     insertData.ExecuteNonQuery();
                                 }
                             }
-                        }
-                        else if (option.ToLower() == "e")
-                        {
-                            Tours.OverviewTours(true);
-                            Console.WriteLine("Tour (Id): ");
-                            string id = Console.ReadLine();
-
-                            using (var connection = new SqliteConnection(connectionString))
+                            else if (option.ToLower() == "e")
                             {
+                                Tours.OverviewTours(true);
+                                Console.WriteLine("Tour (Id): ");
+                                string id = Console.ReadLine();
+
                                 connection.Open();
 
                                 DateTime tomorrow = DateTime.Today.AddDays(1);
@@ -427,17 +429,14 @@ class Program
                                     }
                                 }
                                 }
+                                }
                             }
-                            }
-                        }
-                        else if (option.ToLower() == "r")   
-                        {
-                            Tours.OverviewTours(true);
-                            Console.WriteLine("Tour (Id): ");
-                            string id = Console.ReadLine();
-
-                            using (var connection = new SqliteConnection(connectionString))
+                            else if (option.ToLower() == "r")   
                             {
+                                Tours.OverviewTours(true);
+                                Console.WriteLine("Tour (Id): ");
+                                string id = Console.ReadLine();
+
                                 connection.Open();
 
                                 string removeTourCommand = @"
@@ -451,50 +450,50 @@ class Program
                                     Console.WriteLine("Tour removed successfully");
                                 }
                             }
-                        }
-                        else if (option.ToLower() == "q")
-                        {
-                            adminRunning = false;
-                            continue;
-                        }
-                        else
-                        {
-                            Console.WriteLine("Wrong input. Try again.");
+                            else if (option.ToLower() == "q")
+                            {
+                                adminRunning = false;
+                                continue;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Wrong input. Try again.");
+                            }
                         }
                     }
-                }
-                else if (loginStatus == "Guide")
-                {
-                    bool guideRunning = true;
-
-                    while (guideRunning)
+                    else if (loginStatus == "Guide")
                     {
-                        Console.WriteLine("My tours(M)\nQuit (Q)");
-                        string option = Console.ReadLine();
+                        bool guideRunning = true;
 
-                        if (option.ToLower() == "m")
+                        while (guideRunning)
                         {
-                            Tours.guide.ViewTours(Tours.guide.Id);
-                        }
-                        else if (option.ToLower() == "q")
-                        {
-                            guideRunning = false;
-                        }
-                        else
-                        {
-                            Console.WriteLine("Wrong input. Try again.");
+                            Console.WriteLine("My tours(M)\nQuit (Q)");
+                            string option = Console.ReadLine();
+
+                            if (option.ToLower() == "m")
+                            {
+                                Tours.guide.ViewTours(Tours.guide.Id);
+                            }
+                            else if (option.ToLower() == "q")
+                            {
+                                guideRunning = false;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Wrong input. Try again.");
+                            }
                         }
                     }
                 }
-            }
-            else if (choice.ToLower() == "q")
-            {
-                running = false;
-                continue;
-            }
-            else
-            {
-                Console.WriteLine("Wrong input. Try again.");
+                else if (choice.ToLower() == "q")
+                {
+                    running = false;
+                    continue;
+                }
+                else
+                {
+                    Console.WriteLine("Wrong input. Try again.");
+                }
             }
         }
     }
