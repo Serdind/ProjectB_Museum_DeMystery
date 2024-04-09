@@ -37,7 +37,7 @@ class Program
             string createVisitorTableCommand = @"
                 CREATE TABLE IF NOT EXISTS Visitors (
                     Id INTEGER,
-                    Name TEXT NOT NULL,
+                    QR TEXT NOT NULL,
                     PRIMARY KEY (ID)
                 );";
             
@@ -45,6 +45,7 @@ class Program
                 CREATE TABLE IF NOT EXISTS DepartmentHead (
                     Id INTEGER,
                     Name TEXT NOT NULL,
+                    QR TEXT NOT NULL,
                     PRIMARY KEY (ID)
                 );";
             
@@ -52,6 +53,7 @@ class Program
                 CREATE TABLE IF NOT EXISTS Guide (
                     Id INTEGER,
                     Name TEXT NOT NULL,
+                    QR TEXT NOT NULL,
                     PRIMARY KEY (ID)
                 );";
             
@@ -94,17 +96,18 @@ class Program
             }
 
             string insertDepartmentHeadDataCommand = @"
-                    INSERT OR IGNORE INTO DepartmentHead (Id, Name) VALUES 
-                        (@Id, @Name);";
+                    INSERT OR IGNORE INTO DepartmentHead (Id, Name, QR) VALUES 
+                        (@Id, @Name, @Qr);";
             
             string insertGuideDataCommand = @"
-                    INSERT OR IGNORE INTO Guide (Id, Name) VALUES 
-                        (@Id, @Name);";
+                    INSERT OR IGNORE INTO Guide (Id, Name, QR) VALUES 
+                        (@Id, @Name, @Qr);";
 
                 using (var insertData = new SqliteCommand(insertGuideDataCommand, connection))
                 {
                     insertData.Parameters.AddWithValue("@Id", Tours.guide.Id);
                     insertData.Parameters.AddWithValue("@Name", Tours.guide.Name);
+                    insertData.Parameters.AddWithValue("@Qr", Tours.guide.QR);
 
                     insertData.ExecuteNonQuery();
                 }
@@ -114,9 +117,7 @@ class Program
                 {
                     insertData.Parameters.AddWithValue("@Id", 1);
                     insertData.Parameters.AddWithValue("@Name", "Frans");
-                    insertData.Parameters.AddWithValue("@Email", "Frans@depotadmin.com");
-                    insertData.Parameters.AddWithValue("@Password", "Password123");
-                    insertData.Parameters.AddWithValue("@Phonenumber", 01111132);
+                    insertData.Parameters.AddWithValue("@Qr", "6457823");
 
                     insertData.ExecuteNonQuery();
                 }
@@ -164,20 +165,33 @@ class Program
 
             if (choice.ToLower() == "l")
             {
-                string loginStatus = visitor.Login(visitor.Name);
+                Console.WriteLine("Scan je qr code:");
+                string qr = Console.ReadLine();
+
+                using (var connection = new SqliteConnection(connectionString))
+                {
+                    connection.Open();
+
+                    string insertVisitorDataCommand = @"
+                    INSERT OR IGNORE INTO Visitors (Id, QR) VALUES 
+                        (@Id, @Qr);";
+
+                    using (var insertData = new SqliteCommand(insertVisitorDataCommand, connection))
+                    {
+                        insertData.Parameters.AddWithValue("@Id", visitor.Id);
+                        insertData.Parameters.AddWithValue("@Qr", visitor.QR);
+
+                        insertData.ExecuteNonQuery();
+                    }
+                }
+
+                string loginStatus = visitor.Login(visitor.QR);
                 if (loginStatus == "Visitor")
                 {
-                    Console.WriteLine("Make reservation with QR(R)\nMake reservation(E)\nMy reservations(M)\nQuit(Q)");
+                    Console.WriteLine("Make reservation(E)\nMy reservations(M)\nQuit(Q)");
                     string option = Console.ReadLine();
 
-                    if (option.ToLower() == "r")
-                    {
-                        Console.WriteLine("Scan je qr code:");
-                        string qr = Console.ReadLine();
-
-                        visitor.MakeReservationQR(qr, visitor);
-                    }
-                    else if (option.ToLower() == "e")
+                    if (option.ToLower() == "e")
                     {
                         Tours.ReservateTour(visitor);
                     }

@@ -7,7 +7,7 @@ static class Tours
 {
     public static readonly List<GuidedTour> guidedTour = new List<GuidedTour>();
     public static string connectionString = "Data Source=MyDatabase.db";
-    public static Guide guide = new Guide("Casper");
+    public static Guide guide = new Guide("Casper", "6438729164");
     public static string maxParticipants = "13";
 
     static Tours()
@@ -146,43 +146,5 @@ static class Tours
         string tourID = Console.ReadLine();
 
         visitor.Reservate(tourID, visitor);
-    }
-
-    public static void WriteToJSON()
-    {
-        string filePath = @"C:\Users\Wisha\Downloads\School,(●'◡'●)\Jaar 1\Project B\Project B eindopdracht\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery\UniqueCodes.json";
-
-        var tours = new Dictionary<string, object>();
-
-        using (var connection = new SqliteConnection(connectionString))
-        {
-            connection.Open();
-
-            string selectTours = @"
-                SELECT * FROM Tours";
-            
-            using (var command = new SqliteCommand(selectTours, connection))
-            using (var reader = command.ExecuteReader())
-            {
-                while (reader.Read())
-                {
-                    var tourId = reader["Id"].ToString();
-                    var tour = new
-                    {
-                        Name = reader["Name"].ToString(),
-                        Date = reader["Date"].ToString(),
-                        StartingPoint = reader["StartingPoint"].ToString(),
-                        EndPoint = reader["EndPoint"].ToString(),
-                        Language = reader["Language"].ToString(),
-                        Guide = reader["Guide"].ToString(),
-                    };
-                    tours.Add(tourId, tour);
-                }
-            }
-        }
-
-        string jsonString = JsonSerializer.Serialize(tours);
-
-        File.WriteAllText(filePath, jsonString);
     }
 }

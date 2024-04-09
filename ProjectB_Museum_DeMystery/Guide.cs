@@ -4,7 +4,11 @@ using Spectre.Console;
 class Guide : Person
 {
     string connectionString = "Data Source=MyDatabase.db";
-    public Guide(string name) : base(name){}
+    public string Name;
+    public Guide(string name, string qr) : base(qr)
+    {
+        Name = name;
+    }
 
     public void ViewTours(int guideID)
     {
