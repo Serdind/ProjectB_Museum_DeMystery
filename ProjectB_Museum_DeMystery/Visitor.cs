@@ -1,16 +1,6 @@
-<<<<<<< HEAD
-class Visitor
-{
-    public long Code;
-    public string Name;
-    public string Email;
-    public string Phonenumber;
-    public GuidedTour guidedTour;
-
-    public Visitor(string name, string email, string phonenumber)
-=======
 using Microsoft.Data.Sqlite;
 using Spectre.Console;
+using Newtonsoft.Json;
 
 class Visitor : Person
 {
@@ -18,8 +8,7 @@ class Visitor : Person
     
     public Visitor(string name) : base(name){}
 
-    public bool Reservate(int tourID, Visitor visitor)
->>>>>>> reservation_visitor
+    public bool Reservate(string tourID, Visitor visitor)
     {
         using (var connection = new SqliteConnection(connectionString))
         {
@@ -134,6 +123,7 @@ class Visitor : Person
                                         reader2["Language"].ToString()
                                     );
                                 }
+
                                 AnsiConsole.Render(table);
                             }
                         }

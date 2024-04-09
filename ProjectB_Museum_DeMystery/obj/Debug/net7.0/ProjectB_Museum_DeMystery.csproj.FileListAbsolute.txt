@@ -139,3 +139,4 @@ C:\Users\serdi\Desktop\ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMyst
 C:\Users\serdi\Desktop\ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery\bin\Debug\net7.0\fr\Spectre.Console.Cli.resources.dll
 C:\Users\serdi\Desktop\ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery\bin\Debug\net7.0\sv\Spectre.Console.Cli.resources.dll
 C:\Users\serdi\Desktop\ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery\bin\Debug\net7.0\Newtonsoft.Json.dll
+C:\Users\Serdi\Desktop\Project B\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery\bin\Debug\net7.0\Newtonsoft.Json.dll

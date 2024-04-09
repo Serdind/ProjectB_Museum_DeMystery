@@ -1,7 +1,7 @@
 class GuidedTour
 {
-    private static int nextID = 1;
-    public int ID;
+    private static long nextID = 8754312874;
+    public long ID;
     public string Name;
     public DateTime Date;
     public const string StartingPoint = "Begin";

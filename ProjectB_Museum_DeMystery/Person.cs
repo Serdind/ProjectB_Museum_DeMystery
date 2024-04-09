@@ -30,11 +30,6 @@ class Person
         Name = name;
     }
 
-    public void MakeReservationQR()
-    {
-        
-    }
-
     public void CreateAccount(string name)
     {
         Visitor visitor = new Visitor(name);
@@ -57,11 +52,8 @@ class Person
         }
     }
 
-    public string Login()
+    public string Login(string name)
     {
-        Console.WriteLine("Insert your full name:");
-        string name = Console.ReadLine();
-
         using (var connection = new SqliteConnection(connectionString))
         {
             connection.Open();
