@@ -57,6 +57,8 @@ class Visitor : Person
                                 insertData.Parameters.AddWithValue("@Date", reader["Date"].ToString());
 
                                 insertData.ExecuteNonQuery();
+                                
+                                Console.WriteLine("Succesfully reservation made.\n");
                                 return true;
                             }
                         }
