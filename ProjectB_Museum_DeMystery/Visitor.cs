@@ -68,7 +68,7 @@ class Visitor : Person
         return false;
     }
 
-    public void ViewReservationsMade(int visitorID)
+    public bool ViewReservationsMade(int visitorID)
     {
         using (var connection = new SqliteConnection(connectionString))
         {
@@ -125,16 +125,18 @@ class Visitor : Person
                                 }
 
                                 AnsiConsole.Render(table);
+                                return true;
                             }
                         }
                     }
 
                     if (!reservationsExist)
                     {
-                        Console.WriteLine("No reservations made.");
+                        return false;
                     }
                 }
             }
         }
+        return false;
     }
 }
