@@ -12,7 +12,7 @@ static class Tours
 
     static Tours()
     {
-        UpdateTours(2);
+        UpdateTours(1);
     }
 
     public static void UpdateTours(int numberOfDays)
@@ -27,28 +27,7 @@ static class Tours
         {
             DateTime currentDay = currentDate.AddDays(day);
 
-            if (!ToursExistForDate(currentDay))
-            {
-                ToursDay(currentDay);
-            }
-        }
-    }
-
-    private static bool ToursExistForDate(DateTime date)
-    {
-        using (var connection = new SqliteConnection(connectionString))
-        {
-            connection.Open();
-
-            string selectToursDataCommand = @"
-                SELECT COUNT(*) FROM Tours WHERE Date(Date) = Date(@Date)";
-
-            using (var selectData = new SqliteCommand(selectToursDataCommand, connection))
-            {
-                selectData.Parameters.AddWithValue("@Date", date);
-                int count = Convert.ToInt32(selectData.ExecuteScalar());
-                return count > 0;
-            }
+            ToursDay(currentDay);
         }
     }
 
@@ -65,15 +44,9 @@ static class Tours
         guidedTour.Add(new GuidedTour("Museum tour", new DateTime(date.Year, date.Month, date.Day, 17, 00, 0), "English", guide.Name));
     }
 
-    public static void OverviewTours(bool edit)
+    public static void OverviewTours()
     {
         DateTime currentDate = DateTime.Today;
-
-        if (edit == true)
-        {
-            currentDate = DateTime.Today.AddDays(1);
-        }
-
         using (var connection = new SqliteConnection(connectionString))
         {
             connection.Open();
@@ -168,10 +141,48 @@ static class Tours
 
     public static void ReservateTour(Visitor visitor)
     {
-        OverviewTours(false);
+        OverviewTours();
         Console.WriteLine("Which tour? (ID)");
         string tourID = Console.ReadLine();
 
         visitor.Reservate(tourID, visitor);
+    }
+
+    public static void WriteToJSON()
+    {
+        string filePath = @"C:\Users\Wisha\Downloads\School,(●'◡'●)\Jaar 1\Project B\Project B eindopdracht\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery\UniqueCodes.json";
+
+        var tours = new Dictionary<string, object>();
+
+        using (var connection = new SqliteConnection(connectionString))
+        {
+            connection.Open();
+
+            string selectTours = @"
+                SELECT * FROM Tours";
+            
+            using (var command = new SqliteCommand(selectTours, connection))
+            using (var reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    var tourId = reader["Id"].ToString();
+                    var tour = new
+                    {
+                        Name = reader["Name"].ToString(),
+                        Date = reader["Date"].ToString(),
+                        StartingPoint = reader["StartingPoint"].ToString(),
+                        EndPoint = reader["EndPoint"].ToString(),
+                        Language = reader["Language"].ToString(),
+                        Guide = reader["Guide"].ToString(),
+                    };
+                    tours.Add(tourId, tour);
+                }
+            }
+        }
+
+        string jsonString = JsonSerializer.Serialize(tours);
+
+        File.WriteAllText(filePath, jsonString);
     }
 }

@@ -123,7 +123,6 @@ class Visitor : Person
                                         reader2["Language"].ToString()
                                     );
                                 }
-
                                 AnsiConsole.Render(table);
                             }
                         }
@@ -135,6 +134,32 @@ class Visitor : Person
                     }
                 }
             }
+        }
+    }
+
+    public void MakeReservationQR(string number, Visitor visitor)
+    {
+        string jsonFilePath = @"C:\Users\Wisha\Downloads\School,(●'◡'●)\Jaar 1\Project B\Project B eindopdracht\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery\UniqueCodes.json";
+        string jsonText = File.ReadAllText(jsonFilePath);
+
+        dynamic jsonData = JsonConvert.DeserializeObject(jsonText);
+
+        var item = jsonData[number];
+
+        if (item != null)
+        {
+            Console.WriteLine("Name: " + item["Name"]);
+            Console.WriteLine("Date: " + item["Date"]);
+            Console.WriteLine("StartingPoint: " + item["StartingPoint"]);
+            Console.WriteLine("EndPoint: " + item["EndPoint"]);
+            Console.WriteLine("Language: " + item["Language"]);
+            Console.WriteLine("Guide: " + item["Guide"]);
+
+            Reservate(number, visitor);
+        }
+        else
+        {
+            Console.WriteLine("Your qr is not valid.");
         }
     }
 }
