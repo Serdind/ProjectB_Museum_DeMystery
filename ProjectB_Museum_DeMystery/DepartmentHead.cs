@@ -2,5 +2,10 @@ class DepartmentHead : Person
 {
     public GuidedTour guidedTour;
 
-    public DepartmentHead(string name) : base(name){}
+    public string Name;
+
+    public DepartmentHead(string name, string qr) : base(qr)
+    {
+        Name = name;
+    }
 }

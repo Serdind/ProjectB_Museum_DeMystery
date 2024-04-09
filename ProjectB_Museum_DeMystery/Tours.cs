@@ -7,7 +7,7 @@ static class Tours
 {
     public static readonly List<GuidedTour> guidedTour = new List<GuidedTour>();
     public static string connectionString = "Data Source=MyDatabase.db";
-    public static Guide guide = new Guide("Casper");
+    public static Guide guide = new Guide("Casper", "6438729164");
     public static string maxParticipants = "13";
 
     static Tours()
@@ -27,28 +27,7 @@ static class Tours
         {
             DateTime currentDay = currentDate.AddDays(day);
 
-            if (!ToursExistForDate(currentDay))
-            {
-                ToursDay(currentDay);
-            }
-        }
-    }
-
-    private static bool ToursExistForDate(DateTime date)
-    {
-        using (var connection = new SqliteConnection(connectionString))
-        {
-            connection.Open();
-
-            string selectToursDataCommand = @"
-                SELECT COUNT(*) FROM Tours WHERE Date(Date) = Date(@Date)";
-
-            using (var selectData = new SqliteCommand(selectToursDataCommand, connection))
-            {
-                selectData.Parameters.AddWithValue("@Date", date);
-                int count = Convert.ToInt32(selectData.ExecuteScalar());
-                return count > 0;
-            }
+            ToursDay(currentDay);
         }
     }
 
@@ -65,15 +44,9 @@ static class Tours
         guidedTour.Add(new GuidedTour("Museum tour", new DateTime(date.Year, date.Month, date.Day, 17, 00, 0), "English", guide.Name));
     }
 
-    public static void OverviewTours(bool edit)
+    public static void OverviewTours()
     {
         DateTime currentDate = DateTime.Today;
-
-        if (edit == true)
-        {
-            currentDate = DateTime.Today.AddDays(1);
-        }
-
         using (var connection = new SqliteConnection(connectionString))
         {
             connection.Open();
@@ -168,7 +141,7 @@ static class Tours
 
     public static void ReservateTour(Visitor visitor)
     {
-        OverviewTours(false);
+        OverviewTours();
         Console.WriteLine("Which tour? (ID)");
         string tourID = Console.ReadLine();
 

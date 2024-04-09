@@ -1,6 +1,6 @@
 class GuidedTour
 {
-    private static long nextID = 8754312874;
+    private static long nextID = 1;
     public long ID;
     public string Name;
     public DateTime Date;

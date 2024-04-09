@@ -6,7 +6,7 @@ class Visitor : Person
 {
     string connectionString = "Data Source=MyDatabase.db";
     
-    public Visitor(string name) : base(name){}
+    public Visitor(string qr) : base(qr){}
 
     public bool Reservate(string tourID, Visitor visitor)
     {
@@ -123,7 +123,6 @@ class Visitor : Person
                                         reader2["Language"].ToString()
                                     );
                                 }
-
                                 AnsiConsole.Render(table);
                                 return true;
                             }
