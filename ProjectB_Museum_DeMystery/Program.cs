@@ -143,29 +143,29 @@ class Program
                 }
             }
 
-            AddGuide(8754312874);
-            AddGuide(8754312875);
-            AddGuide(8754312876);
-            AddGuide(8754312877);
-            AddGuide(8754312878);
-            AddGuide(8754312879);
-            AddGuide(8754312880);
-            AddGuide(8754312881);
-            AddGuide(8754312882);
+            AddGuide(1);
+            AddGuide(2);
+            AddGuide(3);
+            AddGuide(4);
+            AddGuide(5);
+            AddGuide(6);
+            AddGuide(7);
+            AddGuide(8);
+            AddGuide(9);
             
         }        
         bool running = true;
 
         while (running)
         {
-            Visitor visitor = new Visitor("Wish");
+            Visitor visitor = new Visitor(null);
             Console.WriteLine("Welcome to Het Depot!");
             Console.WriteLine("Login(L)\nQuit(Q)");
             string choice = Console.ReadLine();
 
             if (choice.ToLower() == "l")
             {
-                Console.WriteLine("Scan je qr code:");
+                Console.WriteLine("Scan your QR code:");
                 string qr = Console.ReadLine();
 
                 using (var connection = new SqliteConnection(connectionString))
@@ -179,13 +179,13 @@ class Program
                     using (var insertData = new SqliteCommand(insertVisitorDataCommand, connection))
                     {
                         insertData.Parameters.AddWithValue("@Id", visitor.Id);
-                        insertData.Parameters.AddWithValue("@Qr", visitor.QR);
+                        insertData.Parameters.AddWithValue("@Qr", qr);
 
                         insertData.ExecuteNonQuery();
                     }
                 }
 
-                string loginStatus = visitor.Login(visitor.QR);
+                string loginStatus = visitor.Login(qr);
                 if (loginStatus == "Visitor")
                 {
                     Console.WriteLine("Make reservation(E)\nMy reservations(M)\nQuit(Q)");

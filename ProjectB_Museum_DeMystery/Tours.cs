@@ -12,7 +12,7 @@ static class Tours
 
     static Tours()
     {
-        UpdateTours(1);
+        UpdateTours(2);
     }
 
     public static void UpdateTours(int numberOfDays)
