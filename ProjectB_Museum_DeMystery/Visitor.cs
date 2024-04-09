@@ -138,4 +138,78 @@ class Visitor : Person
         }
         return false;
     }
+
+    public void CancelReservation(Visitor visitor)
+    {
+        string connectionString = "Data Source=MyDatabase.db";
+
+        if (visitor.ViewReservationsMade(visitor.Id))
+        {
+            Console.WriteLine("Which tour do you wanna cancel?");
+            int tourid = Convert.ToInt32(Console.ReadLine());
+
+            Console.WriteLine("Are you sure you want to cancel your reservation? (Y/N)");
+            string confirmation = Console.ReadLine();
+
+            if (confirmation.ToLower() == "y")
+            {            
+                using (var connection = new SqliteConnection(connectionString))
+                {
+                    connection.Open();
+
+                    string removeTourCommand = @"
+                        DELETE FROM VisitorInTour
+                        WHERE Id_Tour = @TourID;";
+
+                    using (var deleteCommand = new SqliteCommand(removeTourCommand, connection))
+                    {
+                        deleteCommand.Parameters.AddWithValue("@TourID", tourid);
+                        deleteCommand.ExecuteNonQuery();
+                        Console.WriteLine("Reservation removed successfully");
+                    }
+                
+                    string selectToursDataCommand = @"
+                        SELECT * FROM Tours WHERE Id = @TourID";
+
+                    using (var selectData = new SqliteCommand(selectToursDataCommand, connection))
+                    {
+                        selectData.Parameters.AddWithValue("@TourID", tourid);
+
+                        using (var reader = selectData.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                int currentVisitors = reader.GetInt32(reader.GetOrdinal("Visitors"));
+
+                                string updateVisitorsCountCommand = @"
+                                    UPDATE Tours
+                                    SET Visitors = Visitors - 1
+                                    WHERE Id = @TourID;";
+
+                                using (var updateCommand = new SqliteCommand(updateVisitorsCountCommand, connection))
+                                {
+                                    updateCommand.Parameters.AddWithValue("@TourID", tourid);
+                                    updateCommand.ExecuteNonQuery();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            else if (confirmation.ToLower() == "n")
+            {
+                Console.WriteLine("Reservation cancellation cancelled.");
+            }
+            else
+            {
+                Console.WriteLine("Invalid input. Please enter 'Y' or 'N'.");
+            }
+            Tours.OverviewTours(false);
+            return;
+        }
+        else
+        {
+            Console.WriteLine("No reservations made.");
+        }
+    }
 }
