@@ -4,11 +4,10 @@ class GuidedTour
     public long ID;
     public string Name;
     public DateTime Date;
-    public const string StartingPoint = "Begin";
-    public const string EndPoint = "Eind";
+    public const string StartingPoint = "Room 1";
+    public const string EndPoint = "Room 6";
     public string Language;
     public string NameGuide;
-    public List <Visitor> WaitingList;
     public List <Visitor> ReservedVisitors;
 
     public GuidedTour(string name, DateTime date, string language, string nameGuide)
@@ -18,7 +17,6 @@ class GuidedTour
         Date = date;
         Language = language;
         NameGuide = nameGuide;
-        WaitingList = new List<Visitor>();
         ReservedVisitors = new List<Visitor>();
     }
 }

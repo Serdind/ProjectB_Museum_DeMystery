@@ -25,55 +25,55 @@ class Guide : Person
 
                 using (var reader = selectData.ExecuteReader())
                 {
-                    bool reservationsExist = false;
+                    var table = new Table().LeftAligned();
 
-                    while (reader.Read())
-                    {
-                        string selectToursDataCommand = @"
-                            SELECT * FROM Tours WHERE Id = @TourID";
-
-                        using (var selectData2 = new SqliteCommand(selectToursDataCommand, connection))
+                    AnsiConsole.Live(table)
+                        .AutoClear(false)
+                        .Overflow(VerticalOverflow.Ellipsis)
+                        .Cropping(VerticalOverflowCropping.Top)
+                        .Start(ctx =>
                         {
-                            selectData2.Parameters.AddWithValue("@TourID", reader["Id_Tour"].ToString());
+                            table.AddColumn("ID");
+                            table.AddColumn("Name");
+                            table.AddColumn("Date");
+                            table.AddColumn("Time");
+                            table.AddColumn("StartingPoint");
+                            table.AddColumn("EndPoint");
+                            table.AddColumn("Language");
 
-                            using (var reader2 = selectData2.ExecuteReader())
+                            while (reader.Read())
                             {
-                                var table = new Table().LeftAligned();
+                                string selectToursDataCommand = @"
+                                    SELECT * FROM Tours WHERE Id = @TourID";
 
-                                table.AddColumn("ID");
-                                table.AddColumn("Name");
-                                table.AddColumn("Date");
-                                table.AddColumn("Time");
-                                table.AddColumn("StartingPoint");
-                                table.AddColumn("EndPoint");
-                                table.AddColumn("Language");
-
-                                while (reader2.Read())
+                                using (var selectData2 = new SqliteCommand(selectToursDataCommand, connection))
                                 {
-                                    reservationsExist = true;
-                                    DateTime dateValue = Convert.ToDateTime(reader2["Date"]);
-                                    string timeOnly = dateValue.ToString("HH:mm");
-                                    string dateOnly = dateValue.ToShortDateString();
+                                    selectData2.Parameters.AddWithValue("@TourID", reader["Id_Tour"].ToString());
 
-                                    table.AddRow(
-                                        reader2["Id"].ToString(),
-                                        reader2["Name"].ToString(),
-                                        dateOnly,
-                                        timeOnly,
-                                        reader2["StartingPoint"].ToString(),
-                                        reader2["EndPoint"].ToString(),
-                                        reader2["Language"].ToString()
-                                    );
+                                    using (var reader2 = selectData2.ExecuteReader())
+                                    {
+                                        while (reader2.Read())
+                                        {
+                                            DateTime dateValue = Convert.ToDateTime(reader2["Date"]);
+                                            string timeOnly = dateValue.ToString("HH:mm");
+                                            string dateOnly = dateValue.ToShortDateString();
+
+                                            table.AddRow(
+                                                reader2["Id"].ToString(),
+                                                reader2["Name"].ToString(),
+                                                dateOnly,
+                                                timeOnly,
+                                                reader2["StartingPoint"].ToString(),
+                                                reader2["EndPoint"].ToString(),
+                                                reader2["Language"].ToString()
+                                            );
+
+                                            ctx.Refresh();
+                                        }
+                                    }
                                 }
-                                AnsiConsole.Render(table);
                             }
-                        }
-                    }
-
-                    if (!reservationsExist)
-                    {
-                        Console.WriteLine("No reservations made.");
-                    }
+                        });
                 }
             }
         }

@@ -1,14 +1,12 @@
 using Spectre.Console;
-using System;
 using Microsoft.Data.Sqlite;
-using System.Text.Json;
 
 static class Tours
 {
     public static readonly List<GuidedTour> guidedTour = new List<GuidedTour>();
     public static string connectionString = "Data Source=MyDatabase.db";
-    public static Guide guide = new Guide("Casper", "6438729164");
-    public static string maxParticipants = "13";
+    public static Guide guide = new Guide("Casper", "4892579");
+    public static string maxParticipants = "1";
 
     static Tours()
     {
@@ -173,5 +171,45 @@ static class Tours
         string tourID = Console.ReadLine();
 
         visitor.Reservate(tourID, visitor);
+    }
+
+    public static void AddGuide(long tourID)
+    {
+        string connectionString = "Data Source=MyDatabase.db";
+
+        using (var connection = new SqliteConnection(connectionString))
+        {
+            connection.Open();
+
+            string selectToursDataCommand = @"
+                    SELECT * FROM Tours WHERE Id = @TourID";
+
+            using (var selectData = new SqliteCommand(selectToursDataCommand, connection))
+            {
+                selectData.Parameters.AddWithValue("@TourID", tourID);
+
+                using (var reader = selectData.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        int guideId = 1;
+                        string guideName = "Casper";
+
+                        string insertGuideInTourDataCommand = @"
+                                INSERT OR IGNORE INTO GuideInTour (Id_Guide, Id_Tour, Date) VALUES 
+                                    (@Id_Guide, @Id_Tour, @Date);";
+
+                        using (var insertData = new SqliteCommand(insertGuideInTourDataCommand, connection))
+                        {
+                            insertData.Parameters.AddWithValue("@Id_Guide", guideId);
+                            insertData.Parameters.AddWithValue("@Id_Tour", tourID);
+                            insertData.Parameters.AddWithValue("@Date", reader["Date"]);
+
+                            insertData.ExecuteNonQuery();
+                        }
+                    }
+                }
+            }
+        }
     }
 }

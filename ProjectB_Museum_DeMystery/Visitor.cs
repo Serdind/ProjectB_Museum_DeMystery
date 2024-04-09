@@ -1,6 +1,5 @@
 using Microsoft.Data.Sqlite;
 using Spectre.Console;
-using Newtonsoft.Json;
 
 class Visitor : Person
 {
@@ -13,7 +12,7 @@ class Visitor : Person
 
         if (ViewReservationsMade(visitor.Id))
         {
-            Console.WriteLine("Visitor has already reserved a tour for today.");
+            Console.WriteLine("You already reserved a tour for today.\n");
             return false;
         }
 
@@ -34,7 +33,7 @@ class Visitor : Person
                     {
                         int currentVisitors = reader.GetInt32(reader.GetOrdinal("Visitors"));
 
-                        if (currentVisitors != 13)
+                        if (currentVisitors != 1)
                         {
                             string updateVisitorsCountCommand = @"
                                 UPDATE Tours
@@ -152,7 +151,7 @@ class Visitor : Person
 
         if (visitor.ViewReservationsMade(visitor.Id))
         {
-            Console.WriteLine("Which tour do you wanna cancel?");
+            Console.WriteLine("Which tour do you wanna cancel?(ID)");
             int tourid = Convert.ToInt32(Console.ReadLine());
 
             Console.WriteLine("Are you sure you want to cancel your reservation? (Y/N)");

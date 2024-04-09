@@ -1,8 +1,4 @@
-﻿using System;
-using Microsoft.Data.Sqlite;
-using Spectre.Console;
-using System.Globalization;
-
+﻿using Microsoft.Data.Sqlite;
 
 class Program
 {
@@ -105,9 +101,9 @@ class Program
 
                 using (var insertData = new SqliteCommand(insertGuideDataCommand, connection))
                 {
-                    insertData.Parameters.AddWithValue("@Id", Tours.guide.Id);
-                    insertData.Parameters.AddWithValue("@Name", Tours.guide.Name);
-                    insertData.Parameters.AddWithValue("@Qr", Tours.guide.QR);
+                    insertData.Parameters.AddWithValue("@Id", 1);
+                    insertData.Parameters.AddWithValue("@Name", "Casper");
+                    insertData.Parameters.AddWithValue("@Qr", "4892579");
 
                     insertData.ExecuteNonQuery();
                 }
@@ -143,15 +139,15 @@ class Program
                 }
             }
 
-            AddGuide(1);
-            AddGuide(2);
-            AddGuide(3);
-            AddGuide(4);
-            AddGuide(5);
-            AddGuide(6);
-            AddGuide(7);
-            AddGuide(8);
-            AddGuide(9);
+            Tours.AddGuide(1);
+            Tours.AddGuide(2);
+            Tours.AddGuide(3);
+            Tours.AddGuide(4);
+            Tours.AddGuide(5);
+            Tours.AddGuide(6);
+            Tours.AddGuide(7);
+            Tours.AddGuide(8);
+            Tours.AddGuide(9);
             
         }        
         bool running = true;
@@ -193,7 +189,6 @@ class Program
                         }
                         else if (option.ToLower() == "q")
                         {
-                            running = false;
                             break;
                         }
                         else
@@ -204,269 +199,7 @@ class Program
                 }
                 else if (loginStatus == "Admin")
                 {
-                    bool adminRunning = true;
-
-                    while (adminRunning)
-                    {
-                        Console.WriteLine("\nOverview tours(T)\nAdd tour (A)\nEdit tour (E)\nRemove tour (R)\nQuit (Q)");
-                        string option = Console.ReadLine();
-                        
-                        if (option.ToLower() == "t")
-                        {
-                            Tours.OverviewTours(true);
-                        }
-                        else if (option.ToLower() == "a")
-                        {
-                            Console.WriteLine("Name: ");
-                            string name = Console.ReadLine();
-                            Console.WriteLine("Date (Y-M-D H:M:S): ");
-                            string dateString = Console.ReadLine();
-
-                            DateTime date;
-                            if (!DateTime.TryParse(dateString, out date))
-                            {
-                                Console.WriteLine("Invalid date format. Please enter a valid date.");
-                                return;
-                            }
-
-                            Console.WriteLine("Language: ");
-                            string language = Console.ReadLine();
-
-                            using (var connection = new SqliteConnection(connectionString))
-                            {
-                                connection.Open();
-
-                                string insertTourDataCommand = @"
-                                    INSERT OR IGNORE INTO Tours (Id, Name, Date, StartingPoint, EndPoint, Language, Visitors, Guide) VALUES 
-                                        (@Id, @Name, @Date, @StartingPoint, @EndPoint, @Language, @Visitors, @Guide);";
-
-                                using (var insertData = new SqliteCommand(insertTourDataCommand, connection))
-                                {
-                                    insertData.Parameters.AddWithValue("@Name", name);
-                                    insertData.Parameters.AddWithValue("@Date", date);
-                                    insertData.Parameters.AddWithValue("@StartingPoint", GuidedTour.StartingPoint);
-                                    insertData.Parameters.AddWithValue("@EndPoint", GuidedTour.EndPoint);
-                                    insertData.Parameters.AddWithValue("@Language", language);
-                                    insertData.Parameters.AddWithValue("@Visitors", 0);
-                                    insertData.Parameters.AddWithValue("@Guide", Tours.guide.Name);
-
-                                    insertData.ExecuteNonQuery();
-                                }
-                            }
-                        }
-                        else if (option.ToLower() == "e")
-                        {
-                            Tours.OverviewTours(true);
-                            Console.WriteLine("Tour (Id): ");
-                            string id = Console.ReadLine();
-
-                            using (var connection = new SqliteConnection(connectionString))
-                            {
-                                connection.Open();
-
-                                string selectTourDataCommand = @"
-                                    SELECT * FROM Tours WHERE Id = @TourID";
-                                
-                                using (var selectData = new SqliteCommand(selectTourDataCommand, connection))
-                                {
-                                    selectData.Parameters.AddWithValue("@TourID", id);
-
-                                    using (var reader = selectData.ExecuteReader())
-                                    {
-                                        var table = new Table().LeftAligned();
-
-                                        AnsiConsole.Live(table)
-                                            .AutoClear(false)
-                                            .Overflow(VerticalOverflow.Ellipsis)
-                                            .Cropping(VerticalOverflowCropping.Top)
-                                            .Start(ctx =>
-                                            {
-                                                table.AddColumn("ID");
-                                                table.AddColumn("Name");
-                                                table.AddColumn("Date");
-                                                table.AddColumn("Time");
-                                                table.AddColumn("StartingPoint");
-                                                table.AddColumn("EndPoint");
-                                                table.AddColumn("Language");
-                                                table.AddColumn("Visitors");
-                                                table.AddColumn("Guide");
-
-                                                while (reader.Read())
-                                                {
-                                                    DateTime dateValue = Convert.ToDateTime(reader["Date"]);
-                                                    string timeOnly = dateValue.ToString("HH:mm");
-                                                    string dateOnly = dateValue.ToShortDateString();
-                                                    string visitors = reader["Visitors"].ToString() == Tours.maxParticipants ? "Full" : reader["Visitors"].ToString();
-
-                                                    table.AddRow(
-                                                        reader["Id"].ToString(),
-                                                        reader["Name"].ToString(),
-                                                        dateOnly,
-                                                        timeOnly,
-                                                        reader["StartingPoint"].ToString(),
-                                                        reader["EndPoint"].ToString(),
-                                                        reader["Language"].ToString(),
-                                                        visitors,
-                                                        reader["Guide"].ToString()
-                                                    );
-
-                                                    ctx.Refresh();
-                                                }
-                                            });
-                                        
-                                        Console.WriteLine("What do you want to change?\nName(N)\nDate(D)\nTime(T)\nLanguage(L)\nVisitors(V)");
-                                        string change = Console.ReadLine();
-
-                                        if (change.ToLower() == "n")
-                                        {
-                                            Console.WriteLine("Name:");
-                                            string name = Console.ReadLine();
-
-                                            string updateNameCommand = @"
-                                            UPDATE Tours
-                                            SET Name = @Name
-                                            WHERE Id = @TourID;";
-
-                                            using (var updateCommand = new SqliteCommand(updateNameCommand, connection))
-                                            {
-                                                updateCommand.Parameters.AddWithValue("@Name", name);
-                                                updateCommand.Parameters.AddWithValue("@TourID", id);
-                                                updateCommand.ExecuteNonQuery();
-                                                Console.WriteLine($"Name set to {name}");
-                                            }
-                                        }
-                                        else if (change.ToLower() == "d")
-                                        {
-                                            Console.WriteLine("Date (Y-M-D): ");
-                                            string dateString = Console.ReadLine();
-
-                                            DateTime date;
-                                            if (!DateTime.TryParse(dateString, out date))
-                                            {
-                                                Console.WriteLine("Invalid date format. Please enter a valid date.");
-                                                return;
-                                            }
-
-                                            date = date.Date;
-
-                                            string updateDateCommand = @"
-                                            UPDATE Tours
-                                            SET Date = @Date
-                                            WHERE Id = @TourID;";
-
-                                            using (var updateCommand = new SqliteCommand(updateDateCommand, connection))
-                                            {
-                                                updateCommand.Parameters.AddWithValue("@Date", date);
-                                                updateCommand.Parameters.AddWithValue("@TourID", id);
-                                                updateCommand.ExecuteNonQuery();
-                                                Console.WriteLine($"Date set to {date}");
-                                            }
-                                        }
-                                        else if (change.ToLower() == "t")
-                                        {
-                                            Console.WriteLine("Time (H:M:S): ");
-                                            string timeString = Console.ReadLine();
-
-                                            DateTime time;
-                                            if (!DateTime.TryParseExact(timeString, "H:m:s", CultureInfo.InvariantCulture, DateTimeStyles.None, out time))
-                                            {
-                                                Console.WriteLine("Invalid time format. Please enter a valid time (H:M:S).");
-                                                return;
-                                            }
-
-                                            DateTime currentDate = DateTime.Now.Date;
-
-                                            DateTime updatedDateTime = currentDate.Add(time.TimeOfDay);
-
-                                            string updateDateTimeCommand = @"
-                                            UPDATE Tours
-                                            SET Date = @Date
-                                            WHERE Id = @TourID;";
-
-                                            using (var updateCommand = new SqliteCommand(updateDateTimeCommand, connection))
-                                            {
-                                                updateCommand.Parameters.AddWithValue("@Date", updatedDateTime);
-                                                updateCommand.Parameters.AddWithValue("@TourID", id);
-                                                updateCommand.ExecuteNonQuery();
-                                                Console.WriteLine($"Time set to {updatedDateTime.TimeOfDay}");
-                                            }
-                                        }
-                                        else if (change.ToLower() == "l")
-                                        {
-                                            Console.WriteLine("Language: ");
-                                            string language = Console.ReadLine();
-
-                                            string updateLanguageCommand = @"
-                                            UPDATE Tours
-                                            SET Language = @Language
-                                            WHERE Id = @TourID;";
-
-                                            using (var updateCommand = new SqliteCommand(updateLanguageCommand, connection))
-                                            {
-                                                updateCommand.Parameters.AddWithValue("@Language", language);
-                                                updateCommand.Parameters.AddWithValue("@TourID", id);
-                                                updateCommand.ExecuteNonQuery();
-                                                Console.WriteLine($"Language set to {language}");
-                                            }
-                                        }
-                                        else if (change.ToLower() == "v")
-                                        {
-                                            Console.WriteLine("Visitors: ");
-                                            int visitors = Convert.ToInt32(Console.ReadLine());
-
-                                            string updateVisitorsCommand = @"
-                                            UPDATE Tours
-                                            SET Visitors = @Visitors
-                                            WHERE Id = @TourID;";
-
-                                            using (var updateCommand = new SqliteCommand(updateVisitorsCommand, connection))
-                                            {
-                                                updateCommand.Parameters.AddWithValue("@Visitors", visitors);
-                                                updateCommand.Parameters.AddWithValue("@TourID", id);
-                                                updateCommand.ExecuteNonQuery();
-                                                Console.WriteLine($"Visitors set to {visitors}");
-                                            }
-                                        }
-                                        else
-                                        {
-                                            Console.WriteLine("Wrong input. Try again.");
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        else if (option.ToLower() == "r")
-                        {
-                            Tours.OverviewTours(true);
-                            Console.WriteLine("Tour (Id): ");
-                            string id = Console.ReadLine();
-
-                            using (var connection = new SqliteConnection(connectionString))
-                            {
-                                connection.Open();
-
-                                string removeTourCommand = @"
-                                    DELETE FROM Tours
-                                    WHERE Id = @TourID;";
-
-                                using (var deleteCommand = new SqliteCommand(removeTourCommand, connection))
-                                {
-                                    deleteCommand.Parameters.AddWithValue("@TourID", id);
-                                    deleteCommand.ExecuteNonQuery();
-                                    Console.WriteLine("Tour removed successfully");
-                                }
-                            }
-                        }
-                        else if (option.ToLower() == "q")
-                        {
-                            adminRunning = false;
-                            continue;
-                        }
-                        else
-                        {
-                            Console.WriteLine("Wrong input. Try again.");
-                        }
-                    }
+                    visitor.AdminMenu();
                 }
                 else if (loginStatus == "Guide")
                 {
@@ -500,46 +233,6 @@ class Program
             else
             {
                 Console.WriteLine("Wrong input. Try again.");
-            }
-        }
-    }
-
-    public static void AddGuide(long tourID)
-    {
-        string connectionString = "Data Source=MyDatabase.db";
-
-        using (var connection = new SqliteConnection(connectionString))
-        {
-            connection.Open();
-
-            string selectToursDataCommand = @"
-                    SELECT * FROM Tours WHERE Id = @TourID";
-
-            using (var selectData = new SqliteCommand(selectToursDataCommand, connection))
-            {
-                selectData.Parameters.AddWithValue("@TourID", tourID);
-
-                using (var reader = selectData.ExecuteReader())
-                {
-                    if (reader.Read())
-                    {
-                        int guideId = Tours.guide.Id;
-                        string guideName = Tours.guide.Name;
-
-                        string insertGuideInTourDataCommand = @"
-                                INSERT OR IGNORE INTO GuideInTour (Id_Guide, Id_Tour, Date) VALUES 
-                                    (@Id_Guide, @Id_Tour, @Date);";
-
-                        using (var insertData = new SqliteCommand(insertGuideInTourDataCommand, connection))
-                        {
-                            insertData.Parameters.AddWithValue("@Id_Guide", guideId);
-                            insertData.Parameters.AddWithValue("@Id_Tour", tourID);
-                            insertData.Parameters.AddWithValue("@Date", reader["Date"]);
-
-                            insertData.ExecuteNonQuery();
-                        }
-                    }
-                }
             }
         }
     }
