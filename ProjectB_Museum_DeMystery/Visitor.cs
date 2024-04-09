@@ -10,6 +10,13 @@ class Visitor : Person
 
     public bool Reservate(string tourID, Visitor visitor)
     {
+
+        if (ViewReservationsMade(visitor.Id))
+        {
+            Console.WriteLine("Visitor has already reserved a tour for today.");
+            return false;
+        }
+
         using (var connection = new SqliteConnection(connectionString))
         {
             connection.Open();
@@ -204,7 +211,6 @@ class Visitor : Person
             {
                 Console.WriteLine("Invalid input. Please enter 'Y' or 'N'.");
             }
-            Tours.OverviewTours(false);
             return;
         }
         else

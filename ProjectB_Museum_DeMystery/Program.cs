@@ -168,49 +168,38 @@ class Program
                 Console.WriteLine("Scan your QR code:");
                 string qr = Console.ReadLine();
 
-                using (var connection = new SqliteConnection(connectionString))
-                {
-                    connection.Open();
-
-                    string insertVisitorDataCommand = @"
-                    INSERT OR IGNORE INTO Visitors (Id, QR) VALUES 
-                        (@Id, @Qr);";
-
-                    using (var insertData = new SqliteCommand(insertVisitorDataCommand, connection))
-                    {
-                        insertData.Parameters.AddWithValue("@Id", visitor.Id);
-                        insertData.Parameters.AddWithValue("@Qr", qr);
-
-                        insertData.ExecuteNonQuery();
-                    }
-                }
+                visitor.AccCreated(qr);
 
                 string loginStatus = visitor.Login(qr);
                 if (loginStatus == "Visitor")
                 {
-                    Console.WriteLine("Make reservation(E)\nMy reservations(M)\nCancel reservation(C)\nQuit(Q)");
-                    string option = Console.ReadLine();
+                    bool visitorRunning = true;
+                    while (visitorRunning)
+                    {
+                        Console.WriteLine("Make reservation(E)\nMy reservations(M)\nCancel reservation(C)\nQuit(Q)");
+                        string option = Console.ReadLine();
 
-                    if (option.ToLower() == "e")
-                    {
-                        Tours.ReservateTour(visitor);
-                    }
-                    else if (option.ToLower() == "m")
-                    {
-                        visitor.ViewReservationsMade(visitor.Id);
-                    }
-                    else if (option.ToLower() == "c")
-                    {
-                        visitor.CancelReservation(visitor);
-                    }
-                    else if (option.ToLower() == "q")
-                    {
-                        running = false;
-                        break;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Wrong input. Try again.");
+                        if (option.ToLower() == "e")
+                        {
+                            Tours.ReservateTour(visitor);
+                        }
+                        else if (option.ToLower() == "m")
+                        {
+                            visitor.ViewReservationsMade(visitor.Id);
+                        }
+                        else if (option.ToLower() == "c")
+                        {
+                            visitor.CancelReservation(visitor);
+                        }
+                        else if (option.ToLower() == "q")
+                        {
+                            running = false;
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Wrong input. Try again.");
+                        }
                     }
                 }
                 else if (loginStatus == "Admin")
@@ -219,10 +208,14 @@ class Program
 
                     while (adminRunning)
                     {
-                        Console.WriteLine("Add tour (A)\nEdit tour (E)\nRemove tour (R)\nQuit (Q)");
+                        Console.WriteLine("\nOverview tours(T)\nAdd tour (A)\nEdit tour (E)\nRemove tour (R)\nQuit (Q)");
                         string option = Console.ReadLine();
-
-                        if (option.ToLower() == "a")
+                        
+                        if (option.ToLower() == "t")
+                        {
+                            Tours.OverviewTours(true);
+                        }
+                        else if (option.ToLower() == "a")
                         {
                             Console.WriteLine("Name: ");
                             string name = Console.ReadLine();
@@ -263,7 +256,7 @@ class Program
                         }
                         else if (option.ToLower() == "e")
                         {
-                            Tours.OverviewTours();
+                            Tours.OverviewTours(true);
                             Console.WriteLine("Tour (Id): ");
                             string id = Console.ReadLine();
 
@@ -444,7 +437,7 @@ class Program
                         }
                         else if (option.ToLower() == "r")
                         {
-                            Tours.OverviewTours();
+                            Tours.OverviewTours(true);
                             Console.WriteLine("Tour (Id): ");
                             string id = Console.ReadLine();
 

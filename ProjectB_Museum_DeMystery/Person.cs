@@ -92,4 +92,65 @@ class Person
         }
         return "None";
     }
+
+    public bool AccCreated(string qr)
+    {
+        using (var connection = new SqliteConnection(connectionString))
+        {
+            connection.Open();
+
+            string selectVisitorDataCommand = @"
+                SELECT * FROM Visitors WHERE QR = @Qr;";
+            
+            string selectDepartmentHeadDataCommand = @"
+                SELECT * FROM DepartmentHead WHERE QR = @Qr;";
+            
+            string selectGuideDataCommand = @"
+                SELECT * FROM Guide WHERE QR = @Qr;";
+
+            using (var selectData = new SqliteCommand(selectVisitorDataCommand, connection))
+            {
+                selectData.Parameters.AddWithValue("@Qr", qr);
+                using (var reader = selectData.ExecuteReader())
+                {
+                    if (reader.HasRows)
+                        return true;
+                }
+            }
+
+            using (var selectData2 = new SqliteCommand(selectDepartmentHeadDataCommand, connection))
+            {
+                selectData2.Parameters.AddWithValue("@Qr", qr);
+                using (var reader = selectData2.ExecuteReader())
+                {
+                    if (reader.HasRows)
+                        return true;
+                }
+            }
+
+            using (var selectData3 = new SqliteCommand(selectGuideDataCommand, connection))
+            {
+                selectData3.Parameters.AddWithValue("@Qr", qr);
+                using (var reader = selectData3.ExecuteReader())
+                {
+                    if (reader.HasRows)
+                        return true;
+                }
+            }
+
+            string insertVisitorDataCommand = @"
+                INSERT OR IGNORE INTO Visitors (Id, QR) VALUES 
+                (@Id, @Qr);";
+
+            using (var insertData = new SqliteCommand(insertVisitorDataCommand, connection))
+            {
+                insertData.Parameters.AddWithValue("@Id", Id);
+                insertData.Parameters.AddWithValue("@Qr", qr);
+
+                insertData.ExecuteNonQuery();
+            }
+        }
+
+        return false;
+    }
 }
