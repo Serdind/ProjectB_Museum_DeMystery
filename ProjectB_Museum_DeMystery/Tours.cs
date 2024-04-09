@@ -27,7 +27,28 @@ static class Tours
         {
             DateTime currentDay = currentDate.AddDays(day);
 
-            ToursDay(currentDay);
+            if (!ToursExistForDate(currentDay))
+            {
+                ToursDay(currentDay);
+            }
+        }
+    }
+
+    private static bool ToursExistForDate(DateTime date)
+    {
+        using (var connection = new SqliteConnection(connectionString))
+        {
+            connection.Open();
+
+            string selectToursDataCommand = @"
+                SELECT COUNT(*) FROM Tours WHERE Date(Date) = Date(@Date)";
+
+            using (var selectData = new SqliteCommand(selectToursDataCommand, connection))
+            {
+                selectData.Parameters.AddWithValue("@Date", date);
+                int count = Convert.ToInt32(selectData.ExecuteScalar());
+                return count > 0;
+            }
         }
     }
 

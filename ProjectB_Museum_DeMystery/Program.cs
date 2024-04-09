@@ -175,36 +175,37 @@ class Program
                     
                     if (loginStatus == "Visitor")
                     {
-                        Console.WriteLine("Make reservation with QR(R)\nMake reservation(E)\nMy reservations(M)\nQuit(Q)");
-                        string option = Console.ReadLine();
+                        while (true)
+                        {
+                            Console.WriteLine("Make reservation with QR(R)\nMake reservation(E)\nMy reservations(M)\nQuit(Q)");
+                            string option = Console.ReadLine();
 
-                        if (option.ToLower() == "r")
-                        {
-                            
-                        }
-                        else if (option.ToLower() == "e")
-                        {
-                            Tours.ReservateTour(visitor);
-                        }
-                        else if (option.ToLower() == "m")
-                        {
-                            visitor.ViewReservationsMade(visitor.Id);
-                        }
-                        else if (option.ToLower() == "q")
-                        {
-                            running = false;
-                            break;
-                        }
-                        else
-                        {
-                            Console.WriteLine("Wrong input. Try again.");
+                            if (option.ToLower() == "r")
+                            {
+                                
+                            }
+                            else if (option.ToLower() == "e")
+                            {
+                                Tours.ReservateTour(visitor);
+                            }
+                            else if (option.ToLower() == "m")
+                            {
+                                visitor.ViewReservationsMade(visitor.Id);
+                            }
+                            else if (option.ToLower() == "q")
+                            {
+                                running = false;
+                                break;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Wrong input. Try again.");
+                            }
                         }
                     }
                     else if (loginStatus == "Admin")
                     {
-                        bool adminRunning = true;
-
-                        while (adminRunning)
+                        while (true)
                         {
                             Console.WriteLine("Add tour (A)\nEdit tour (E)\nRemove tour (R)\nQuit (Q)");
                             string option = Console.ReadLine();
@@ -452,8 +453,8 @@ class Program
                             }
                             else if (option.ToLower() == "q")
                             {
-                                adminRunning = false;
-                                continue;
+                                running = false;
+                                break;
                             }
                             else
                             {
