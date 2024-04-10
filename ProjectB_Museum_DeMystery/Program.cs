@@ -156,83 +156,174 @@ class Program
         {
             Visitor visitor = new Visitor(null);
             Console.WriteLine("Welcome to Het Depot!");
-            Console.WriteLine("Login(L)\nQuit(Q)");
-            string choice = Console.ReadLine();
-
-            if (choice.ToLower() == "l")
+            Console.WriteLine("select language  /   selecteer taal");
+            Console.WriteLine("English(E)   /   Nederlands(N)");
+            string language = Console.ReadLine();
+            if (language.ToLower() == "e")
             {
-                Console.WriteLine("Scan your QR code:");
-                string qr = Console.ReadLine();
+                Console.WriteLine("Login(L)\nQuit(Q)");
+                string choice = Console.ReadLine();
 
-                visitor.AccCreated(qr);
-
-                string loginStatus = visitor.Login(qr);
-                if (loginStatus == "Visitor")
+                if (choice.ToLower() == "l")
                 {
-                    bool visitorRunning = true;
-                    while (visitorRunning)
-                    {
-                        Console.WriteLine("Make reservation(E)\nMy reservations(M)\nCancel reservation(C)\nQuit(Q)");
-                        string option = Console.ReadLine();
+                    Console.WriteLine("Scan your QR code:");
+                    string qr = Console.ReadLine();
 
-                        if (option.ToLower() == "e")
+                    visitor.AccCreated(qr);
+
+                    string loginStatus = visitor.Login(qr);
+                    if (loginStatus == "Visitor")
+                    {
+                        bool visitorRunning = true;
+                        while (visitorRunning)
                         {
-                            Tours.ReservateTour(visitor);
+                            Console.WriteLine("Make reservation(E)\nMy reservations(M)\nCancel reservation(C)\nQuit(Q)");
+                            string option = Console.ReadLine();
+
+                            if (option.ToLower() == "e")
+                            {
+                                Tours.ReservateTour(visitor);
+                            }
+                            else if (option.ToLower() == "m")
+                            {
+                                visitor.ViewReservationsMade(visitor.Id);
+                            }
+                            else if (option.ToLower() == "c")
+                            {
+                                visitor.CancelReservation(visitor);
+                            }
+                            else if (option.ToLower() == "q")
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Wrong input. Try again.");
+                            }
                         }
-                        else if (option.ToLower() == "m")
+                    }
+                    else if (loginStatus == "Admin")
+                    {
+                        visitor.AdminMenu(1);
+                    }
+                    else if (loginStatus == "Guide")
+                    {
+                        bool guideRunning = true;
+
+                        while (guideRunning)
                         {
-                            visitor.ViewReservationsMade(visitor.Id);
-                        }
-                        else if (option.ToLower() == "c")
-                        {
-                            visitor.CancelReservation(visitor);
-                        }
-                        else if (option.ToLower() == "q")
-                        {
-                            break;
-                        }
-                        else
-                        {
-                            Console.WriteLine("Wrong input. Try again.");
+                            Console.WriteLine("My tours(M)\nQuit (Q)");
+                            string option = Console.ReadLine();
+
+                            if (option.ToLower() == "m")
+                            {
+                                Tours.guide.ViewTours(Tours.guide.Id);
+                            }
+                            else if (option.ToLower() == "q")
+                            {
+                                guideRunning = false;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Wrong input. Try again.");
+                            }
                         }
                     }
                 }
-                else if (loginStatus == "Admin")
+                else if (choice.ToLower() == "q")
                 {
-                    visitor.AdminMenu();
+                    running = false;
+                    continue;
                 }
-                else if (loginStatus == "Guide")
+                else
                 {
-                    bool guideRunning = true;
-
-                    while (guideRunning)
-                    {
-                        Console.WriteLine("My tours(M)\nQuit (Q)");
-                        string option = Console.ReadLine();
-
-                        if (option.ToLower() == "m")
-                        {
-                            Tours.guide.ViewTours(Tours.guide.Id);
-                        }
-                        else if (option.ToLower() == "q")
-                        {
-                            guideRunning = false;
-                        }
-                        else
-                        {
-                            Console.WriteLine("Wrong input. Try again.");
-                        }
-                    }
+                    Console.WriteLine("Wrong input. Try again.");
                 }
             }
-            else if (choice.ToLower() == "q")
+            else if (language.ToLower() == "n")
             {
-                running = false;
-                continue;
+                Console.WriteLine("Login(L)\nAfsluiten(Q)");
+                string choice = Console.ReadLine();
+
+                if (choice.ToLower() == "l")
+                {
+                    Console.WriteLine("Scan uw QR code:");
+                    string qr = Console.ReadLine();
+
+                    visitor.AccCreated(qr);
+
+                    string loginStatus = visitor.Login(qr);
+                    if (loginStatus == "Visitor")
+                    {
+                        bool visitorRunning = true;
+                        while (visitorRunning)
+                        {
+                            Console.WriteLine("Reservering maken(E)\nMijn reserveringen(M)\nreservering annuleren(C)\nVerlaten(Q)");
+                            string option = Console.ReadLine();
+
+                            if (option.ToLower() == "e")
+                            {
+                                Tours.ReservateTour(visitor);
+                            }
+                            else if (option.ToLower() == "m")
+                            {
+                                visitor.ViewReservationsMade(visitor.Id);
+                            }
+                            else if (option.ToLower() == "c")
+                            {
+                                visitor.CancelReservation(visitor);
+                            }
+                            else if (option.ToLower() == "q")
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                Console.WriteLine("ingevoerd antwoord onjuist, probeer opnieuw");
+                            }
+                        }
+                    }
+                    else if (loginStatus == "Admin")
+                    {
+                        visitor.AdminMenu(2);
+                    }
+                    else if (loginStatus == "Guide")
+                    {
+                        bool guideRunning = true;
+
+                        while (guideRunning)
+                        {
+                            Console.WriteLine("Mijn rondleidingen(M)\nVerlaten (Q)");
+                            string option = Console.ReadLine();
+
+                            if (option.ToLower() == "m")
+                            {
+                                Tours.guide.ViewTours(Tours.guide.Id);
+                            }
+                            else if (option.ToLower() == "q")
+                            {
+                                guideRunning = false;
+                            }
+                            else
+                            {
+                                Console.WriteLine("ingevoerd antwoord onjuist, probeer opnieuw");
+                            }
+                        }
+                    }
+                }
+                else if (choice.ToLower() == "q")
+                {
+                    running = false;
+                    continue;
+                }
+                else
+                {
+                    Console.WriteLine("ingevoerd antwoord onjuist, probeer opnieuw");
+                }
             }
             else
             {
-                Console.WriteLine("Wrong input. Try again.");
+                Console.WriteLine("wrong input");
             }
         }
     }
