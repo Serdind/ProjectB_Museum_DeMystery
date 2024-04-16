@@ -153,9 +153,6 @@ class Visitor : Person
 
         if (visitor.ViewReservationsMade(visitor.Id))
         {
-            Console.WriteLine("Which tour do you wanna cancel?(ID)");
-            int tourid = Convert.ToInt32(Console.ReadLine());
-
             Console.WriteLine("Are you sure you want to cancel your reservation? (Y/N)");
             string confirmation = Console.ReadLine();
 
