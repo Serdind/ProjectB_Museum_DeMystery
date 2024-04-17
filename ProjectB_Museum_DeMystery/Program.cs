@@ -1,26 +1,24 @@
 ﻿using Microsoft.Data.Sqlite;
+using Newtonsoft.Json;
 
 class Program
 {
     public static void Main()
     {
+        Tours.UpdateTours();
+
+        Tours.OverviewTours(false);
+
+        Tours.AddAdminToJSON();
+
+        Tours.AddGuideToJSON();
+        
+
         string connectionString = "Data Source=MyDatabase.db";
 
         using (var connection = new SqliteConnection(connectionString))
         {
             connection.Open();
-
-            string createTourTableCommand = @"
-                CREATE TABLE IF NOT EXISTS Tours (
-                    Id INTEGER PRIMARY KEY,
-                    Name TEXT NOT NULL,
-                    Date INTEGER,
-                    StartingPoint TEXT NOT NULL,
-                    EndPoint TEXT NOT NULL,
-                    Language TEXT NOT NULL,
-                    Visitors INTEGER,
-                    Guide TEXT NOT NULL
-                );";
 
             string createVisitorInTourTableCommand = @"
                 CREATE TABLE IF NOT EXISTS VisitorInTour (
@@ -60,11 +58,6 @@ class Program
                     Date TEXT NOT NULL,
                     PRIMARY KEY (Id_Guide, Id_Tour)
                 );";
-
-            using (var createTable = new SqliteCommand(createTourTableCommand, connection))
-            {
-                createTable.ExecuteNonQuery();
-            }
 
             using (var createTable = new SqliteCommand(createVisitorInTourTableCommand, connection))
             {
@@ -117,44 +110,13 @@ class Program
 
                     insertData.ExecuteNonQuery();
                 }
-
-            foreach (GuidedTour tour in Tours.guidedTour)
-            {
-                string insertTourDataCommand = @"
-                    INSERT OR IGNORE INTO Tours (Id, Name, Date, StartingPoint, EndPoint, Language, Visitors, Guide) VALUES 
-                        (@Id, @Name, @Date, @StartingPoint, @EndPoint, @Language, @Visitors, @Guide);";
-
-                using (var insertData = new SqliteCommand(insertTourDataCommand, connection))
-                {
-                    insertData.Parameters.AddWithValue("@Id", tour.ID);
-                    insertData.Parameters.AddWithValue("@Name", tour.Name);
-                    insertData.Parameters.AddWithValue("@Date", tour.Date);
-                    insertData.Parameters.AddWithValue("@StartingPoint", GuidedTour.StartingPoint);
-                    insertData.Parameters.AddWithValue("@EndPoint", GuidedTour.EndPoint);
-                    insertData.Parameters.AddWithValue("@Language", tour.Language);
-                    insertData.Parameters.AddWithValue("@Visitors", tour.ReservedVisitors.Count());
-                    insertData.Parameters.AddWithValue("@Guide", tour.NameGuide);
-
-                    insertData.ExecuteNonQuery();
-                }
-            }
-
-            Tours.AddGuide(1);
-            Tours.AddGuide(2);
-            Tours.AddGuide(3);
-            Tours.AddGuide(4);
-            Tours.AddGuide(5);
-            Tours.AddGuide(6);
-            Tours.AddGuide(7);
-            Tours.AddGuide(8);
-            Tours.AddGuide(9);
             
         }        
         bool running = true;
 
         while (running)
         {
-            Visitor visitor = new Visitor(null);
+            Visitor visitor = new Visitor(0,null);
             Console.WriteLine("Welcome to Het Depot!");
             Console.WriteLine("select language  /   selecteer taal");
             Console.WriteLine("English(E)   /   Nederlands(N)");
@@ -169,65 +131,33 @@ class Program
                     Console.WriteLine("Scan your QR code:");
                     string qr = Console.ReadLine();
 
+                    visitor.QR = qr;
+
                     visitor.AccCreated(qr);
 
-                    string loginStatus = visitor.Login(qr);
-                    if (loginStatus == "Visitor")
-                    {
-                        bool visitorRunning = true;
-                        while (visitorRunning)
-                        {
-                            Console.WriteLine("Make reservation(E)\nMy reservations(M)\nCancel reservation(C)\nQuit(Q)");
-                            string option = Console.ReadLine();
+                    
+                    Console.WriteLine("Make reservation(E)\nMy reservations(M)\nCancel reservation(C)\nQuit(Q)");
+                    string option = Console.ReadLine();
 
-                            if (option.ToLower() == "e")
-                            {
-                                Tours.ReservateTour(visitor);
-                            }
-                            else if (option.ToLower() == "m")
-                            {
-                                visitor.ViewReservationsMade(visitor.Id);
-                            }
-                            else if (option.ToLower() == "c")
-                            {
-                                visitor.CancelReservation(visitor);
-                            }
-                            else if (option.ToLower() == "q")
-                            {
-                                break;
-                            }
-                            else
-                            {
-                                Console.WriteLine("Wrong input. Try again.");
-                            }
-                        }
+                    if (option.ToLower() == "e")
+                    {
+                        Tours.ReservateTour(visitor);
                     }
-                    else if (loginStatus == "Admin")
+                    else if (option.ToLower() == "m")
                     {
-                        visitor.AdminMenu(1);
+                        visitor.ViewReservationsMade(visitor.Id);
                     }
-                    else if (loginStatus == "Guide")
+                    else if (option.ToLower() == "c")
                     {
-                        bool guideRunning = true;
-
-                        while (guideRunning)
-                        {
-                            Console.WriteLine("My tours(M)\nQuit (Q)");
-                            string option = Console.ReadLine();
-
-                            if (option.ToLower() == "m")
-                            {
-                                Tours.guide.ViewTours(Tours.guide.Id);
-                            }
-                            else if (option.ToLower() == "q")
-                            {
-                                guideRunning = false;
-                            }
-                            else
-                            {
-                                Console.WriteLine("Wrong input. Try again.");
-                            }
-                        }
+                        visitor.CancelReservation(visitor);
+                    }
+                    else if (option.ToLower() == "q")
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Wrong input. Try again.");
                     }
                 }
                 else if (choice.ToLower() == "q")
@@ -298,7 +228,7 @@ class Program
 
                             if (option.ToLower() == "m")
                             {
-                                Tours.guide.ViewTours(Tours.guide.Id);
+                                Tours.guide.ViewTours("Casper");
                             }
                             else if (option.ToLower() == "q")
                             {

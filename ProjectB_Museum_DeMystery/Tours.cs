@@ -1,150 +1,217 @@
 using Spectre.Console;
 using Microsoft.Data.Sqlite;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 static class Tours
 {
     public static readonly List<GuidedTour> guidedTour = new List<GuidedTour>();
+    public static readonly List<DepartmentHead> admins = new List<DepartmentHead>();
+    public static readonly List<Guide> guides = new List<Guide>();
+    public static List<Visitor> visitors = new List<Visitor>();
     public static string connectionString = "Data Source=MyDatabase.db";
     public static Guide guide = new Guide("Casper", "4892579");
-    public static string maxParticipants = "1";
+    public static int maxParticipants = 1;
+    
 
-    static Tours()
-    {
-        UpdateTours(2);
-    }
-
-    public static void UpdateTours(int numberOfDays)
+    public static void UpdateTours()
     {
         DateTime yesterday = DateTime.Today.AddDays(-1);
-        RemoveToursFromDate(yesterday);
-        RemoveVisitorInTourFromDate(yesterday);
-
-        DateTime currentDate = DateTime.Today;
-
-        for (int day = 0; day < numberOfDays; day++)
+        string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
+        string fileName = "tours.json";
+        string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        string filePath = Path.Combine(userDirectory, subdirectory, fileName);
+            
+        if (File.Exists(filePath))
         {
-            DateTime currentDay = currentDate.AddDays(day);
-
-            if (!ToursExistForDate(currentDay))
-            {
-                ToursDay(currentDay);
-            }
+            RemoveToursFromDate(yesterday);
+            RemoveVisitorInTourFromDate(yesterday);
         }
+
+        DateTime today = DateTime.Today;
+        DateTime tomorrow = today.AddDays(1);
+
+        ToursDay(today);
+        ToursDay(tomorrow);
     }
 
-    private static bool ToursExistForDate(DateTime date)
+    public static void ToursDay(DateTime date)
     {
-        using (var connection = new SqliteConnection(connectionString))
+        if (date.Date == DateTime.Today.Date || date.Date == DateTime.Today.AddDays(1).Date)
         {
-            connection.Open();
-
-            string selectToursDataCommand = @"
-                SELECT COUNT(*) FROM Tours WHERE Date(Date) = Date(@Date)";
-
-            using (var selectData = new SqliteCommand(selectToursDataCommand, connection))
-            {
-                selectData.Parameters.AddWithValue("@Date", date);
-                int count = Convert.ToInt32(selectData.ExecuteScalar());
-                return count > 0;
-            }
+            AddTour(new GuidedTour("Museum tour", new DateTime(date.Year, date.Month, date.Day, 11, 30, 0), "English", guide.Name));
+            AddTour(new GuidedTour("Museum tour", new DateTime(date.Year, date.Month, date.Day, 13, 00, 0), "Dutch", guide.Name));
+            AddTour(new GuidedTour("Museum tour", new DateTime(date.Year, date.Month, date.Day, 13, 30, 0), "English", guide.Name));
+            AddTour(new GuidedTour("Museum tour", new DateTime(date.Year, date.Month, date.Day, 14, 00, 0), "Dutch", guide.Name));
+            AddTour(new GuidedTour("Museum tour", new DateTime(date.Year, date.Month, date.Day, 14, 30, 0), "English", guide.Name));
+            AddTour(new GuidedTour("Museum tour", new DateTime(date.Year, date.Month, date.Day, 15, 00, 0), "Dutch", guide.Name));
+            AddTour(new GuidedTour("Museum tour", new DateTime(date.Year, date.Month, date.Day, 16, 00, 0), "English", guide.Name));
+            AddTour(new GuidedTour("Museum tour", new DateTime(date.Year, date.Month, date.Day, 16, 30, 0), "Dutch", guide.Name));
+            AddTour(new GuidedTour("Museum tour", new DateTime(date.Year, date.Month, date.Day, 17, 00, 0), "English", guide.Name));
         }
+
+        string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
+        string fileName = "tours.json";
+        string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        string filePath = Path.Combine(userDirectory, subdirectory, fileName);
+        SaveToursToFile(filePath);
     }
 
-    private static void ToursDay(DateTime date)
+    public static void AddTour(GuidedTour tour)
     {
-        guidedTour.Add(new GuidedTour("Museum tour", new DateTime(date.Year, date.Month, date.Day, 11, 30, 0), "English", guide.Name));
-        guidedTour.Add(new GuidedTour("Museum tour", new DateTime(date.Year, date.Month, date.Day, 13, 00, 0), "Dutch", guide.Name));
-        guidedTour.Add(new GuidedTour("Museum tour", new DateTime(date.Year, date.Month, date.Day, 13, 30, 0), "English", guide.Name));
-        guidedTour.Add(new GuidedTour("Museum tour", new DateTime(date.Year, date.Month, date.Day, 14, 00, 0), "Dutch", guide.Name));
-        guidedTour.Add(new GuidedTour("Museum tour", new DateTime(date.Year, date.Month, date.Day, 14, 30, 0), "English", guide.Name));
-        guidedTour.Add(new GuidedTour("Museum tour", new DateTime(date.Year, date.Month, date.Day, 15, 00, 0), "Dutch", guide.Name));
-        guidedTour.Add(new GuidedTour("Museum tour", new DateTime(date.Year, date.Month, date.Day, 16, 00, 0), "English", guide.Name));
-        guidedTour.Add(new GuidedTour("Museum tour", new DateTime(date.Year, date.Month, date.Day, 16, 30, 0), "Dutch", guide.Name));
-        guidedTour.Add(new GuidedTour("Museum tour", new DateTime(date.Year, date.Month, date.Day, 17, 00, 0), "English", guide.Name));
+        guidedTour.Add(tour);
+    }
+
+    public static void SaveToursToFile(string filePath)
+    {
+        string json = JsonConvert.SerializeObject(guidedTour, Formatting.Indented);
+
+        File.WriteAllText(filePath, json);
     }
 
     public static void OverviewTours(bool edit)
     {
         DateTime currentDate = DateTime.Today;
 
-        if (edit == true)
+        if (edit)
         {
             currentDate = DateTime.Today.AddDays(1);
         }
 
-        using (var connection = new SqliteConnection(connectionString))
+        string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
+        string fileName = "tours.json";
+        string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        string filePath = Path.Combine(userDirectory, subdirectory, fileName);
+        if (File.Exists(filePath))
         {
-            connection.Open();
+            string json = File.ReadAllText(filePath);
+            var tours = JsonConvert.DeserializeObject<List<GuidedTour>>(json);
 
-            string selectToursDataCommand = @"
-                SELECT * FROM Tours WHERE Date(Date) = Date(@Date)";
+            var table = new Table().Border(TableBorder.Rounded);
+            table.AddColumn("ID");
+            table.AddColumn("Name");
+            table.AddColumn("Date");
+            table.AddColumn("Time");
+            table.AddColumn("Language");
+            table.AddColumn("Guide");
+            table.AddColumn("Visitors");
 
-            using (var selectData = new SqliteCommand(selectToursDataCommand, connection))
+            foreach (var tour in tours)
             {
-                selectData.Parameters.AddWithValue("@Date", currentDate.Date);
-
-                using (var reader = selectData.ExecuteReader())
+                if (tour.Date.Date == currentDate.Date)
                 {
-                    var table = new Table().LeftAligned();
+                    string timeOnly = tour.Date.ToString("HH:mm");
+                    string dateOnly = tour.Date.ToShortDateString();
 
-                    AnsiConsole.Live(table)
-                        .AutoClear(false)
-                        .Overflow(VerticalOverflow.Ellipsis)
-                        .Cropping(VerticalOverflowCropping.Top)
-                        .Start(ctx =>
-                        {
-                            table.AddColumn("ID");
-                            table.AddColumn("Name");
-                            table.AddColumn("Date");
-                            table.AddColumn("Time");
-                            table.AddColumn("StartingPoint");
-                            table.AddColumn("EndPoint");
-                            table.AddColumn("Language");
-                            table.AddColumn("Visitors");
-                            table.AddColumn("Guide");
-
-                            while (reader.Read())
-                            {
-                                DateTime dateValue = Convert.ToDateTime(reader["Date"]);
-                                string timeOnly = dateValue.ToString("HH:mm");
-                                string dateOnly = dateValue.ToShortDateString();
-                                string visitors = reader["Visitors"].ToString() == Tours.maxParticipants ? "Full" : reader["Visitors"].ToString();
-
-                                table.AddRow(
-                                    reader["Id"].ToString(),
-                                    reader["Name"].ToString(),
-                                    dateOnly,
-                                    timeOnly,
-                                    reader["StartingPoint"].ToString(),
-                                    reader["EndPoint"].ToString(),
-                                    reader["Language"].ToString(),
-                                    visitors,
-                                    reader["Guide"].ToString()
-                                );
-
-                                ctx.Refresh();
-                            }
-                        });
+                    table.AddRow(
+                        tour.ID.ToString(),
+                        tour.Name,
+                        dateOnly,
+                        timeOnly,
+                        tour.Language,
+                        guide.Name,
+                        tour.ReservedVisitors.Count().ToString()
+                    );
                 }
             }
+
+            AnsiConsole.Render(table);
+        }
+        else
+        {
+            Console.WriteLine("Tours JSON file not found.");
         }
     }
 
     private static void RemoveToursFromDate(DateTime date)
     {
-        using (var connection = new SqliteConnection(connectionString))
+        string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
+        string fileName = "tours.json";
+        string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        string filePath = Path.Combine(userDirectory, subdirectory, fileName);
+        
+        if (File.Exists(filePath))
         {
-            connection.Open();
+            string json = File.ReadAllText(filePath);
+            List<GuidedTour> tours = JsonConvert.DeserializeObject<List<GuidedTour>>(json);
 
-            string deleteToursDataCommand = @"
-                DELETE FROM Tours WHERE Date(Date) = Date(@Date)";
+            tours.RemoveAll(tour => tour.Date.Date == date.Date);
 
-            using (var deleteData = new SqliteCommand(deleteToursDataCommand, connection))
-            {
-                deleteData.Parameters.AddWithValue("@Date", date.Date);
-                deleteData.ExecuteNonQuery();
-            }
+            string updatedJson = JsonConvert.SerializeObject(tours, Formatting.Indented);
+            File.WriteAllText(filePath, updatedJson);
         }
+    }
+
+    public static void AddAdminToJSON()
+    {
+        AddAdmin(new DepartmentHead("Frans", "6457823"));
+
+        string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
+        string fileName = "admins.json";
+        string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        string filePath = Path.Combine(userDirectory, subdirectory, fileName);
+        SaveAdminToFile(filePath);
+    }
+
+    public static void AddAdmin(DepartmentHead departmentHead)
+    {
+        admins.Add(departmentHead);
+    }
+
+    public static void SaveAdminToFile(string filePath)
+    {
+        string json = JsonConvert.SerializeObject(admins, Formatting.Indented);
+
+        File.WriteAllText(filePath, json);
+    }
+
+    public static void AddGuideToJSON()
+    {
+        AddGuide(new Guide("Casper", "4892579"));
+
+        string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
+        string fileName = "guides.json";
+        string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        string filePath = Path.Combine(userDirectory, subdirectory, fileName);
+        SaveGuideToFile(filePath);
+    }
+
+    public static void AddGuide(Guide guide)
+    {
+        guides.Add(guide);
+    }
+
+    public static void SaveGuideToFile(string filePath)
+    {
+        string json = JsonConvert.SerializeObject(guides, Formatting.Indented);
+
+        File.WriteAllText(filePath, json);
+    }
+    
+    public static void AddVisitorToJSON(int tourId, string qr)
+    {
+        AddVisitor(new Visitor(tourId, qr));
+
+        string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
+        string fileName = "visitors.json";
+        string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        string filePath = Path.Combine(userDirectory, subdirectory, fileName);
+        SaveVisitorToFile(filePath);
+    }
+
+    public static void AddVisitor(Visitor visitor)
+    {
+        if (visitors == null)
+        {
+            visitors = new List<Visitor>();
+        }
+        visitors.Add(visitor);
+    }
+    public static void SaveVisitorToFile(string filePath)
+    {
+        string json = JsonConvert.SerializeObject(visitors, Formatting.Indented);
+
+        File.WriteAllText(filePath, json);
     }
 
     private static void RemoveVisitorInTourFromDate(DateTime date)
@@ -168,48 +235,8 @@ static class Tours
     {
         OverviewTours(false);
         Console.WriteLine("Which tour? (ID)");
-        string tourID = Console.ReadLine();
+        int tourID = Convert.ToInt32(Console.ReadLine());
 
         visitor.Reservate(tourID, visitor);
-    }
-
-    public static void AddGuide(long tourID)
-    {
-        string connectionString = "Data Source=MyDatabase.db";
-
-        using (var connection = new SqliteConnection(connectionString))
-        {
-            connection.Open();
-
-            string selectToursDataCommand = @"
-                    SELECT * FROM Tours WHERE Id = @TourID";
-
-            using (var selectData = new SqliteCommand(selectToursDataCommand, connection))
-            {
-                selectData.Parameters.AddWithValue("@TourID", tourID);
-
-                using (var reader = selectData.ExecuteReader())
-                {
-                    if (reader.Read())
-                    {
-                        int guideId = 1;
-                        string guideName = "Casper";
-
-                        string insertGuideInTourDataCommand = @"
-                                INSERT OR IGNORE INTO GuideInTour (Id_Guide, Id_Tour, Date) VALUES 
-                                    (@Id_Guide, @Id_Tour, @Date);";
-
-                        using (var insertData = new SqliteCommand(insertGuideInTourDataCommand, connection))
-                        {
-                            insertData.Parameters.AddWithValue("@Id_Guide", guideId);
-                            insertData.Parameters.AddWithValue("@Id_Tour", tourID);
-                            insertData.Parameters.AddWithValue("@Date", reader["Date"]);
-
-                            insertData.ExecuteNonQuery();
-                        }
-                    }
-                }
-            }
-        }
     }
 }
