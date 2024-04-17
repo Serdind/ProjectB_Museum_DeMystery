@@ -161,7 +161,7 @@ class Program
             string language = Console.ReadLine();
             if (language.ToLower() == "e")
             {
-                Console.WriteLine("Login(L)\nQuit(Q)");
+                Console.WriteLine("Login(L)");
                 string choice = Console.ReadLine();
 
                 if (choice.ToLower() == "l")
@@ -177,7 +177,7 @@ class Program
                         bool visitorRunning = true;
                         while (visitorRunning)
                         {
-                            Console.WriteLine("Make reservation(E)\nMy reservations(M)\nCancel reservation(C)\nQuit(Q)");
+                            Console.WriteLine("Make reservation(E)\nMy reservations(M)\nCancel reservation(C)");
                             string option = Console.ReadLine();
 
                             if (option.ToLower() == "e")
@@ -191,10 +191,6 @@ class Program
                             else if (option.ToLower() == "c")
                             {
                                 visitor.CancelReservation(visitor);
-                            }
-                            else if (option.ToLower() == "q")
-                            {
-                                break;
                             }
                             else
                             {
@@ -212,16 +208,12 @@ class Program
 
                         while (guideRunning)
                         {
-                            Console.WriteLine("My tours(M)\nQuit (Q)");
+                            Console.WriteLine("My tours(M)");
                             string option = Console.ReadLine();
 
                             if (option.ToLower() == "m")
                             {
                                 Tours.guide.ViewTours(Tours.guide.Id);
-                            }
-                            else if (option.ToLower() == "q")
-                            {
-                                guideRunning = false;
                             }
                             else
                             {
@@ -230,11 +222,6 @@ class Program
                         }
                     }
                 }
-                else if (choice.ToLower() == "q")
-                {
-                    running = false;
-                    continue;
-                }
                 else
                 {
                     Console.WriteLine("Wrong input. Try again.");
@@ -242,7 +229,7 @@ class Program
             }
             else if (language.ToLower() == "n")
             {
-                Console.WriteLine("Login(L)\nAfsluiten(Q)");
+                Console.WriteLine("Login(L)");
                 string choice = Console.ReadLine();
 
                 if (choice.ToLower() == "l")
@@ -258,7 +245,7 @@ class Program
                         bool visitorRunning = true;
                         while (visitorRunning)
                         {
-                            Console.WriteLine("Reservering maken(E)\nMijn reserveringen(M)\nreservering annuleren(C)\nVerlaten(Q)");
+                            Console.WriteLine("Reservering maken(E)\nMijn reserveringen(M)\nreservering annuleren(C)");
                             string option = Console.ReadLine();
 
                             if (option.ToLower() == "e")
@@ -272,10 +259,6 @@ class Program
                             else if (option.ToLower() == "c")
                             {
                                 visitor.CancelReservation(visitor);
-                            }
-                            else if (option.ToLower() == "q")
-                            {
-                                break;
                             }
                             else
                             {
@@ -293,16 +276,12 @@ class Program
 
                         while (guideRunning)
                         {
-                            Console.WriteLine("Mijn rondleidingen(M)\nVerlaten (Q)");
+                            Console.WriteLine("Mijn rondleidingen(M)");
                             string option = Console.ReadLine();
 
                             if (option.ToLower() == "m")
                             {
                                 Tours.guide.ViewTours(Tours.guide.Id);
-                            }
-                            else if (option.ToLower() == "q")
-                            {
-                                guideRunning = false;
                             }
                             else
                             {
@@ -310,11 +289,6 @@ class Program
                             }
                         }
                     }
-                }
-                else if (choice.ToLower() == "q")
-                {
-                    running = false;
-                    continue;
                 }
                 else
                 {
