@@ -31,4 +31,42 @@ public class ToursTests
 
         File.Delete(filePath);
     }
+
+    [Test]
+    public void OverviewTours_EditFalse_CurrentDate()
+    {
+        bool edit = false;
+        DateTime currentDate = DateTime.Today;
+        string expectedDate = currentDate.ToShortDateString();
+        string expectedTime = currentDate.ToString("HH:mm");
+
+        using (StringWriter sw = new StringWriter())
+        {
+            Console.SetOut(sw);
+            Tours.OverviewTours(edit);
+            string result = sw.ToString().Trim();
+
+            Assert.IsTrue(result.Contains(expectedDate), "Expected date not found.");
+            Assert.IsTrue(result.Contains(expectedTime), "Expected time not found.");
+        }
+    }
+
+    [Test]
+    public void OverviewTours_EditTrue_TomorrowDate()
+    {
+        bool edit = true;
+        DateTime currentDate = DateTime.Today.AddDays(1);
+        string expectedDate = currentDate.ToShortDateString();
+        string expectedTime = currentDate.ToString("HH:mm");
+
+        using (StringWriter sw = new StringWriter())
+        {
+            Console.SetOut(sw);
+            Tours.OverviewTours(edit);
+            string result = sw.ToString().Trim();
+
+            Assert.IsTrue(result.Contains(expectedDate), "Expected date not found.");
+            Assert.IsTrue(result.Contains(expectedTime), "Expected time not found.");
+        }
+    }
 }
