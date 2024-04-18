@@ -69,4 +69,27 @@ public class ToursTests
             Assert.IsTrue(result.Contains(expectedTime), "Expected time not found.");
         }
     }
+
+    [Test]
+    public void AddGuide()
+    {
+        string name = "randomguide";
+        string qr = "123456";
+        
+        var guide = new Guide(name, qr);
+        
+        Assert.AreEqual(name, guide.Name);
+        Assert.AreEqual(0, guide.Id);
+    }
+
+    [Test]
+    public void ReservateTour()
+    {
+        Visitor visitor = new Visitor();
+        int tourId = 1;
+
+        ReservateTour(visitor, tourId);
+
+        Assert.AreEqual(tourId, visitor.TourId);
+    }
 }
