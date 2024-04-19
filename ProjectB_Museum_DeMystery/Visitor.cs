@@ -49,7 +49,12 @@ class Visitor : Person
             {
                 Tours.AddVisitorToJSON(tourID, visitor.QR);
 
-                Console.WriteLine("Reservation successful.\n");
+                string message = $"Reservation successful. You have reserved the following tour:\n" +
+                                 $"Tour: {tour.Name}\n" +
+                                 $"Date: {tour.Date.ToShortDateString()}\n" +
+                                 $"Time: {tour.Date.ToString("HH:mm")}\n" +
+                                 $"Language: {tour.Language}\n";
+                Console.WriteLine(message);
                 return true;
             }
             else
