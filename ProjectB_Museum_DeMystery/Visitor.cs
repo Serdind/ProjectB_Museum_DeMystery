@@ -1,14 +1,25 @@
 using Microsoft.Data.Sqlite;
 using Spectre.Console;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 class Visitor : Person
 {
     string connectionString = "Data Source=MyDatabase.db";
     
-    public Visitor(string qr) : base(qr){}
+    private static int lastId = 1;
+    public int Id;
+    public int TourId;
 
-    public bool Reservate(string tourID, Visitor visitor)
+    public Visitor(int tourId, string qr) : base(qr)
     {
+        Id = lastId++;
+        TourId = tourId;
+    }
+
+    public bool Reservate(int tourID, Visitor visitor)
+    {
+        Tours.visitors.Clear();
 
         if (ViewReservationsMade(visitor.Id))
         {
@@ -16,63 +27,37 @@ class Visitor : Person
             return false;
         }
 
-        using (var connection = new SqliteConnection(connectionString))
+        string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
+        string fileName = "tours.json";
+        string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        string filePath = Path.Combine(userDirectory, subdirectory, fileName);
+
+        string subdirectory1 = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
+        string fileName1 = "visitors.json";
+        string userDirectory1 = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        string filePath1 = Path.Combine(userDirectory1, subdirectory1, fileName1);
+
+        if (File.Exists(filePath))
         {
-            connection.Open();
+            string json = File.ReadAllText(filePath);
 
-            string selectToursDataCommand = @"
-                SELECT * FROM Tours WHERE Id = @TourID";
+            var tours = JsonConvert.DeserializeObject<List<GuidedTour>>(json);
 
-            using (var selectData = new SqliteCommand(selectToursDataCommand, connection))
+            var tour = tours.FirstOrDefault(t => t.ID == tourID);
+
+            if (tour != null)
             {
-                selectData.Parameters.AddWithValue("@TourID", tourID);
+                Tours.AddVisitorToJSON(tourID, visitor.QR);
 
-                using (var reader = selectData.ExecuteReader())
-                {
-                    if (reader.Read())
-                    {
-                        int currentVisitors = reader.GetInt32(reader.GetOrdinal("Visitors"));
-
-                        if (currentVisitors != 1)
-                        {
-                            string updateVisitorsCountCommand = @"
-                                UPDATE Tours
-                                SET Visitors = Visitors + 1
-                                WHERE Id = @TourID;";
-
-                            using (var updateCommand = new SqliteCommand(updateVisitorsCountCommand, connection))
-                            {
-                                updateCommand.Parameters.AddWithValue("@TourID", tourID);
-                                updateCommand.ExecuteNonQuery();
-                            }
-
-                            string insertVisitorDataCommand = @"
-                                INSERT OR IGNORE INTO VisitorInTour (Id_Visitor, Id_Tour, Date) VALUES 
-                                    (@Id_Visitor, @Id_Tour, @Date);";
-
-                            using (var insertData = new SqliteCommand(insertVisitorDataCommand, connection))
-                            {
-                                insertData.Parameters.AddWithValue("@Id_Visitor", visitor.Id);
-                                insertData.Parameters.AddWithValue("@Id_Tour", reader["Id"].ToString());
-                                insertData.Parameters.AddWithValue("@Date", reader["Date"].ToString());
-
-                                insertData.ExecuteNonQuery();
-                                
-                                Console.WriteLine("Succesfully reservation made.\n");
-                                return true;
-                            }
-                        }
-                        else
-                        {
-                            Console.WriteLine("Tour is full");
-                            Tours.ReservateTour(visitor);
-                        }
-                    }
-                }
+                Console.WriteLine("Reservation successful.\n");
+                return true;
+            }
+            else
+            {
+                Console.WriteLine("Tour is not available.");
             }
         }
-        Console.WriteLine("Tour not found. Try again!");
-        Tours.ReservateTour(visitor);
+
         return false;
     }
 

@@ -4,28 +4,13 @@ using System.Globalization;
 
 class Person
 {
-    public int Id;
+
     public string QR;
+    public int Id;
     string connectionString = "Data Source=MyDatabase.db";
 
     public Person(string qr)
     {
-        int lastId = 0;
-
-        using (var connection = new SqliteConnection(connectionString))
-        {
-            connection.Open();
-
-            string query = "SELECT MAX(Id) FROM Visitors";
-            using (SqliteCommand command = new SqliteCommand(query, connection))
-            {
-                var result = command.ExecuteScalar();
-                if (result != DBNull.Value)
-                    lastId = Convert.ToInt32(result);
-            }
-        }
-        
-        Id = lastId + 1;
         QR = qr;
     }
 
@@ -258,7 +243,6 @@ class Person
                                             DateTime dateValue = Convert.ToDateTime(reader["Date"]);
                                             string timeOnly = dateValue.ToString("HH:mm");
                                             string dateOnly = dateValue.ToShortDateString();
-                                            string visitors = reader["Visitors"].ToString() == Tours.maxParticipants ? "Full" : reader["Visitors"].ToString();
 
                                             table.AddRow(
                                                 reader["Id"].ToString(),
@@ -268,7 +252,6 @@ class Person
                                                 reader["StartingPoint"].ToString(),
                                                 reader["EndPoint"].ToString(),
                                                 reader["Language"].ToString(),
-                                                visitors,
                                                 reader["Guide"].ToString()
                                             );
 
@@ -541,7 +524,6 @@ class Person
                                             DateTime dateValue = Convert.ToDateTime(reader["Date"]);
                                             string timeOnly = dateValue.ToString("HH:mm");
                                             string dateOnly = dateValue.ToShortDateString();
-                                            string visitors = reader["Visitors"].ToString() == Tours.maxParticipants ? "Full" : reader["Visitors"].ToString();
 
                                             table.AddRow(
                                                 reader["Id"].ToString(),
@@ -551,7 +533,6 @@ class Person
                                                 reader["StartingPoint"].ToString(),
                                                 reader["EndPoint"].ToString(),
                                                 reader["Language"].ToString(),
-                                                visitors,
                                                 reader["Guide"].ToString()
                                             );
 
