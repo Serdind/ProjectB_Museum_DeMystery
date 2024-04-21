@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using NUnit.Framework;
 
 [TestFixture]
@@ -91,5 +92,33 @@ public class ToursTests
         ReservateTour(visitor, tourId);
 
         Assert.AreEqual(tourId, visitor.TourId);
+    }
+
+    [Test]
+    public void RemoveToursFromDate(DateTime date_to_remove)
+    {
+        DateTime dateToRemove = new DateTime(2024, 4, 19, 11, 30, 0);
+        
+        List<GuidedTour> tours = new List<GuidedTour>
+        {
+            new GuidedTour("Museum tour", dateToRemove, "English", "Casper"),
+        };
+
+        string json = JsonConvert.SerializeObject(tours);
+        
+        string tempFilePath = Path.GetTempFileName();
+        File.WriteAllText(tempFilePath, json);
+
+        RemoveToursFromDate(date_to_remove);
+
+        string updatedJson = File.ReadAllText(tempFilePath);
+        List<GuidedTour> updatedTours = JsonConvert.DeserializeObject<List<GuidedTour>>(updatedJson);
+
+        foreach (var tour in updatedTours)
+        {
+            Assert.AreNotEqual(dateToRemove, tour.Date);
+        }
+
+        File.Delete(tempFilePath);
     }
 }
