@@ -38,22 +38,43 @@ class Visitor : Person
 
             if (tour != null)
             {
-                Tours.AddVisitorToJSON(tourID, visitor.QR);
+                if (tour.ReservedVisitors.Count() != 0)
+                {
+                    Tours.AddVisitorToJSON(tourID, visitor.QR);
 
-                tour.ReservedVisitors.Add(visitor);
-                visitor.TourId = tour.ID;
+                    tour.ReservedVisitors.Add(visitor);
+                    visitor.TourId = tour.ID;
+                    string subdirectory1 = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
+                    string fileName1 = "visitors.json";
+                    string userDirectory1 = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+                    string filePath1 = Path.Combine(userDirectory1, subdirectory1, fileName1);
 
-                string updatedJson = JsonConvert.SerializeObject(tours, Formatting.Indented);
+                    if (File.Exists(filePath1))
+                    {
+                        string json1 = File.ReadAllText(filePath1);
+                        var visitors = JsonConvert.DeserializeObject<List<Visitor>>(json1);
 
-                File.WriteAllText(filePath, updatedJson);
+                        var v = visitors.FirstOrDefault(t => t.QR == visitor.QR);
 
-                string message = $"Reservation successful. You have reserved the following tour:\n" +
-                                $"Tour: {tour.Name}\n" +
-                                $"Date: {tour.Date.ToShortDateString()}\n" +
-                                $"Time: {tour.Date.ToString("HH:mm")}\n" +
-                                $"Language: {tour.Language}\n";
-                Console.WriteLine(message);
-                return true;
+                        visitor.Id = v.Id;
+                    }
+
+                    string updatedJson = JsonConvert.SerializeObject(tours, Formatting.Indented);
+
+                    File.WriteAllText(filePath, updatedJson);
+
+                    string message = $"Reservation successful. You have reserved the following tour:\n" +
+                                    $"Tour: {tour.Name}\n" +
+                                    $"Date: {tour.Date.ToShortDateString()}\n" +
+                                    $"Time: {tour.Date.ToString("HH:mm")}\n" +
+                                    $"Language: {tour.Language}\n";
+                    Console.WriteLine(message);
+                    return true;
+                }
+                else
+                {
+                    Console.WriteLine("Tour is full.");
+                }
             }
             else
             {
