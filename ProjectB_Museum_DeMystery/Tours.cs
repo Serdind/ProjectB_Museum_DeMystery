@@ -245,45 +245,58 @@ static class Tours
     
     public static void AddVisitorToJSON(int tourId, string qr)
     {
-        AddVisitor(new Visitor(tourId, qr));
+        int highestId;
+        List<Visitor> existingVisitors = LoadVisitorsFromFile();
 
+        if (existingVisitors.Count > 0)
+        {
+            highestId = existingVisitors.Max(v => v.Id);
+        }
+        else
+        {
+            highestId = 0;
+        }
+
+        Visitor newVisitor = new Visitor(tourId, qr);
+        newVisitor.Id = highestId + 1;
+
+        existingVisitors.Add(newVisitor);
+
+        SaveVisitorToFile(existingVisitors);
+    }
+
+    public static List<Visitor> LoadVisitorsFromFile()
+    {
         string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
         string fileName = "visitors.json";
         string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
         string filePath = Path.Combine(userDirectory, subdirectory, fileName);
-        SaveVisitorToFile(filePath);
+
+        if (File.Exists(filePath))
+        {
+            string json = File.ReadAllText(filePath);
+            return JsonConvert.DeserializeObject<List<Visitor>>(json);
+        }
+        else
+        {
+            return new List<Visitor>();
+        }
     }
 
     public static void AddVisitor(Visitor visitor)
     {
-        if (visitors == null)
-        {
-            visitors = new List<Visitor>();
-        }
         visitors.Add(visitor);
     }
-    public static void SaveVisitorToFile(string filePath)
+
+    public static void SaveVisitorToFile(List<Visitor> visitors)
     {
+        string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
+        string fileName = "visitors.json";
+        string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        string filePath = Path.Combine(userDirectory, subdirectory, fileName);
+
         string json = JsonConvert.SerializeObject(visitors, Formatting.Indented);
-
         File.WriteAllText(filePath, json);
-    }
-
-    private static void RemoveVisitorInTourFromDate(DateTime date)
-    {
-        using (var connection = new SqliteConnection(connectionString))
-        {
-            connection.Open();
-
-            string deleteVisitorInTourDataCommand = @"
-                DELETE FROM VisitorInTour WHERE Date(Date) = Date(@Date)";
-
-            using (var deleteData = new SqliteCommand(deleteVisitorInTourDataCommand, connection))
-            {
-                deleteData.Parameters.AddWithValue("@Date", date.Date);
-                deleteData.ExecuteNonQuery();
-            }
-        }
     }
 
     public static void ReservateTour(Visitor visitor)
