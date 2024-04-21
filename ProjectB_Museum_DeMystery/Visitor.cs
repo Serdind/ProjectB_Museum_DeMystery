@@ -101,74 +101,52 @@ class Visitor : Person
 
     public void CancelReservation(Visitor visitor)
     {
-        string connectionString = "Data Source=MyDatabase.db";
+        List<GuidedTour> tours = Tours.LoadToursFromFile();
+        List<Visitor> visitors = Tours.LoadVisitorsFromFile();
 
-        if (visitor.ViewReservationsMade(visitor.Id))
+        string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
+        string fileName = "tours.json";
+        string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        string filePath = Path.Combine(userDirectory, subdirectory, fileName);
+
+        string subdirectory1 = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
+        string fileName1 = "visitors.json";
+        string userDirectory1 = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        string filePath1 = Path.Combine(userDirectory1, subdirectory1, fileName1);
+
+        if (!visitor.ReservationMade(visitor.QR))
         {
-            Console.WriteLine("Which tour do you wanna cancel?(ID)");
-            int tourid = Convert.ToInt32(Console.ReadLine());
-
-            Console.WriteLine("Are you sure you want to cancel your reservation? (Y/N)");
-            string confirmation = Console.ReadLine();
-
-            if (confirmation.ToLower() == "y")
-            {            
-                using (var connection = new SqliteConnection(connectionString))
-                {
-                    connection.Open();
-
-                    string removeTourCommand = @"
-                        DELETE FROM VisitorInTour
-                        WHERE Id_Tour = @TourID;";
-
-                    using (var deleteCommand = new SqliteCommand(removeTourCommand, connection))
-                    {
-                        deleteCommand.Parameters.AddWithValue("@TourID", tourid);
-                        deleteCommand.ExecuteNonQuery();
-                        Console.WriteLine("Reservation removed successfully");
-                    }
-                
-                    string selectToursDataCommand = @"
-                        SELECT * FROM Tours WHERE Id = @TourID";
-
-                    using (var selectData = new SqliteCommand(selectToursDataCommand, connection))
-                    {
-                        selectData.Parameters.AddWithValue("@TourID", tourid);
-
-                        using (var reader = selectData.ExecuteReader())
-                        {
-                            if (reader.Read())
-                            {
-                                int currentVisitors = reader.GetInt32(reader.GetOrdinal("Visitors"));
-
-                                string updateVisitorsCountCommand = @"
-                                    UPDATE Tours
-                                    SET Visitors = Visitors - 1
-                                    WHERE Id = @TourID;";
-
-                                using (var updateCommand = new SqliteCommand(updateVisitorsCountCommand, connection))
-                                {
-                                    updateCommand.Parameters.AddWithValue("@TourID", tourid);
-                                    updateCommand.ExecuteNonQuery();
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            else if (confirmation.ToLower() == "n")
-            {
-                Console.WriteLine("Reservation cancellation cancelled.");
-            }
-            else
-            {
-                Console.WriteLine("Invalid input. Please enter 'Y' or 'N'.");
-            }
+            Console.WriteLine("No reservations made.");
             return;
+        }
+
+        Console.WriteLine("Are you sure you want to cancel your reservation? (Y/N)");
+        string confirmation = Console.ReadLine().ToLower();
+
+        if (confirmation == "y")
+        {
+            foreach (var tour in tours)
+            {
+                tour.ReservedVisitors.RemoveAll(v => v.QR == visitor.QR);
+            }
+
+            visitors.RemoveAll(v => v.QR == visitor.QR);
+
+            string toursJson = JsonConvert.SerializeObject(tours, Formatting.Indented);
+            File.WriteAllText(filePath, toursJson);
+
+            string visitorsJson = JsonConvert.SerializeObject(visitors, Formatting.Indented);
+            File.WriteAllText(filePath1, visitorsJson);
+            
+            Console.WriteLine("Reservation cancelled successfully.");
+        }
+        else if (confirmation == "n")
+        {
+            Console.WriteLine("Reservation cancellation cancelled.");
         }
         else
         {
-            Console.WriteLine("No reservations made.");
+            Console.WriteLine("Invalid input. Please enter 'Y' or 'N'.");
         }
     }
 }
