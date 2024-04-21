@@ -64,75 +64,39 @@ class Visitor : Person
         return false;
     }
 
-    public bool ViewReservationsMade(int visitorID)
+    public bool ViewReservationsMade(string qr)
     {
-        using (var connection = new SqliteConnection(connectionString))
+        List<Visitor> visitors = Tours.LoadVisitorsFromFile();
+
+        Visitor visitor = visitors.FirstOrDefault(v => v.QR == qr);
+
+        if (visitor != null)
         {
-            connection.Open();
+            List<GuidedTour> tours = Tours.LoadToursFromFile();
 
-            string selectVisitorInTourDataCommand = @"
-                SELECT * FROM VisitorInTour WHERE Id_Visitor = @VisitorID";
+            GuidedTour tour = tours.FirstOrDefault(t => t.ID == visitor.TourId);
 
-            using (var selectData = new SqliteCommand(selectVisitorInTourDataCommand, connection))
+            if (tour != null)
             {
-                selectData.Parameters.AddWithValue("@VisitorID", visitorID);
+                string message = $"Tour: {tour.Name}\n" +
+                                $"Date: {tour.Date.ToShortDateString()}\n" +
+                                $"Time: {tour.Date.ToString("HH:mm")}\n" +
+                                $"Language: {tour.Language}\n";
 
-                using (var reader = selectData.ExecuteReader())
-                {
-                    bool reservationsExist = false;
-
-                    while (reader.Read())
-                    {
-                        string selectToursDataCommand = @"
-                            SELECT * FROM Tours WHERE Id = @TourID";
-
-                        using (var selectData2 = new SqliteCommand(selectToursDataCommand, connection))
-                        {
-                            selectData2.Parameters.AddWithValue("@TourID", reader["Id_Tour"].ToString());
-
-                            using (var reader2 = selectData2.ExecuteReader())
-                            {
-                                var table = new Table().LeftAligned();
-
-                                table.AddColumn("ID");
-                                table.AddColumn("Name");
-                                table.AddColumn("Date");
-                                table.AddColumn("Time");
-                                table.AddColumn("StartingPoint");
-                                table.AddColumn("EndPoint");
-                                table.AddColumn("Language");
-
-                                while (reader2.Read())
-                                {
-                                    reservationsExist = true;
-                                    DateTime dateValue = Convert.ToDateTime(reader2["Date"]);
-                                    string timeOnly = dateValue.ToString("HH:mm");
-                                    string dateOnly = dateValue.ToShortDateString();
-
-                                    table.AddRow(
-                                        reader2["Id"].ToString(),
-                                        reader2["Name"].ToString(),
-                                        dateOnly,
-                                        timeOnly,
-                                        reader2["StartingPoint"].ToString(),
-                                        reader2["EndPoint"].ToString(),
-                                        reader2["Language"].ToString()
-                                    );
-                                }
-                                AnsiConsole.Render(table);
-                                return true;
-                            }
-                        }
-                    }
-
-                    if (!reservationsExist)
-                    {
-                        return false;
-                    }
-                }
+                Console.WriteLine(message);
+                return true;
             }
         }
         return false;
+    }
+
+    public bool ReservationMade(string qr)
+    {
+        List<Visitor> visitors = Tours.LoadVisitorsFromFile();
+
+        Visitor visitor = visitors.FirstOrDefault(v => v.QR == qr);
+
+        return visitor != null;
     }
 
     public void CancelReservation(Visitor visitor)
