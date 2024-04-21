@@ -354,23 +354,16 @@ static class Tours
             return new List<Guide>();
         }
     }
-    
+
     public static void AddVisitorToJSON(int tourId, string qr)
     {
-        int highestId;
         List<Visitor> existingVisitors = LoadVisitorsFromFile();
 
-        if (existingVisitors.Count > 0)
-        {
-            highestId = existingVisitors.Max(v => v.Id);
-        }
-        else
-        {
-            highestId = 0;
-        }
-
         Visitor newVisitor = new Visitor(tourId, qr);
-        newVisitor.Id = highestId + 1;
+
+        int nextId = existingVisitors.Count > 0 ? existingVisitors.Max(v => v.Id) + 1 : 1;
+
+        newVisitor.Id = nextId;
 
         existingVisitors.Add(newVisitor);
 
