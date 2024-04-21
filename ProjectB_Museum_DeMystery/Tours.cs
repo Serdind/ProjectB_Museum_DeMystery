@@ -72,6 +72,30 @@ static class Tours
         guidedTour.Add(tour);
     }
 
+     public static void SaveToursToFile(string filePath, List<GuidedTour> tours)
+    {
+        string existingJson = File.Exists(filePath) ? File.ReadAllText(filePath) : "[]";
+        List<GuidedTour> existingTours = JsonConvert.DeserializeObject<List<GuidedTour>>(existingJson);
+
+        foreach (var tour in tours)
+        {
+            var existingTour = existingTours.FirstOrDefault(t => t.ID == tour.ID);
+            if (existingTour != null)
+            {
+                existingTour.Name = tour.Name;
+                existingTour.Date = tour.Date;
+                existingTour.Language = tour.Language;
+            }
+            else
+            {
+                existingTours.Add(tour);
+            }
+        }
+
+        string updatedJson = JsonConvert.SerializeObject(existingTours, Formatting.Indented);
+        File.WriteAllText(filePath, updatedJson);
+    }
+
     public static void OverviewTours(bool edit)
     {
         DateTime currentDate = DateTime.Today;
@@ -85,10 +109,13 @@ static class Tours
         string fileName = "tours.json";
         string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
         string filePath = Path.Combine(userDirectory, subdirectory, fileName);
+        
         if (File.Exists(filePath))
         {
             string json = File.ReadAllText(filePath);
             var tours = JsonConvert.DeserializeObject<List<GuidedTour>>(json);
+
+            tours = tours.OrderBy(t => t.Date).ToList();
 
             var table = new Table().Border(TableBorder.Rounded);
             table.AddColumn("ID");
@@ -97,7 +124,9 @@ static class Tours
             table.AddColumn("Time");
             table.AddColumn("Language");
             table.AddColumn("Guide");
-            table.AddColumn("Visitors");
+            table.AddColumn("Remaining spots");
+
+            int id = 1;
 
             foreach (var tour in tours)
             {
@@ -105,16 +134,19 @@ static class Tours
                 {
                     string timeOnly = tour.Date.ToString("HH:mm");
                     string dateOnly = tour.Date.ToShortDateString();
+                    int remainingSpots = maxParticipants - tour.ReservedVisitors.Count;
 
                     table.AddRow(
-                        tour.ID.ToString(),
+                        id.ToString(),
                         tour.Name,
                         dateOnly,
                         timeOnly,
                         tour.Language,
                         guide.Name,
-                        tour.ReservedVisitors.Count().ToString()
+                        remainingSpots.ToString()
                     );
+
+                    id++;
                 }
             }
 
@@ -122,7 +154,71 @@ static class Tours
         }
         else
         {
-            Console.WriteLine("Tours JSON file not found.");
+            Console.WriteLine("Tour is empty.");
+        }
+    }
+
+    public static void OverviewRemovedTours()
+    {
+        DateTime currentDate = DateTime.Today;
+
+        string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
+        string fileName = "removedTours.json";
+        string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        string filePath = Path.Combine(userDirectory, subdirectory, fileName);
+
+        try
+        {
+            if (File.Exists(filePath))
+            {
+                string json = File.ReadAllText(filePath);
+
+                if (string.IsNullOrWhiteSpace(json))
+                {
+                    Console.WriteLine("The removedTours.json file is empty.");
+                    return;
+                }
+
+                var tour = JsonConvert.DeserializeObject<List<GuidedTour>>(json).FirstOrDefault();
+
+                if (tour == null)
+                {
+                    Console.WriteLine("No tour found in the removedTours.json file.");
+                    return;
+                }
+
+                var table = new Table().Border(TableBorder.Rounded);
+                table.AddColumn("ID");
+                table.AddColumn("Name");
+                table.AddColumn("Date");
+                table.AddColumn("Time");
+                table.AddColumn("Language");
+                table.AddColumn("Guide");
+                table.AddColumn("Visitors");
+
+                string timeOnly = tour.Date.ToString("HH:mm");
+                string dateOnly = tour.Date.ToShortDateString();
+
+                table.AddRow(
+                    tour.ID.ToString(),
+                    tour.Name,
+                    dateOnly,
+                    timeOnly,
+                    tour.Language,
+                    tour.NameGuide,
+                    tour.ReservedVisitors.Count().ToString()
+                );
+
+                AnsiConsole.Render(table);
+            }
+            else
+            {
+                Console.WriteLine("The removedTours.json file does not exist.");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"An error occurred while overviewing removed tours: {ex.Message}");
         }
     }
 
