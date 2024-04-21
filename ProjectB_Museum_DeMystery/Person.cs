@@ -16,126 +16,57 @@ class Person
 
     public string Login(string qr)
     {
-        using (var connection = new SqliteConnection(connectionString))
+        List<Visitor> visitors = Tours.LoadVisitorsFromFile();
+        List<Guide> guides = Tours.LoadGuidesFromFile();
+        List<DepartmentHead> admins = Tours.LoadAdminsFromFile();
+
+        Visitor visitor = visitors.FirstOrDefault(v => v.QR == qr);
+
+        if (visitor != null)
         {
-            connection.Open();
+            Console.WriteLine($"Logged in as: {visitor.QR}");
+            return "Visitor";
+        }
 
-            string selectVisitorDataCommand = @"
-                SELECT * FROM Visitors WHERE QR = @Qr;";
-            
-            string selectDepartmentHeadDataCommand = @"
-                SELECT * FROM DepartmentHead WHERE QR = @Qr;";
-            
-            string selectGuideDataCommand = @"
-                SELECT * FROM Guide WHERE QR = @Qr;";
+        Guide guide = guides.FirstOrDefault(v => v.QR == qr);
 
-            using (var selectData = new SqliteCommand(selectVisitorDataCommand, connection))
-            {
-                selectData.Parameters.AddWithValue("@Qr", qr);
+        if (guide != null)
+        {
+            Console.WriteLine($"Logged in as: {guide.Name}");
+            return "Guide";
+        }
 
-                using (var reader = selectData.ExecuteReader())
-                {
-                    if (reader.Read())
-                    {
-                        Id = Convert.ToInt32(reader["Id"]);
-                        Console.WriteLine($"Type: Visitor\nYour code: {reader["QR"]}\n");
-                        return "Visitor";
-                    }
-                }
-            }
+        DepartmentHead admin = admins.FirstOrDefault(v => v.QR == qr);
 
-            using (var selectData2 = new SqliteCommand(selectDepartmentHeadDataCommand, connection))
-            {
-                selectData2.Parameters.AddWithValue("@Qr", qr);
-
-                using (var reader2 = selectData2.ExecuteReader())
-                {
-                    if (reader2.Read())
-                    {
-                        Id = Convert.ToInt32(reader2["Id"]);
-                        Console.WriteLine($"Type: Admin\nLogged in as: {reader2["Name"]}\n");
-                        return "Admin";
-                    }
-                }
-            }
-
-            using (var selectData3 = new SqliteCommand(selectGuideDataCommand, connection))
-            {
-                selectData3.Parameters.AddWithValue("@Qr", qr);
-
-                using (var reader3 = selectData3.ExecuteReader())
-                {
-                    if (reader3.Read())
-                    {
-                        Id = Convert.ToInt32(reader3["Id"]);
-                        Console.WriteLine($"Type: Guide\nLogged in as: {reader3["Name"]}\n");
-                        return "Guide";
-                    }
-                }
-            }
+        if (admin != null)
+        {
+            Console.WriteLine($"Logged in as: {admin.Name}");
+            return "Admin";
         }
         return "None";
     }
 
     public bool AccCreated(string qr)
     {
-        using (var connection = new SqliteConnection(connectionString))
+        List<Guide> guides = Tours.LoadGuidesFromFile();
+        List<DepartmentHead> admins = Tours.LoadAdminsFromFile();
+
+        bool isGuide = guides.Any(g => g.QR == qr);
+        bool isAdmin = admins.Any(a => a.QR == qr);
+
+        if (isGuide)
         {
-            connection.Open();
-
-            string selectVisitorDataCommand = @"
-                SELECT * FROM Visitors WHERE QR = @Qr;";
-            
-            string selectDepartmentHeadDataCommand = @"
-                SELECT * FROM DepartmentHead WHERE QR = @Qr;";
-            
-            string selectGuideDataCommand = @"
-                SELECT * FROM Guide WHERE QR = @Qr;";
-
-            using (var selectData = new SqliteCommand(selectVisitorDataCommand, connection))
-            {
-                selectData.Parameters.AddWithValue("@Qr", qr);
-                using (var reader = selectData.ExecuteReader())
-                {
-                    if (reader.HasRows)
-                        return true;
-                }
-            }
-
-            using (var selectData2 = new SqliteCommand(selectDepartmentHeadDataCommand, connection))
-            {
-                selectData2.Parameters.AddWithValue("@Qr", qr);
-                using (var reader = selectData2.ExecuteReader())
-                {
-                    if (reader.HasRows)
-                        return true;
-                }
-            }
-
-            using (var selectData3 = new SqliteCommand(selectGuideDataCommand, connection))
-            {
-                selectData3.Parameters.AddWithValue("@Qr", qr);
-                using (var reader = selectData3.ExecuteReader())
-                {
-                    if (reader.HasRows)
-                        return true;
-                }
-            }
-
-            string insertVisitorDataCommand = @"
-                INSERT OR IGNORE INTO Visitors (Id, QR) VALUES 
-                (@Id, @Qr);";
-
-            using (var insertData = new SqliteCommand(insertVisitorDataCommand, connection))
-            {
-                insertData.Parameters.AddWithValue("@Id", Id);
-                insertData.Parameters.AddWithValue("@Qr", qr);
-
-                insertData.ExecuteNonQuery();
-            }
+            return false;
         }
-
-        return false;
+        else if (isAdmin)
+        {
+            return false;
+        }
+        else
+        {
+            Visitor visitor = new Visitor(0, qr);
+            return true;
+        }
     }
 
     public void AdminMenu(int languageSelection)
