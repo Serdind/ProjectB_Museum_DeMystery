@@ -256,6 +256,23 @@ static class Tours
 
         return new List<GuidedTour>();
     }
+
+    public static List<GuidedTour> LoadRemovedToursFromFile()
+    {
+        string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
+        string fileName = "removedTours.json";
+        string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        string filePath = Path.Combine(userDirectory, subdirectory, fileName);
+
+        if (File.Exists(filePath))
+        {
+            string json = File.ReadAllText(filePath);
+            return JsonConvert.DeserializeObject<List<GuidedTour>>(json);
+        }
+
+        return new List<GuidedTour>();
+    }
+
     public static void AddAdminToJSON()
     {
         AddAdmin(new DepartmentHead("Frans", "6457823"));
