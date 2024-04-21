@@ -354,7 +354,7 @@ static class Tours
             return new List<Guide>();
         }
     }
-
+    
     public static void AddVisitorToJSON(int tourId, string qr)
     {
         List<Visitor> existingVisitors = LoadVisitorsFromFile();
@@ -402,6 +402,47 @@ static class Tours
 
         string json = JsonConvert.SerializeObject(visitors, Formatting.Indented);
         File.WriteAllText(filePath, json);
+    }
+
+    public static void OverviewVisitorsTour(int tourID)
+    {
+        string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
+        string fileName = "visitors.json";
+        string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        string filePath = Path.Combine(userDirectory, subdirectory, fileName);
+        
+        if (File.Exists(filePath))
+        {
+            string json = File.ReadAllText(filePath);
+            var visitors = JsonConvert.DeserializeObject<List<Visitor>>(json);
+            
+            visitors = visitors.Where(v => v.TourId == tourID).OrderBy(t => t.TourId).ToList();
+
+            if (visitors.Any())
+            {
+                var table = new Table().Border(TableBorder.Rounded);
+                table.AddColumn("ID");
+                table.AddColumn("Qr");
+
+                foreach (var visitor in visitors)
+                {
+                    table.AddRow(
+                        visitor.Id.ToString(),
+                        visitor.QR.ToString()
+                    );
+                }
+
+                AnsiConsole.Render(table);
+            }
+            else
+            {
+                Console.WriteLine("No visitors found for the specified tour.");
+            }
+        }
+        else
+        {
+            Console.WriteLine("Tour is empty.");
+        }
     }
 
     public static void ReservateTour(Visitor visitor)
