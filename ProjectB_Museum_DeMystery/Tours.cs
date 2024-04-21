@@ -184,6 +184,24 @@ static class Tours
         File.WriteAllText(filePath, json);
     }
 
+    public static List<DepartmentHead> LoadAdminsFromFile()
+    {
+        string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
+        string fileName = "admins.json";
+        string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        string filePath = Path.Combine(userDirectory, subdirectory, fileName);
+
+        if (File.Exists(filePath))
+        {
+            string json = File.ReadAllText(filePath);
+            return JsonConvert.DeserializeObject<List<DepartmentHead>>(json);
+        }
+        else
+        {
+            return new List<DepartmentHead>();
+        }
+    }
+
     public static void AddGuideToJSON()
     {
         AddGuide(new Guide("Casper", "4892579"));
@@ -205,6 +223,24 @@ static class Tours
         string json = JsonConvert.SerializeObject(guides, Formatting.Indented);
 
         File.WriteAllText(filePath, json);
+    }
+
+    public static List<Guide> LoadGuidesFromFile()
+    {
+        string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
+        string fileName = "guides.json";
+        string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        string filePath = Path.Combine(userDirectory, subdirectory, fileName);
+
+        if (File.Exists(filePath))
+        {
+            string json = File.ReadAllText(filePath);
+            return JsonConvert.DeserializeObject<List<Guide>>(json);
+        }
+        else
+        {
+            return new List<Guide>();
+        }
     }
     
     public static void AddVisitorToJSON(int tourId, string qr)
