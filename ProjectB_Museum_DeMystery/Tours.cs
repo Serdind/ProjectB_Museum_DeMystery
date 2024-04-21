@@ -9,14 +9,12 @@ static class Tours
     public static readonly List<DepartmentHead> admins = new List<DepartmentHead>();
     public static readonly List<Guide> guides = new List<Guide>();
     public static List<Visitor> visitors = new List<Visitor>();
-    public static string connectionString = "Data Source=MyDatabase.db";
     public static Guide guide = new Guide("Casper", "4892579");
     public static int maxParticipants = 1;
-    
 
     public static void UpdateTours()
     {
-        DateTime yesterday = DateTime.Today.AddDays(-1);
+        DateTime today = DateTime.Today;
         string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
         string fileName = "tours.json";
         string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
@@ -24,15 +22,21 @@ static class Tours
             
         if (File.Exists(filePath))
         {
-            RemoveToursFromDate(yesterday);
-            RemoveVisitorInTourFromDate(yesterday);
+            DateTime lastWriteTime = File.GetLastWriteTime(filePath).Date;
+            
+            if (lastWriteTime != today)
+            {
+                RemoveToursFromDate(lastWriteTime);
+                
+                ToursDay(today);
+                ToursDay(today.AddDays(1));
+            }
         }
-
-        DateTime today = DateTime.Today;
-        DateTime tomorrow = today.AddDays(1);
-
-        ToursDay(today);
-        ToursDay(tomorrow);
+        else
+        {
+            ToursDay(today);
+            ToursDay(today.AddDays(1));
+        }
     }
 
     public static void ToursDay(DateTime date)
@@ -142,6 +146,21 @@ static class Tours
         }
     }
 
+    public static List<GuidedTour> LoadToursFromFile()
+    {
+        string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
+        string fileName = "tours.json";
+        string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        string filePath = Path.Combine(userDirectory, subdirectory, fileName);
+
+        if (File.Exists(filePath))
+        {
+            string json = File.ReadAllText(filePath);
+            return JsonConvert.DeserializeObject<List<GuidedTour>>(json);
+        }
+
+        return new List<GuidedTour>();
+    }
     public static void AddAdminToJSON()
     {
         AddAdmin(new DepartmentHead("Frans", "6457823"));
