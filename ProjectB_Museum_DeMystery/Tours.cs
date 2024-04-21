@@ -10,8 +10,8 @@ static class Tours
     public static readonly List<Guide> guides = new List<Guide>();
     public static List<Visitor> visitors = new List<Visitor>();
     public static Guide guide = new Guide("Casper", "4892579");
-    public static int maxParticipants = 1;
-
+    public static int maxParticipants = 13;
+    
     public static void UpdateTours()
     {
         DateTime today = DateTime.Today;
@@ -58,19 +58,18 @@ static class Tours
         string fileName = "tours.json";
         string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
         string filePath = Path.Combine(userDirectory, subdirectory, fileName);
-        SaveToursToFile(filePath);
+        SaveToursToFile(filePath, guidedTour);
     }
 
     public static void AddTour(GuidedTour tour)
     {
+        int maxId = guidedTour.Count > 0 ? guidedTour.Max(t => t.ID) : 0;
+        
+        int newId = maxId + 1;
+        
+        tour.ID = newId;
+        
         guidedTour.Add(tour);
-    }
-
-    public static void SaveToursToFile(string filePath)
-    {
-        string json = JsonConvert.SerializeObject(guidedTour, Formatting.Indented);
-
-        File.WriteAllText(filePath, json);
     }
 
     public static void OverviewTours(bool edit)
