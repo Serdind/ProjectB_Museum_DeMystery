@@ -5,7 +5,6 @@ using Newtonsoft.Json.Linq;
 
 class Visitor : Person
 {
-    string connectionString = "Data Source=MyDatabase.db";
     
     private static int lastId = 1;
     public int Id;
@@ -19,11 +18,9 @@ class Visitor : Person
 
     public bool Reservate(int tourID, Visitor visitor)
     {
-        Tours.visitors.Clear();
-
-        if (ViewReservationsMade(visitor.Id))
+        if (ReservationMade(visitor.QR))
         {
-            Console.WriteLine("You already reserved a tour for today.\n");
+            Console.WriteLine("You already made a reservation for today.");
             return false;
         }
 
@@ -32,15 +29,9 @@ class Visitor : Person
         string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
         string filePath = Path.Combine(userDirectory, subdirectory, fileName);
 
-        string subdirectory1 = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
-        string fileName1 = "visitors.json";
-        string userDirectory1 = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-        string filePath1 = Path.Combine(userDirectory1, subdirectory1, fileName1);
-
         if (File.Exists(filePath))
         {
             string json = File.ReadAllText(filePath);
-
             var tours = JsonConvert.DeserializeObject<List<GuidedTour>>(json);
 
             var tour = tours.FirstOrDefault(t => t.ID == tourID);
@@ -49,11 +40,18 @@ class Visitor : Person
             {
                 Tours.AddVisitorToJSON(tourID, visitor.QR);
 
+                tour.ReservedVisitors.Add(visitor);
+                visitor.TourId = tour.ID;
+
+                string updatedJson = JsonConvert.SerializeObject(tours, Formatting.Indented);
+
+                File.WriteAllText(filePath, updatedJson);
+
                 string message = $"Reservation successful. You have reserved the following tour:\n" +
-                                 $"Tour: {tour.Name}\n" +
-                                 $"Date: {tour.Date.ToShortDateString()}\n" +
-                                 $"Time: {tour.Date.ToString("HH:mm")}\n" +
-                                 $"Language: {tour.Language}\n";
+                                $"Tour: {tour.Name}\n" +
+                                $"Date: {tour.Date.ToShortDateString()}\n" +
+                                $"Time: {tour.Date.ToString("HH:mm")}\n" +
+                                $"Language: {tour.Language}\n";
                 Console.WriteLine(message);
                 return true;
             }
