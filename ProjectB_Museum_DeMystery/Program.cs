@@ -60,7 +60,7 @@ class Program
                             }
                             else if (option.ToLower() == "m")
                             {
-                                visitor.ViewReservationsMade(visitor.Id);
+                                visitor.ViewReservationsMade(qr);
                             }
                             else if (option.ToLower() == "c")
                             {
@@ -78,7 +78,7 @@ class Program
                     }
                     else if (loginStatus == "Admin")
                     {
-                        visitor.AdminMenu(2);
+                        visitor.AdminMenu(language);
                     }
                     else if (loginStatus == "Guide")
                     {
@@ -123,16 +123,26 @@ class Program
                 {
                     Console.WriteLine("Scan uw QR code:");
                     string qr = Console.ReadLine();
-                    
-                    visitor.AccCreated(qr);
 
-                    string loginStatus = visitor.Login(qr);
+                    bool accountCreated = visitor.AccCreated(qr);
+
+                    string loginStatus;
+
+                    if (accountCreated)
+                    {
+                        loginStatus = "Visitor";
+                        visitor.QR = qr;
+                    }
+                    else
+                    {
+                        loginStatus = visitor.Login(qr);
+                    }
                     if (loginStatus == "Visitor")
                     {
                         bool visitorRunning = true;
                         while (visitorRunning)
                         {
-                            Console.WriteLine("Reservering maken(E)\nMijn reserveringen(M)\nreservering annuleren(C)\nVerlaten(Q)");
+                            Console.WriteLine("Reservering maken(E)\nMijn reserveringen(M)\nReservering annuleren(C)\nAfsluiten(Q)");
                             string option = Console.ReadLine();
 
                             if (option.ToLower() == "e")
@@ -141,7 +151,7 @@ class Program
                             }
                             else if (option.ToLower() == "m")
                             {
-                                visitor.ViewReservationsMade(visitor.Id);
+                                visitor.ViewReservationsMade(qr);
                             }
                             else if (option.ToLower() == "c")
                             {
@@ -153,13 +163,13 @@ class Program
                             }
                             else
                             {
-                                Console.WriteLine("ingevoerd antwoord onjuist, probeer opnieuw");
+                                Console.WriteLine("Ingevoerd antwoord onjuist, probeer opnieuw.");
                             }
                         }
                     }
                     else if (loginStatus == "Admin")
                     {
-                        visitor.AdminMenu(2);
+                        visitor.AdminMenu(language);
                     }
                     else if (loginStatus == "Guide")
                     {
@@ -167,7 +177,7 @@ class Program
 
                         while (guideRunning)
                         {
-                            Console.WriteLine("Mijn rondleidingen(M)\nVerlaten (Q)");
+                            Console.WriteLine("Mijn rondleidingen(M)\nAfsluten(Q)");
                             string option = Console.ReadLine();
 
                             if (option.ToLower() == "m")
@@ -180,7 +190,7 @@ class Program
                             }
                             else
                             {
-                                Console.WriteLine("ingevoerd antwoord onjuist, probeer opnieuw");
+                                Console.WriteLine("Ingevoerd antwoord onjuist, probeer opnieuw.");
                             }
                         }
                     }
@@ -192,12 +202,12 @@ class Program
                 }
                 else
                 {
-                    Console.WriteLine("ingevoerd antwoord onjuist, probeer opnieuw");
+                    Console.WriteLine("Ingevoerd antwoord onjuist, probeer opnieuw.");
                 }
             }
             else
             {
-                Console.WriteLine("wrong input");
+                Console.WriteLine("Verkeerde invoer.");
             }
         }
     }
