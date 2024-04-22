@@ -44,6 +44,28 @@
           }
         }
       },
+      "NUnit/4.1.0": {
+        "type": "package",
+        "compile": {
+          "lib/net6.0/nunit.framework.dll": {
+            "related": ".legacy.xml;.xml"
+          },
+          "lib/net6.0/nunit.framework.legacy.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/nunit.framework.dll": {
+            "related": ".legacy.xml;.xml"
+          },
+          "lib/net6.0/nunit.framework.legacy.dll": {
+            "related": ".xml"
+          }
+        },
+        "build": {
+          "build/NUnit.props": {}
+        }
+      },
       "QRCoder/1.4.3": {
         "type": "package",
         "compile": {
@@ -302,6 +324,32 @@
         "packageIcon.png"
       ]
     },
+    "NUnit/4.1.0": {
+      "sha512": "MT/DpAhjtiytzhTgTqIhBuWx4y26PKfDepYUHUM+5uv4TsryHC2jwFo5e6NhWkApCm/G6kZ80dRjdJFuAxq3rg==",
+      "type": "package",
+      "path": "nunit/4.1.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "CHANGES.md",
+        "LICENSE.txt",
+        "NOTICES.md",
+        "README.md",
+        "THIRD_PARTY_NOTICES.md",
+        "build/NUnit.props",
+        "icon.png",
+        "lib/net462/nunit.framework.dll",
+        "lib/net462/nunit.framework.legacy.dll",
+        "lib/net462/nunit.framework.legacy.xml",
+        "lib/net462/nunit.framework.xml",
+        "lib/net6.0/nunit.framework.dll",
+        "lib/net6.0/nunit.framework.legacy.dll",
+        "lib/net6.0/nunit.framework.legacy.xml",
+        "lib/net6.0/nunit.framework.xml",
+        "nunit.4.1.0.nupkg.sha512",
+        "nunit.nuspec"
+      ]
+    },
     "QRCoder/1.4.3": {
       "sha512": "fWuFqjm8GTlEb2GqBl3Hi8HZZeZQwBSHxvRPtPjyNbT82H0ff0JwavKRBmMaXCno1Av6McPC8aJzri0Mj2w9Jw==",
       "type": "package",
@@ -491,6 +539,7 @@
   "projectFileDependencyGroups": {
     "net7.0": [
       "Microsoft.Data.Sqlite >= 8.0.3",
+      "NUnit >= 4.1.0",
       "Newtonsoft.Json >= 13.0.3",
       "QRCoder >= 1.4.3",
       "Spectre.Console >= 0.48.0",
@@ -537,6 +586,10 @@
           "Microsoft.Data.Sqlite": {
             "target": "Package",
             "version": "[8.0.3, )"
+          },
+          "NUnit": {
+            "target": "Package",
+            "version": "[4.1.0, )"
           },
           "Newtonsoft.Json": {
             "target": "Package",
