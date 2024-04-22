@@ -234,3 +234,5 @@ C:\Users\Wisha\OneDrive\Bureaublad\ProjectB\ProjectB_Museum_DeMystery\ProjectB_M
 C:\Users\Wisha\OneDrive\Bureaublad\ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery\obj\Debug\net7.0\ProjectB_Museum_DeMystery.csproj.CopyComplete
 C:\Users\Wisha\OneDrive\Bureaublad\ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery\obj\Debug\net7.0\ProjectB_Museum_DeMystery.genruntimeconfig.cache
 C:\Users\Wisha\OneDrive\Bureaublad\ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery\obj\Debug\net7.0\ref\ProjectB_Museum_DeMystery.dll
+C:\Users\Serdi\Desktop\ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery\bin\Debug\net7.0\nunit.framework.dll
+C:\Users\Serdi\Desktop\ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery\bin\Debug\net7.0\nunit.framework.legacy.dll

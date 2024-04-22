@@ -38,7 +38,7 @@ class Visitor : Person
 
             if (tour != null)
             {
-                if (tour.ReservedVisitors.Count() != 0)
+                if (Tours.maxParticipants > tour.ReservedVisitors.Count())
                 {
                     Tours.AddVisitorToJSON(tourID, visitor.QR);
 

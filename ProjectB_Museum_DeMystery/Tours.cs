@@ -194,10 +194,11 @@ static class Tours
                 table.AddColumn("Time");
                 table.AddColumn("Language");
                 table.AddColumn("Guide");
-                table.AddColumn("Visitors");
+                table.AddColumn("Remaining spots");
 
                 string timeOnly = tour.Date.ToString("HH:mm");
                 string dateOnly = tour.Date.ToShortDateString();
+                int remainingSpots = maxParticipants - tour.ReservedVisitors.Count;
 
                 table.AddRow(
                     tour.ID.ToString(),
@@ -206,7 +207,7 @@ static class Tours
                     timeOnly,
                     tour.Language,
                     tour.NameGuide,
-                    tour.ReservedVisitors.Count().ToString()
+                    remainingSpots.ToString()
                 );
 
                 AnsiConsole.Render(table);
