@@ -1,81 +1,63 @@
 using Microsoft.Data.Sqlite;
 using Spectre.Console;
+using Newtonsoft.Json;
 
 class Guide : Person
 {
-    string connectionString = "Data Source=MyDatabase.db";
+    private static int lastId = 0;
+    public int Id;
     public string Name;
     public Guide(string name, string qr) : base(qr)
     {
+        Id = lastId++;
         Name = name;
     }
-
-    public void ViewTours(int guideID)
+    public void ViewTours(string guideName)
     {
-        using (var connection = new SqliteConnection(connectionString))
-        {
-            connection.Open();
-
-            string selectGuideInTourDataCommand = @"
-                SELECT * FROM GuideInTour WHERE Id_Guide = @GuideID";
-
-            using (var selectData = new SqliteCommand(selectGuideInTourDataCommand, connection))
+        DateTime today = DateTime.Today;
+        string fileName = "tours.json";
+        string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        string filePath = Path.Combine(userDirectory, fileName);
+        string jsonData = File.ReadAllText(filePath);
+        
+        List<GuidedTour> tours = JsonConvert.DeserializeObject<List<GuidedTour>>(jsonData);
+        
+        List<GuidedTour> guideTours = tours.FindAll(tour => tour.NameGuide == guideName && tour.Date.Date == today);
+        
+        var table = new Table().LeftAligned();
+        AnsiConsole.Live(table)
+            .AutoClear(false)
+            .Overflow(VerticalOverflow.Ellipsis)
+            .Cropping(VerticalOverflowCropping.Top)
+            .Start(ctx =>
             {
-                selectData.Parameters.AddWithValue("@GuideID", guideID);
-
-                using (var reader = selectData.ExecuteReader())
+                table.AddColumn("ID");
+                table.AddColumn("Name");
+                table.AddColumn("Date");
+                table.AddColumn("Time");
+                table.AddColumn("StartingPoint");
+                table.AddColumn("EndPoint");
+                table.AddColumn("Language");
+                table.AddColumn("Visitors");
+                
+                foreach (var tour in guideTours)
                 {
-                    var table = new Table().LeftAligned();
-
-                    AnsiConsole.Live(table)
-                        .AutoClear(false)
-                        .Overflow(VerticalOverflow.Ellipsis)
-                        .Cropping(VerticalOverflowCropping.Top)
-                        .Start(ctx =>
-                        {
-                            table.AddColumn("ID");
-                            table.AddColumn("Name");
-                            table.AddColumn("Date");
-                            table.AddColumn("Time");
-                            table.AddColumn("StartingPoint");
-                            table.AddColumn("EndPoint");
-                            table.AddColumn("Language");
-
-                            while (reader.Read())
-                            {
-                                string selectToursDataCommand = @"
-                                    SELECT * FROM Tours WHERE Id = @TourID";
-
-                                using (var selectData2 = new SqliteCommand(selectToursDataCommand, connection))
-                                {
-                                    selectData2.Parameters.AddWithValue("@TourID", reader["Id_Tour"].ToString());
-
-                                    using (var reader2 = selectData2.ExecuteReader())
-                                    {
-                                        while (reader2.Read())
-                                        {
-                                            DateTime dateValue = Convert.ToDateTime(reader2["Date"]);
-                                            string timeOnly = dateValue.ToString("HH:mm");
-                                            string dateOnly = dateValue.ToShortDateString();
-
-                                            table.AddRow(
-                                                reader2["Id"].ToString(),
-                                                reader2["Name"].ToString(),
-                                                dateOnly,
-                                                timeOnly,
-                                                reader2["StartingPoint"].ToString(),
-                                                reader2["EndPoint"].ToString(),
-                                                reader2["Language"].ToString()
-                                            );
-
-                                            ctx.Refresh();
-                                        }
-                                    }
-                                }
-                            }
-                        });
+                    string timeOnly = tour.Date.ToString("HH:mm");
+                    string dateOnly = tour.Date.ToShortDateString();
+                    
+                    table.AddRow(
+                        tour.ID.ToString(),
+                        tour.Name,
+                        dateOnly,
+                        timeOnly,
+                        GuidedTour.StartingPoint,
+                        GuidedTour.EndPoint,
+                        tour.Language,
+                        tour.ReservedVisitors.Count.ToString()
+                    );
+                    
+                    ctx.Refresh();
                 }
-            }
-        }
+            });
     }
 }

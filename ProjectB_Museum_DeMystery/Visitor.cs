@@ -1,219 +1,173 @@
 using Microsoft.Data.Sqlite;
 using Spectre.Console;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 class Visitor : Person
 {
-    string connectionString = "Data Source=MyDatabase.db";
     
-    public Visitor(string qr) : base(qr){}
+    private static int lastId = 1;
+    public int Id;
+    public int TourId;
 
-    public bool Reservate(string tourID, Visitor visitor)
+    public Visitor(int tourId, string qr) : base(qr)
     {
+        Id = lastId++;
+        TourId = tourId;
+    }
 
-        if (ViewReservationsMade(visitor.Id))
+    public bool Reservate(int tourID, Visitor visitor)
+    {
+        if (ReservationMade(visitor.QR))
         {
-            Console.WriteLine("You already reserved a tour for today.\n");
+            Console.WriteLine("You already made a reservation for today.");
             return false;
         }
 
-        using (var connection = new SqliteConnection(connectionString))
+        string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
+        string fileName = "tours.json";
+        string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        string filePath = Path.Combine(userDirectory, subdirectory, fileName);
+
+        if (File.Exists(filePath))
         {
-            connection.Open();
+            string json = File.ReadAllText(filePath);
+            var tours = JsonConvert.DeserializeObject<List<GuidedTour>>(json);
 
-            string selectToursDataCommand = @"
-                SELECT * FROM Tours WHERE Id = @TourID";
+            var tour = tours.FirstOrDefault(t => t.ID == tourID);
 
-            using (var selectData = new SqliteCommand(selectToursDataCommand, connection))
+            if (tour != null)
             {
-                selectData.Parameters.AddWithValue("@TourID", tourID);
-
-                using (var reader = selectData.ExecuteReader())
+                if (tour.ReservedVisitors.Count() != 0)
                 {
-                    if (reader.Read())
+                    Tours.AddVisitorToJSON(tourID, visitor.QR);
+
+                    tour.ReservedVisitors.Add(visitor);
+                    visitor.TourId = tour.ID;
+                    string subdirectory1 = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
+                    string fileName1 = "visitors.json";
+                    string userDirectory1 = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+                    string filePath1 = Path.Combine(userDirectory1, subdirectory1, fileName1);
+
+                    if (File.Exists(filePath1))
                     {
-                        int currentVisitors = reader.GetInt32(reader.GetOrdinal("Visitors"));
+                        string json1 = File.ReadAllText(filePath1);
+                        var visitors = JsonConvert.DeserializeObject<List<Visitor>>(json1);
 
-                        if (currentVisitors != 1)
-                        {
-                            string updateVisitorsCountCommand = @"
-                                UPDATE Tours
-                                SET Visitors = Visitors + 1
-                                WHERE Id = @TourID;";
+                        var v = visitors.FirstOrDefault(t => t.QR == visitor.QR);
 
-                            using (var updateCommand = new SqliteCommand(updateVisitorsCountCommand, connection))
-                            {
-                                updateCommand.Parameters.AddWithValue("@TourID", tourID);
-                                updateCommand.ExecuteNonQuery();
-                            }
-
-                            string insertVisitorDataCommand = @"
-                                INSERT OR IGNORE INTO VisitorInTour (Id_Visitor, Id_Tour, Date) VALUES 
-                                    (@Id_Visitor, @Id_Tour, @Date);";
-
-                            using (var insertData = new SqliteCommand(insertVisitorDataCommand, connection))
-                            {
-                                insertData.Parameters.AddWithValue("@Id_Visitor", visitor.Id);
-                                insertData.Parameters.AddWithValue("@Id_Tour", reader["Id"].ToString());
-                                insertData.Parameters.AddWithValue("@Date", reader["Date"].ToString());
-
-                                insertData.ExecuteNonQuery();
-                                
-                                Console.WriteLine("Succesfully reservation made.\n");
-                                return true;
-                            }
-                        }
-                        else
-                        {
-                            Console.WriteLine("Tour is full");
-                            Tours.ReservateTour(visitor);
-                        }
+                        visitor.Id = v.Id;
                     }
+
+                    string updatedJson = JsonConvert.SerializeObject(tours, Formatting.Indented);
+
+                    File.WriteAllText(filePath, updatedJson);
+
+                    string message = $"Reservation successful. You have reserved the following tour:\n" +
+                                    $"Tour: {tour.Name}\n" +
+                                    $"Date: {tour.Date.ToShortDateString()}\n" +
+                                    $"Time: {tour.Date.ToString("HH:mm")}\n" +
+                                    $"Language: {tour.Language}\n";
+                    Console.WriteLine(message);
+                    return true;
+                }
+                else
+                {
+                    Console.WriteLine("Tour is full.");
                 }
             }
+            else
+            {
+                Console.WriteLine("Tour is not available.");
+            }
         }
-        Console.WriteLine("Tour not found. Try again!");
-        Tours.ReservateTour(visitor);
+
         return false;
     }
 
-    public bool ViewReservationsMade(int visitorID)
+    public bool ViewReservationsMade(string qr)
     {
-        using (var connection = new SqliteConnection(connectionString))
+        List<Visitor> visitors = Tours.LoadVisitorsFromFile();
+
+        Visitor visitor = visitors.FirstOrDefault(v => v.QR == qr);
+
+        if (visitor != null)
         {
-            connection.Open();
+            List<GuidedTour> tours = Tours.LoadToursFromFile();
 
-            string selectVisitorInTourDataCommand = @"
-                SELECT * FROM VisitorInTour WHERE Id_Visitor = @VisitorID";
+            GuidedTour tour = tours.FirstOrDefault(t => t.ID == visitor.TourId);
 
-            using (var selectData = new SqliteCommand(selectVisitorInTourDataCommand, connection))
+            if (tour != null)
             {
-                selectData.Parameters.AddWithValue("@VisitorID", visitorID);
+                string message = $"Tour: {tour.Name}\n" +
+                                $"Date: {tour.Date.ToShortDateString()}\n" +
+                                $"Time: {tour.Date.ToString("HH:mm")}\n" +
+                                $"Language: {tour.Language}\n";
 
-                using (var reader = selectData.ExecuteReader())
-                {
-                    bool reservationsExist = false;
-
-                    while (reader.Read())
-                    {
-                        string selectToursDataCommand = @"
-                            SELECT * FROM Tours WHERE Id = @TourID";
-
-                        using (var selectData2 = new SqliteCommand(selectToursDataCommand, connection))
-                        {
-                            selectData2.Parameters.AddWithValue("@TourID", reader["Id_Tour"].ToString());
-
-                            using (var reader2 = selectData2.ExecuteReader())
-                            {
-                                var table = new Table().LeftAligned();
-
-                                table.AddColumn("ID");
-                                table.AddColumn("Name");
-                                table.AddColumn("Date");
-                                table.AddColumn("Time");
-                                table.AddColumn("StartingPoint");
-                                table.AddColumn("EndPoint");
-                                table.AddColumn("Language");
-
-                                while (reader2.Read())
-                                {
-                                    reservationsExist = true;
-                                    DateTime dateValue = Convert.ToDateTime(reader2["Date"]);
-                                    string timeOnly = dateValue.ToString("HH:mm");
-                                    string dateOnly = dateValue.ToShortDateString();
-
-                                    table.AddRow(
-                                        reader2["Id"].ToString(),
-                                        reader2["Name"].ToString(),
-                                        dateOnly,
-                                        timeOnly,
-                                        reader2["StartingPoint"].ToString(),
-                                        reader2["EndPoint"].ToString(),
-                                        reader2["Language"].ToString()
-                                    );
-                                }
-                                AnsiConsole.Render(table);
-                                return true;
-                            }
-                        }
-                    }
-
-                    if (!reservationsExist)
-                    {
-                        return false;
-                    }
-                }
+                Console.WriteLine(message);
+                return true;
             }
         }
         return false;
+    }
+
+    public bool ReservationMade(string qr)
+    {
+        List<Visitor> visitors = Tours.LoadVisitorsFromFile();
+
+        Visitor visitor = visitors.FirstOrDefault(v => v.QR == qr);
+
+        return visitor != null;
     }
 
     public void CancelReservation(Visitor visitor)
     {
-        string connectionString = "Data Source=MyDatabase.db";
+        List<GuidedTour> tours = Tours.LoadToursFromFile();
+        List<Visitor> visitors = Tours.LoadVisitorsFromFile();
 
-        if (visitor.ViewReservationsMade(visitor.Id))
+        string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
+        string fileName = "tours.json";
+        string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        string filePath = Path.Combine(userDirectory, subdirectory, fileName);
+
+        string subdirectory1 = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
+        string fileName1 = "visitors.json";
+        string userDirectory1 = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        string filePath1 = Path.Combine(userDirectory1, subdirectory1, fileName1);
+
+        if (!visitor.ReservationMade(visitor.QR))
         {
-            Console.WriteLine("Are you sure you want to cancel your reservation? (Y/N)");
-            string confirmation = Console.ReadLine();
-
-            if (confirmation.ToLower() == "y")
-            {            
-                using (var connection = new SqliteConnection(connectionString))
-                {
-                    connection.Open();
-
-                    string removeTourCommand = @"
-                        DELETE FROM VisitorInTour
-                        WHERE Id_Tour = @TourID;";
-
-                    using (var deleteCommand = new SqliteCommand(removeTourCommand, connection))
-                    {
-                        deleteCommand.Parameters.AddWithValue("@TourID", tourid);
-                        deleteCommand.ExecuteNonQuery();
-                        Console.WriteLine("Reservation removed successfully");
-                    }
-                
-                    string selectToursDataCommand = @"
-                        SELECT * FROM Tours WHERE Id = @TourID";
-
-                    using (var selectData = new SqliteCommand(selectToursDataCommand, connection))
-                    {
-                        selectData.Parameters.AddWithValue("@TourID", tourid);
-
-                        using (var reader = selectData.ExecuteReader())
-                        {
-                            if (reader.Read())
-                            {
-                                int currentVisitors = reader.GetInt32(reader.GetOrdinal("Visitors"));
-
-                                string updateVisitorsCountCommand = @"
-                                    UPDATE Tours
-                                    SET Visitors = Visitors - 1
-                                    WHERE Id = @TourID;";
-
-                                using (var updateCommand = new SqliteCommand(updateVisitorsCountCommand, connection))
-                                {
-                                    updateCommand.Parameters.AddWithValue("@TourID", tourid);
-                                    updateCommand.ExecuteNonQuery();
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            else if (confirmation.ToLower() == "n")
-            {
-                Console.WriteLine("Reservation cancellation cancelled.");
-            }
-            else
-            {
-                Console.WriteLine("Invalid input. Please enter 'Y' or 'N'.");
-            }
+            Console.WriteLine("No reservations made.");
             return;
+        }
+
+        Console.WriteLine("Are you sure you want to cancel your reservation? (Y/N)");
+        string confirmation = Console.ReadLine().ToLower();
+
+        if (confirmation == "y")
+        {
+            foreach (var tour in tours)
+            {
+                tour.ReservedVisitors.RemoveAll(v => v.QR == visitor.QR);
+            }
+
+            visitors.RemoveAll(v => v.QR == visitor.QR);
+
+            string toursJson = JsonConvert.SerializeObject(tours, Formatting.Indented);
+            File.WriteAllText(filePath, toursJson);
+
+            string visitorsJson = JsonConvert.SerializeObject(visitors, Formatting.Indented);
+            File.WriteAllText(filePath1, visitorsJson);
+            
+            Console.WriteLine("Reservation cancelled successfully.");
+        }
+        else if (confirmation == "n")
+        {
+            Console.WriteLine("Reservation cancellation cancelled.");
         }
         else
         {
-            Console.WriteLine("No reservations made.");
+            Console.WriteLine("Invalid input. Please enter 'Y' or 'N'.");
         }
     }
 }
