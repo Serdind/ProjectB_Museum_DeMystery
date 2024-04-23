@@ -1,9 +1,7 @@
 using Spectre.Console;
-using Microsoft.Data.Sqlite;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
-static class Tours
+static class Tour
 {
     public static readonly List<GuidedTour> guidedTour = new List<GuidedTour>();
     public static readonly List<DepartmentHead> admins = new List<DepartmentHead>();
@@ -11,7 +9,7 @@ static class Tours
     public static List<Visitor> visitors = new List<Visitor>();
     public static Guide guide = new Guide("Casper", "4892579");
     public static int maxParticipants = 13;
-    
+
     public static void UpdateTours()
     {
         DateTime today = DateTime.Today;
@@ -64,22 +62,37 @@ static class Tours
     public static void AddTour(GuidedTour tour)
     {
         int maxId = guidedTour.Count > 0 ? guidedTour.Max(t => t.ID) : 0;
-        
         int newId = maxId + 1;
-        
         tour.ID = newId;
         
         guidedTour.Add(tour);
+
+        string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
+        string fileName = "tours.json";
+        string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        string filePath = Path.Combine(userDirectory, subdirectory, fileName);
+        
+        SaveToursToFile(filePath, guidedTour);
     }
 
-     public static void SaveToursToFile(string filePath, List<GuidedTour> tours)
+    public static void SaveToursToFile(string filePath, List<GuidedTour> tours)
     {
-        string existingJson = File.Exists(filePath) ? File.ReadAllText(filePath) : "[]";
-        List<GuidedTour> existingTours = JsonConvert.DeserializeObject<List<GuidedTour>>(existingJson);
+        List<GuidedTour> existingTours;
+        if (File.Exists(filePath))
+        {
+            string existingJson = File.ReadAllText(filePath);
+            existingTours = JsonConvert.DeserializeObject<List<GuidedTour>>(existingJson);
+        }
+        else
+        {
+            existingTours = new List<GuidedTour>();
+        }
+
+        List<GuidedTour> updatedTours = new List<GuidedTour>(existingTours);
 
         foreach (var tour in tours)
         {
-            var existingTour = existingTours.FirstOrDefault(t => t.ID == tour.ID);
+            var existingTour = updatedTours.FirstOrDefault(t => t.ID == tour.ID);
             if (existingTour != null)
             {
                 existingTour.Name = tour.Name;
@@ -88,11 +101,11 @@ static class Tours
             }
             else
             {
-                existingTours.Add(tour);
+                updatedTours.Add(tour);
             }
         }
 
-        string updatedJson = JsonConvert.SerializeObject(existingTours, Formatting.Indented);
+        string updatedJson = JsonConvert.SerializeObject(updatedTours, Formatting.Indented);
         File.WriteAllText(filePath, updatedJson);
     }
 
@@ -154,7 +167,7 @@ static class Tours
         }
         else
         {
-            Console.WriteLine("Tour is empty.");
+            TourEmpty.Show();
         }
     }
 
@@ -167,59 +180,52 @@ static class Tours
         string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
         string filePath = Path.Combine(userDirectory, subdirectory, fileName);
 
-        try
+        if (File.Exists(filePath))
         {
-            if (File.Exists(filePath))
+            string json = File.ReadAllText(filePath);
+
+            if (string.IsNullOrWhiteSpace(json))
             {
-                string json = File.ReadAllText(filePath);
-
-                if (string.IsNullOrWhiteSpace(json))
-                {
-                    Console.WriteLine("The removedTours.json file is empty.");
-                    return;
-                }
-
-                var tour = JsonConvert.DeserializeObject<List<GuidedTour>>(json).FirstOrDefault();
-
-                if (tour == null)
-                {
-                    Console.WriteLine("No tour found in the removedTours.json file.");
-                    return;
-                }
-
-                var table = new Table().Border(TableBorder.Rounded);
-                table.AddColumn("ID");
-                table.AddColumn("Name");
-                table.AddColumn("Date");
-                table.AddColumn("Time");
-                table.AddColumn("Language");
-                table.AddColumn("Guide");
-                table.AddColumn("Remaining spots");
-
-                string timeOnly = tour.Date.ToString("HH:mm");
-                string dateOnly = tour.Date.ToShortDateString();
-                int remainingSpots = maxParticipants - tour.ReservedVisitors.Count;
-
-                table.AddRow(
-                    tour.ID.ToString(),
-                    tour.Name,
-                    dateOnly,
-                    timeOnly,
-                    tour.Language,
-                    tour.NameGuide,
-                    remainingSpots.ToString()
-                );
-
-                AnsiConsole.Render(table);
+                TourEmpty.RemovedToursEmpty();
+                return;
             }
-            else
+
+            var tour = JsonConvert.DeserializeObject<List<GuidedTour>>(json).FirstOrDefault();
+
+            if (tour == null)
             {
-                Console.WriteLine("The removedTours.json file does not exist.");
+                TourNotFound.RemovedToursNotFound();
+                return;
             }
+
+            var table = new Table().Border(TableBorder.Rounded);
+            table.AddColumn("ID");
+            table.AddColumn("Name");
+            table.AddColumn("Date");
+            table.AddColumn("Time");
+            table.AddColumn("Language");
+            table.AddColumn("Guide");
+            table.AddColumn("Remaining spots");
+
+            string timeOnly = tour.Date.ToString("HH:mm");
+            string dateOnly = tour.Date.ToShortDateString();
+            int remainingSpots = maxParticipants - tour.ReservedVisitors.Count;
+
+            table.AddRow(
+                tour.ID.ToString(),
+                tour.Name,
+                dateOnly,
+                timeOnly,
+                tour.Language,
+                tour.NameGuide,
+                remainingSpots.ToString()
+            );
+
+            AnsiConsole.Render(table);
         }
-        catch (Exception ex)
+        else
         {
-            Console.WriteLine($"An error occurred while overviewing removed tours: {ex.Message}");
+            JsonFile.RemovedToursDoesNotExist();
         }
     }
 
@@ -437,21 +443,12 @@ static class Tours
             }
             else
             {
-                Console.WriteLine("No visitors found for the specified tour.");
+                TourEmpty.NoVisitorsInTour();
             }
         }
         else
         {
-            Console.WriteLine("Tour is empty.");
+            TourEmpty.Show();
         }
-    }
-
-    public static void ReservateTour(Visitor visitor)
-    {
-        OverviewTours(false);
-        Console.WriteLine("Which tour? (ID)");
-        int tourID = Convert.ToInt32(Console.ReadLine());
-
-        visitor.Reservate(tourID, visitor);
     }
 }

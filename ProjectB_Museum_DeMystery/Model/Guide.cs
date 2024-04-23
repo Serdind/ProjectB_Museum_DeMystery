@@ -1,47 +1,22 @@
-using Microsoft.Data.Sqlite;
+using System.Text.Json.Serialization;
 using Spectre.Console;
 using Newtonsoft.Json;
 
-class Guide : Person
+public class Guide : Person
 {
     private static int lastId = 0;
+    [JsonPropertyName("Id")]
     public int Id;
+    [JsonPropertyName("Name")]
     public string Name;
-    private bool guideRunning = true;
+    
     public Guide(string name, string qr) : base(qr)
     {
         Id = lastId++;
         Name = name;
     }
-    public void ViewVisitorsTour()
-    {
-        Console.WriteLine("Which tour? (ID)");
-        int tourID = Convert.ToInt32(Console.ReadLine());
 
-        Tours.OverviewVisitorsTour(tourID);
-    
-        Console.WriteLine("Add visitor(A)\nRemove visitor(R)\nQuit (Q)");
-        string option = Console.ReadLine();
-
-        if (option.ToLower() == "a")
-        {
-            AddVisistorToTour(tourID);
-        }
-        else if (option.ToLower() == "r")
-        {
-
-        }
-        else if (option.ToLower() == "q")
-        {
-            guideRunning = false;
-        }
-        else
-        {
-            Console.WriteLine("Wrong input. Try again.");
-        }
-    }
-
-    public bool AddVisistorToTour(int tourID)
+    public static bool AddVisistorToTour(int tourID)
     {
         string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
         string fileName = "tours.json";
@@ -57,25 +32,24 @@ class Guide : Person
 
             if (tour != null)
             {
-                Console.WriteLine("QR visitor:");
-                string qr = Console.ReadLine();
+                string qr = QRVisitor.WhichVisitorQr();
 
                 Visitor visitor = new Visitor(tourID, qr);
                 
-                visitor.Reservate(tourID, visitor);
+                Visitor.Reservate(tourID, visitor);
 
                 return true;
             }
             else
             {
-                Console.WriteLine("Tour not found.");
+                TourNotFound.Show();
                 return false;
             }
         }
         return false;
     }
 
-    public void ViewTours(string guideName)
+    public static void ViewTours(string guideName)
     {
         DateTime today = DateTime.Today;
         string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
@@ -108,7 +82,7 @@ class Guide : Person
                 {
                     string timeOnly = tour.Date.ToString("HH:mm");
                     string dateOnly = tour.Date.ToShortDateString();
-                    int remainingSpots = Tours.maxParticipants - tour.ReservedVisitors.Count;
+                    int remainingSpots = Tour.maxParticipants - tour.ReservedVisitors.Count;
                     
                     table.AddRow(
                         tour.ID.ToString(),
@@ -125,20 +99,6 @@ class Guide : Person
                 }
             });
 
-        Console.WriteLine("View visitors(V)\nQuit (Q)");
-        string option = Console.ReadLine();
-
-        if (option.ToLower() == "v")
-        {
-            ViewVisitorsTour();
-        }
-        else if (option.ToLower() == "q")
-        {
-            guideRunning = false;
-        }
-        else
-        {
-            Console.WriteLine("Wrong input. Try again.");
-        }
+        GuideController.OptionsGuide();
     }
 }

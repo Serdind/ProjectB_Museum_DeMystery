@@ -1,188 +1,22 @@
-﻿using Microsoft.Data.Sqlite;
-using Newtonsoft.Json;
-
-class Program
+﻿class Program
 {
+    public static IMuseum Museum = new RealMuseum();
     public static void Main()
     {
-        Tours.UpdateTours();
+        
+        Tour.UpdateTours();
 
-        Tours.OverviewTours(false);
+        Tour.OverviewTours(false);
 
-        Tours.AddAdminToJSON();
+        Tour.AddAdminToJSON();
 
-        Tours.AddGuideToJSON();
+        Tour.AddGuideToJSON();
              
         bool running = true;
 
         while (running)
         {
-            Visitor visitor = new Visitor(0,null);
-            Console.WriteLine("Welcome to Het Depot!");
-            Console.WriteLine("select language  /   selecteer taal");
-            Console.WriteLine("English(E)   /   Nederlands(N)");
-            string language = Console.ReadLine();
-            if (language.ToLower() == "e")
-            {
-                Console.WriteLine("Login(L)");
-                string choice = Console.ReadLine();
-
-                if (choice.ToLower() == "l")
-                {
-                    Console.WriteLine("Scan your QR code:");
-                    string qr = Console.ReadLine();
-
-                    bool accountCreated = visitor.AccCreated(qr);
-
-                    string loginStatus;
-
-                    if (accountCreated)
-                    {
-                        loginStatus = "Visitor";
-                        visitor.QR = qr;
-                    }
-                    else
-                    {
-                        loginStatus = visitor.Login(qr);
-                    }
-
-                    if (loginStatus == "Visitor")
-                    {
-                        bool visitorRunning = true;
-                        while (visitorRunning)
-                        {
-                            Console.WriteLine("Make reservation(E)\nMy reservations(M)\nCancel reservation(C)");
-                            string option = Console.ReadLine();
-
-                            if (option.ToLower() == "e")
-                            {
-                                Tours.ReservateTour(visitor);
-                            }
-                            else if (option.ToLower() == "m")
-                            {
-                                visitor.ViewReservationsMade(qr);
-                            }
-                            else if (option.ToLower() == "c")
-                            {
-                                visitor.CancelReservation(visitor);
-                            }
-                            else
-                            {
-                                Console.WriteLine("Wrong input. Try again.");
-                            }
-                        }
-                    }
-                    else if (loginStatus == "Admin")
-                    {
-                        visitor.AdminMenu(language);
-                    }
-                    else if (loginStatus == "Guide")
-                    {
-                        bool guideRunning = true;
-
-                        while (guideRunning)
-                        {
-                            Console.WriteLine("My tours(M)");
-                            string option = Console.ReadLine();
-
-                            if (option.ToLower() == "m")
-                            {
-                                Tours.guide.ViewTours("Casper");
-                            }
-                            else
-                            {
-                                Console.WriteLine("Wrong input. Try again.");
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("Wrong input. Try again.");
-                }
-            }
-            else if (language.ToLower() == "n")
-            {
-                Console.WriteLine("Login(L)");
-                string choice = Console.ReadLine();
-
-                if (choice.ToLower() == "l")
-                {
-                    Console.WriteLine("Scan uw QR code:");
-                    string qr = Console.ReadLine();
-
-                    bool accountCreated = visitor.AccCreated(qr);
-
-                    string loginStatus;
-
-                    if (accountCreated)
-                    {
-                        loginStatus = "Visitor";
-                        visitor.QR = qr;
-                    }
-                    else
-                    {
-                        loginStatus = visitor.Login(qr);
-                    }
-                    if (loginStatus == "Visitor")
-                    {
-                        bool visitorRunning = true;
-                        while (visitorRunning)
-                        {
-                            Console.WriteLine("Reservering maken(E)\nMijn reserveringen(M)\nreservering annuleren(C)");
-                            string option = Console.ReadLine();
-
-                            if (option.ToLower() == "e")
-                            {
-                                Tours.ReservateTour(visitor);
-                            }
-                            else if (option.ToLower() == "m")
-                            {
-                                visitor.ViewReservationsMade(qr);
-                            }
-                            else if (option.ToLower() == "c")
-                            {
-                                visitor.CancelReservation(visitor);
-                            }
-                            else
-                            {
-                                Console.WriteLine("Ingevoerd antwoord onjuist, probeer opnieuw.");
-                            }
-                        }
-                    }
-                    else if (loginStatus == "Admin")
-                    {
-                        visitor.AdminMenu(language);
-                    }
-                    else if (loginStatus == "Guide")
-                    {
-                        bool guideRunning = true;
-
-                        while (guideRunning)
-                        {
-                            Console.WriteLine("Mijn rondleidingen(M)");
-                            string option = Console.ReadLine();
-
-                            if (option.ToLower() == "m")
-                            {
-                                Tours.guide.ViewTours("Casper");
-                            }
-                            else
-                            {
-                                Console.WriteLine("Ingevoerd antwoord onjuist, probeer opnieuw.");
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("Ingevoerd antwoord onjuist, probeer opnieuw.");
-                }
-            }
-            else
-            {
-                Console.WriteLine("Verkeerde invoer.");
-            }
+            ProgramController.Start();
         }
     }
 }
