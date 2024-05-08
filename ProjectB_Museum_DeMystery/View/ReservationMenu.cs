@@ -1,8 +1,14 @@
 public class ReservationMenu : View
 {
-    public static string Menu()
+    public static string Menu(int tour)
     {
-        Console.WriteLine("Make reservation(E)\nMy reservations(M)\nCancel reservation(C)");
+        Console.WriteLine("Make reservation (E)");
+
+        if (tour != 0)
+        {
+            Console.WriteLine("My reservations (M)");
+            Console.WriteLine("Cancel reservation (C)");
+        }
         return ReadLineString();
     }
 }
