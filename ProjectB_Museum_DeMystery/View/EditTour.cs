@@ -10,7 +10,7 @@ public class EditTour : View
     {
         Console.WriteLine($"Name set to {name}");
     }
-    
+
     public static void DateSet(DateTime date)
     {
         Console.WriteLine($"Date set to {date}");
@@ -29,5 +29,16 @@ public class EditTour : View
     public static void GuideSet(string guide)
     {
         Console.WriteLine($"Guide set to {guide}");
+    }
+    public static void StatusSet(bool status)
+    {
+        if (status == true)
+        {
+            Console.WriteLine($"Status set to inactive");
+        }
+        else
+        {
+            Console.WriteLine($"Status set to active");
+        }
     }
 }
