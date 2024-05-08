@@ -7,17 +7,28 @@ public class MessageTourReservation
                         $"Date: {tour.Date.ToShortDateString()}\n" +
                         $"Time: {tour.Date.ToString("HH:mm")}\n" +
                         $"Language: {tour.Language}\n";
-        
+
         return message;
     }
 
-    public static string ViewReservation(GuidedTour tour)
+    public static void ViewReservation(GuidedTour tour)
     {
         string message = $"Tour: {tour.Name}\n" +
                         $"Date: {tour.Date.ToShortDateString()}\n" +
                         $"Time: {tour.Date.ToString("HH:mm")}\n" +
                         $"Language: {tour.Language}\n";
-        
-        return message;
+
+        Console.WriteLine(message);
+    }
+
+    public static void ViewStart(GuidedTour tour)
+    {
+        string message = $"Tour has been started:" +
+                        $"Tour: {tour.Name}\n" +
+                        $"Date: {tour.Date.ToShortDateString()}\n" +
+                        $"Time: {tour.Date.ToString("HH:mm")}\n" +
+                        $"Language: {tour.Language}\n";
+
+        Console.WriteLine(message);
     }
 }
