@@ -15,11 +15,6 @@ public static class PersonController
         string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
         string filePath = Path.Combine(userDirectory, subdirectory, fileName);
 
-        string subdirectory1 = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
-        string fileName1 = "removedTours.json";
-        string userDirectory1 = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-        string filePath1 = Path.Combine(userDirectory1, subdirectory1, fileName1);
-
         List<GuidedTour> tours = Tour.LoadToursFromFile();
 
         if (languageSelection.ToLower() == "e")
@@ -85,17 +80,20 @@ public static class PersonController
                                 table.AddColumn("Time");
                                 table.AddColumn("Language");
                                 table.AddColumn("Guide");
+                                table.AddColumn("Status");
                                 
                                 DateTime dateValue = Convert.ToDateTime(tour.Date);
                                 string timeOnly = dateValue.ToString("HH:mm");
                                 string dateOnly = dateValue.ToShortDateString();
+                                string status = tour.Status ? "Active" : "Inactive";
 
                                 table.AddRow(
                                     tour.Name.ToString(),
                                     dateOnly,
                                     timeOnly,
                                     tour.Language.ToString(),
-                                    tour.NameGuide.ToString()
+                                    tour.NameGuide.ToString(),
+                                    status
                                 );
 
                                 ctx.Refresh();
@@ -178,65 +176,23 @@ public static class PersonController
                             EditTour.GuideSet(guide);
                             Tour.SaveToursToFile(filePath, tours);
                         }
+                        else if (change.ToLower() == "s")
+                        {
+                            if (tour.Status == true)
+                            {
+                                tour.Status = false;
+                            }
+                            else
+                            {
+                                tour.Status = true;
+                            }
+                            EditTour.StatusSet(tour.Status);
+                            Tour.SaveToursToFile(filePath, tours);
+                        }
                         else
                         {
                             WrongInput.Show();
                         }
-                    }
-                }
-                else if (option.ToLower() == "r")
-                {
-                    Tour.OverviewTours(true);
-                    int id = TourId.WhichTourId();
-
-                    GuidedTour tour = tours.FirstOrDefault(v => v.ID == id);
-
-                    if (tour != null)
-                    {
-                        string tourJson = JsonConvert.SerializeObject(tour, Formatting.Indented);
-
-                        File.WriteAllText(filePath1, $"[{tourJson}]");
-
-                        tours.Remove(tour);
-
-                        string updatedJsonData = JsonConvert.SerializeObject(tours, Formatting.Indented);
-                        File.WriteAllText(filePath, updatedJsonData);
-
-                        TourInfo.TourRemoved();
-                    }
-                    else
-                    {
-                        TourNotFound.Show();
-                    }
-                }
-                else if (option.ToLower() == "s")
-                {
-                    Tour.OverviewRemovedTours();
-
-                    int id = TourId.WhichTourId();
-
-                    string jsonRemovedTours = File.ReadAllText(filePath1);
-
-                    List<GuidedTour> removedTours = JsonConvert.DeserializeObject<List<GuidedTour>>(jsonRemovedTours);
-
-                    GuidedTour removedTour = removedTours.FirstOrDefault(v => v.ID == id);
-
-                    if (removedTour != null)
-                    {
-                        tours.Add(removedTour);
-
-                        string serializedTours = JsonConvert.SerializeObject(tours, Formatting.Indented);
-                        File.WriteAllText(filePath, serializedTours);
-
-                        removedTours.Remove(removedTour);
-                        string updatedRemovedTours = JsonConvert.SerializeObject(removedTours, Formatting.Indented);
-                        File.WriteAllText(filePath1, updatedRemovedTours);
-
-                        TourInfo.TourRestored();
-                    }
-                    else
-                    {
-                        TourNotFound.Show();
                     }
                 }
                 else if (option.ToLower() == "q")
