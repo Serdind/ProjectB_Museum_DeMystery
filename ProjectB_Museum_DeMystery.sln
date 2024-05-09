@@ -5,6 +5,8 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectB_Museum_DeMystery", "ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery.csproj", "{09BAB489-FCD7-4C05-A8DB-D89BA171C70A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unittest", "Unittest\Unittest.csproj", "{FDBC9613-CE9D-4EC0-9335-2C451F359C78}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{09BAB489-FCD7-4C05-A8DB-D89BA171C70A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{09BAB489-FCD7-4C05-A8DB-D89BA171C70A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{09BAB489-FCD7-4C05-A8DB-D89BA171C70A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FDBC9613-CE9D-4EC0-9335-2C451F359C78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDBC9613-CE9D-4EC0-9335-2C451F359C78}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDBC9613-CE9D-4EC0-9335-2C451F359C78}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDBC9613-CE9D-4EC0-9335-2C451F359C78}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
