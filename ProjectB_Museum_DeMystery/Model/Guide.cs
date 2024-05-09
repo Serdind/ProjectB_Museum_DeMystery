@@ -77,12 +77,14 @@ public class Guide : Person
                 table.AddColumn("EndPoint");
                 table.AddColumn("Language");
                 table.AddColumn("Remaining spots");
+                table.AddColumn("Status");
                 
                 foreach (var tour in guideTours)
                 {
                     string timeOnly = tour.Date.ToString("HH:mm");
                     string dateOnly = tour.Date.ToShortDateString();
                     int remainingSpots = Tour.maxParticipants - tour.ReservedVisitors.Count;
+                    string status = tour.Status ? "Active" : "Inactive";
                     
                     table.AddRow(
                         tour.ID.ToString(),
@@ -92,7 +94,8 @@ public class Guide : Person
                         GuidedTour.StartingPoint,
                         GuidedTour.EndPoint,
                         tour.Language,
-                        remainingSpots.ToString()
+                        remainingSpots.ToString(),
+                        status
                     );
                     
                     ctx.Refresh();
@@ -100,5 +103,34 @@ public class Guide : Person
             });
 
         GuideController.OptionsGuide();
+    }
+
+    public static void StartTour(int tourID)
+    {
+        string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
+        string fileName = "tours.json";
+        string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        string filePath = Path.Combine(userDirectory, subdirectory, fileName);
+
+        if (File.Exists(filePath))
+        {
+            string json = File.ReadAllText(filePath);
+            var tours = JsonConvert.DeserializeObject<List<GuidedTour>>(json);
+
+            var tour = tours.FirstOrDefault(t => t.ID == tourID);
+
+            if (tour != null)
+            {
+                MessageTourReservation.ViewStart(tour);
+            }
+            else
+            {
+                Console.WriteLine("Tour not found!");
+            }
+        }
+        else
+        {
+            TourNotAvailable.Show();
+        }
     }
 }
