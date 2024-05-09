@@ -13,7 +13,7 @@ public static class ProgramController
             {
                 string qr = QRVisitor.ScanQr();
 
-                bool accountCreated = Visitor.AccCreated(qr);
+                bool accountCreated = Person.AccCreated(qr);
 
                 string loginStatus;
 
@@ -24,7 +24,7 @@ public static class ProgramController
                 }
                 else
                 {
-                    loginStatus = Visitor.Login(qr);
+                    loginStatus = Person.Login(qr);
                 }
 
                 if (loginStatus == "Visitor")

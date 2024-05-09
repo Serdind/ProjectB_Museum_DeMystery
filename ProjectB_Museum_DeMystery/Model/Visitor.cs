@@ -90,12 +90,10 @@ public class Visitor : Person
 
             GuidedTour tour = tours.FirstOrDefault(t => t.ID == visitor.TourId);
 
-            if (tour != null)
-            {
-                MessageTourReservation.ViewReservation(tour);
-                return true;
-            }
+            MessageTourReservation.ViewReservation(tour);
+            return true;
         }
+        NoReservationMade.Show();
         return false;
     }
 
@@ -118,7 +116,8 @@ public class Visitor : Person
             NoReservationMade.Show();
             return;
         }
-
+        ViewReservationsMade(visitor.QR);
         VisitorController.ReservationCancel(tours, visitors, visitor);
+        visitor.TourId = 0;
     }
 }

@@ -17,6 +17,8 @@ public class GuidedTour
     public string NameGuide;
     [JsonPropertyName("ReservedVisitors")]
     public List <Visitor> ReservedVisitors;
+    [JsonPropertyName("Status")]
+    public bool Status;
 
     public GuidedTour(string name, DateTime date, string language, string nameGuide)
     {
@@ -26,5 +28,6 @@ public class GuidedTour
         Language = language;
         NameGuide = nameGuide;
         ReservedVisitors = new List<Visitor>();
+        Status = true;
     }
 }

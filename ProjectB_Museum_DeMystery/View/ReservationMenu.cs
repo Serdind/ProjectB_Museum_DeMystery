@@ -1,8 +1,14 @@
 public class ReservationMenu : View
 {
-    public static string Menu()
+    public static string Menu(string qr)
     {
-        Console.WriteLine("Make reservation(E)\nMy reservations(M)\nCancel reservation(C)");
+        Console.WriteLine("Make reservation (E)");
+
+        if ( Visitor.ReservationMade(qr))
+        {
+            Console.WriteLine("My reservations (M)");
+            Console.WriteLine("Cancel reservation (C)");
+        }
         return ReadLineString();
     }
 }
