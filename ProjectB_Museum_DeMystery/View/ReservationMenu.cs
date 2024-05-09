@@ -1,10 +1,10 @@
 public class ReservationMenu : View
 {
-    public static string Menu(int tour)
+    public static string Menu(string qr)
     {
         Console.WriteLine("Make reservation (E)");
 
-        if (tour != 0)
+        if ( Visitor.ReservationMade(qr))
         {
             Console.WriteLine("My reservations (M)");
             Console.WriteLine("Cancel reservation (C)");
