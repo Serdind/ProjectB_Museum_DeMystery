@@ -125,7 +125,7 @@ public class Guide : Person
             }
             else
             {
-                Console.WriteLine("Tour not found!");
+                TourNotFound.Show();
             }
         }
         else

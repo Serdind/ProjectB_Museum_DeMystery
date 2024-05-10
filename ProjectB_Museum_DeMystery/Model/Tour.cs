@@ -144,8 +144,6 @@ static class Tour
                 table.AddColumn("Remaining spots");
                 table.AddColumn("Status");
 
-                int id = 1;
-
                 foreach (var tour in tours)
                 {
                     if (tour.Date.Date == currentDate.Date)
@@ -156,7 +154,7 @@ static class Tour
                         string status = tour.Status ? "Active" : "Inactive";
 
                         table.AddRow(
-                            id.ToString(),
+                            tour.ID.ToString(),
                             dateOnly,
                             timeOnly,
                             tour.Language,
@@ -164,8 +162,6 @@ static class Tour
                             remainingSpots.ToString(),
                             status
                         );
-
-                        id++;
                     }
                 }
 
@@ -194,8 +190,6 @@ static class Tour
                 table.AddColumn("Remaining spots");
                 table.AddColumn("Status");
 
-                int id = 1;
-
                 foreach (var tour in tours)
                 {
                     if (tour.Date.Date == currentDate.Date && tour.Date.TimeOfDay >= DateTime.Now.TimeOfDay && tour.Status)
@@ -206,7 +200,7 @@ static class Tour
                         string status = tour.Status ? "Active" : "Inactive";
 
                         table.AddRow(
-                            id.ToString(),
+                            tour.ID.ToString(),
                             dateOnly,
                             timeOnly,
                             tour.Language,
@@ -214,8 +208,6 @@ static class Tour
                             remainingSpots.ToString(),
                             status
                         );
-
-                        id++;
                     }
                 }
 
