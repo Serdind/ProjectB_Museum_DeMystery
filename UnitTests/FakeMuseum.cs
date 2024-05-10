@@ -36,7 +36,6 @@ public class FakeMuseum : IMuseum
         Files[path] = contents;
     }
 
-    // Concatenates lines into a single string
     public string GetWrittenLinesAsString()
     {
         return string.Join("\n", LinesWritten);

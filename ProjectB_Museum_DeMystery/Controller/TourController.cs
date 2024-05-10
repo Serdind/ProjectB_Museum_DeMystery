@@ -5,6 +5,6 @@ public static class TourController
         Tour.OverviewTours(false);
         int tourID = TourId.WhichTourId();
 
-        Visitor.Reservate(tourID, visitor);
+        visitor.Reservate(tourID, visitor);
     }
 }

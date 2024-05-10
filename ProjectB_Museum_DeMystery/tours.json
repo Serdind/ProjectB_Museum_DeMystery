@@ -5,7 +5,13 @@
     "Date": "2024-05-10T11:30:00",
     "Language": "English",
     "NameGuide": "Casper",
-    "ReservedVisitors": [],
+    "ReservedVisitors": [
+      {
+        "Id": 1,
+        "TourId": 1,
+        "QR": "42234"
+      }
+    ],
     "Status": true
   },
   {
@@ -86,7 +92,18 @@
     "Date": "2024-05-11T11:30:00",
     "Language": "English",
     "NameGuide": "Casper",
-    "ReservedVisitors": [],
+    "ReservedVisitors": [
+      {
+        "Id": 2,
+        "TourId": 10,
+        "QR": "341"
+      },
+      {
+        "Id": 3,
+        "TourId": 10,
+        "QR": "32"
+      }
+    ],
     "Status": true
   },
   {

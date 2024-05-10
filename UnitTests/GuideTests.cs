@@ -27,13 +27,12 @@ public class GuideTests
         // Arrange
         FakeMuseum museum = new FakeMuseum();
         TestableGuide guide = new TestableGuide(museum);
-        GuidedTour tour = new GuidedTour("TestName", DateTime.Now, "Dutch", "TestGuide");
 
         // Act
-        guide.StartTour(tour);
+        guide.StartTour(1);
 
         // Assert
-        Assert.AreEqual("Tour has been started:Tour: TestName\nDate: " + DateTime.Now.ToShortDateString() + "\nTime: " + DateTime.Now.ToString("HH:mm") + "\nLanguage: Dutch\n", museum.GetWrittenLinesAsString());
+        Assert.AreEqual("Tour has been started:\nTour: Museum tour\nDate: 10-5-2024\nTime: 11:30\nLanguage: English\n", museum.GetWrittenLinesAsString());
     }
 
     [TestMethod]
@@ -42,10 +41,9 @@ public class GuideTests
         // Arrange
         FakeMuseum museum = new FakeMuseum();
         TestableGuide guide = new TestableGuide(museum);
-        GuidedTour nonExistentTour = null;
 
         // Act
-        guide.StartTour(nonExistentTour);
+        guide.StartTour(999);
 
         // Assert
         Assert.AreEqual("Tour not found.", museum.GetWrittenLinesAsString().Trim());

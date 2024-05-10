@@ -61,7 +61,7 @@ public static class PersonController
                     Tour.OverviewTours(true);
                     int id = TourId.WhichTourId();
 
-                    int actualID = id + 9;
+                    int actualID = id;
 
                     GuidedTour tour = tours.FirstOrDefault(v => v.ID == actualID);
 
