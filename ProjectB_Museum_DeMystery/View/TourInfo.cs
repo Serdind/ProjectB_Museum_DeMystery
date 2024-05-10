@@ -6,12 +6,17 @@ public class TourInfo : View
         return ReadLineString();
     }
 
+    public static void Status()
+    {
+        Console.WriteLine("Set tour to inactive");
+    }
+
     public static string Date()
     {
         Console.WriteLine("\nDate (Y-M-D H:M:S): ");
         return ReadLineString();
     }
-    
+
     public static void InvalidDate()
     {
         Console.WriteLine("Invalid date format. Please enter a valid date.");
