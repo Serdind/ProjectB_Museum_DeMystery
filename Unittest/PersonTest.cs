@@ -1,10 +1,11 @@
 namespace Unittest;
 
 [TestClass]
-public class UnitTest1
+public class PersonTest
 {
     [TestMethod]
     public void TestMethod1()
     {
+        var person = new Person();
     }
 }
