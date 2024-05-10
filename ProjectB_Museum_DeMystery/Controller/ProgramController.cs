@@ -32,7 +32,7 @@ public static class ProgramController
                     bool visitorRunning = true;
                     while (visitorRunning)
                     {
-                        string option = ReservationMenu.Menu();
+                        string option = ReservationMenu.Menu(visitor.QR);
 
                         if (option.ToLower() == "e")
                         {
