@@ -3,7 +3,6 @@ public class MessageTourReservation
     public static string ShowMessage(GuidedTour tour)
     {
         string message = $"Reservation successful. You have reserved the following tour:\n" +
-                        $"Tour: {tour.Name}\n" +
                         $"Date: {tour.Date.ToShortDateString()}\n" +
                         $"Time: {tour.Date.ToString("HH:mm")}\n" +
                         $"Language: {tour.Language}\n";
@@ -13,8 +12,7 @@ public class MessageTourReservation
 
     public static void ViewReservation(GuidedTour tour)
     {
-        string message = $"Tour: {tour.Name}\n" +
-                        $"Date: {tour.Date.ToShortDateString()}\n" +
+        string message = $"Date: {tour.Date.ToShortDateString()}\n" +
                         $"Time: {tour.Date.ToString("HH:mm")}\n" +
                         $"Language: {tour.Language}\n";
 
@@ -23,8 +21,7 @@ public class MessageTourReservation
 
     public static void ViewStart(GuidedTour tour)
     {
-        string message = $"Tour has been started:" +
-                        $"Tour: {tour.Name}\n" +
+        string message = $"Tour has been started:\n" +
                         $"Date: {tour.Date.ToShortDateString()}\n" +
                         $"Time: {tour.Date.ToString("HH:mm")}\n" +
                         $"Language: {tour.Language}\n";

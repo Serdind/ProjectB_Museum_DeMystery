@@ -4,7 +4,7 @@ public class ReservationMenu : View
     {
         Console.WriteLine("Make reservation (E)");
 
-        if ( Visitor.ReservationMade(qr))
+        if (Visitor.ReservationMade(qr))
         {
             Console.WriteLine("My reservations (M)");
             Console.WriteLine("Cancel reservation (C)");
