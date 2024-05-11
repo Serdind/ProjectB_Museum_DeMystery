@@ -1,4 +1,4 @@
-public static class ProgramController
+public class ProgramController
 {
     public static void Start()
     {
@@ -13,7 +13,7 @@ public static class ProgramController
             {
                 string qr = QRVisitor.ScanQr();
 
-                bool accountCreated = Person.AccCreated(qr);
+                bool accountCreated = visitor.AccCreated(qr);
 
                 string loginStatus;
 
@@ -24,7 +24,7 @@ public static class ProgramController
                 }
                 else
                 {
-                    loginStatus = Person.Login(qr);
+                    loginStatus = visitor.Login(qr);
                 }
 
                 if (loginStatus == "Visitor")
@@ -32,19 +32,20 @@ public static class ProgramController
                     bool visitorRunning = true;
                     while (visitorRunning)
                     {
-                        string option = ReservationMenu.Menu(visitor.QR);
+                        string option = ReservationMenu.Menu(visitor.QR, visitor);
 
                         if (option.ToLower() == "e")
                         {
-                            TourController.ReservateTour(visitor);
+                            TourController tourController = new TourController();
+                            tourController.ReservateTour(visitor);
                         }
                         else if (option.ToLower() == "m")
                         {
-                            Visitor.ViewReservationsMade(qr);
+                            visitor.ViewReservationsMade(qr);
                         }
                         else if (option.ToLower() == "c")
                         {
-                            Visitor.CancelReservation(visitor);
+                            visitor.CancelReservation(visitor);
                         }
                         else
                         {
@@ -54,7 +55,8 @@ public static class ProgramController
                 }
                 else if (loginStatus == "Admin")
                 {
-                    PersonController.AdminMenu(language);
+                    PersonController personController = new PersonController();
+                    personController.AdminMenu(language);
                 }
                 else if (loginStatus == "Guide")
                 {
@@ -66,7 +68,7 @@ public static class ProgramController
 
                         if (option.ToLower() == "m")
                         {
-                            Guide.ViewTours("Casper");
+                            Tour.guide.ViewTours("Casper");
                         }
                         else
                         {

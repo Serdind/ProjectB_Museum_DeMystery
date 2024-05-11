@@ -4,7 +4,7 @@ public class UniqueCodes
 {
     private static Random random = new Random();
 
-    public static List<int> GenerateUniqueCodes(int count)
+    public List<int> GenerateUniqueCodes(int count)
     {
         HashSet<int> codesSet = new HashSet<int>();
 

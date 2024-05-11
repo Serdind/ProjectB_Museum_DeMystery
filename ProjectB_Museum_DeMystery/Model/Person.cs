@@ -13,7 +13,7 @@ public class Person
         QR = qr;
     }
 
-    public static string Login(string qr)
+    public string Login(string qr)
     {
         List<Visitor> visitors = Tour.LoadVisitorsFromFile();
         List<Guide> guides = Tour.LoadGuidesFromFile();
@@ -45,7 +45,7 @@ public class Person
         return "None";
     }
 
-    public static bool AccCreated(string qr)
+    public bool AccCreated(string qr)
     {
         List<Guide> guides = Tour.LoadGuidesFromFile();
         List<DepartmentHead> admins = Tour.LoadAdminsFromFile();
@@ -77,7 +77,7 @@ public class Person
             }
             else
             {
-                Console.WriteLine("Geen geldig code");
+                Console.WriteLine("Code is not valid.");
                 return false;
             }
         }

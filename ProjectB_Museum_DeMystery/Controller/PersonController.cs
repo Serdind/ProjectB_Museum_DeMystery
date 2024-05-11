@@ -6,9 +6,9 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 
-public static class PersonController
+public class PersonController
 {
-    public static void AdminMenu(string languageSelection)
+    public void AdminMenu(string languageSelection)
     {
         string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
         string fileName = "tours.json";

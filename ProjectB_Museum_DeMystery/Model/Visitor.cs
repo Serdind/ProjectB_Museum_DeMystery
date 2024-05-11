@@ -22,6 +22,7 @@ public class Visitor : Person
             return false;
         }
 
+        DateTime currentDate = DateTime.Now;
         string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
         string fileName = "tours.json";
         string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
@@ -34,7 +35,7 @@ public class Visitor : Person
 
             var tour = tours.FirstOrDefault(t => t.ID == tourID);
 
-            if (tour != null)
+            if (tour != null && tour.Date.Date == currentDate.Date && tour.Date.TimeOfDay >= DateTime.Now.TimeOfDay && tour.Status)
             {
                 if (Tour.maxParticipants > tour.ReservedVisitors.Count())
                 {
@@ -78,7 +79,7 @@ public class Visitor : Person
         return false;
     }
 
-    public static bool ViewReservationsMade(string qr)
+    public bool ViewReservationsMade(string qr)
     {
         List<Visitor> visitors = Tour.LoadVisitorsFromFile();
 
@@ -97,7 +98,7 @@ public class Visitor : Person
         return false;
     }
 
-    public static bool ReservationMade(string qr)
+    public bool ReservationMade(string qr)
     {
         List<Visitor> visitors = Tour.LoadVisitorsFromFile();
 
@@ -106,10 +107,11 @@ public class Visitor : Person
         return visitor != null;
     }
 
-    public static void CancelReservation(Visitor visitor)
+    public void CancelReservation(Visitor visitor)
     {
         List<GuidedTour> tours = Tour.LoadToursFromFile();
         List<Visitor> visitors = Tour.LoadVisitorsFromFile();
+        VisitorController visitorController = new VisitorController();
 
         if (!ReservationMade(visitor.QR))
         {
@@ -117,7 +119,7 @@ public class Visitor : Person
             return;
         }
         ViewReservationsMade(visitor.QR);
-        VisitorController.ReservationCancel(tours, visitors, visitor);
+        visitorController.ReservationCancel(tours, visitors, visitor);
         visitor.TourId = 0;
     }
 }

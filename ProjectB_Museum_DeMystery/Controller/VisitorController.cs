@@ -1,9 +1,9 @@
 using Spectre.Console;
 using Newtonsoft.Json;
 
-public static class VisitorController
+public class VisitorController
 {
-    public static void ReservationCancel(List<GuidedTour> tours, List<Visitor> visitors, Visitor visitor)
+    public void ReservationCancel(List<GuidedTour> tours, List<Visitor> visitors, Visitor visitor)
     {
         string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
         string fileName = "tours.json";

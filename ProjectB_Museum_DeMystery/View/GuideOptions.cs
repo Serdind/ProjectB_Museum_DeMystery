@@ -1,8 +1,32 @@
+using System.Text.Json.Serialization;
+using Newtonsoft.Json;
+
 public class GuideOptions : View
 {
-    public static string Options()
+    public static string Options(int tourID)
     {
-        Console.WriteLine("Add visitor(A)\nRemove visitor(R)");
+        string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
+        string fileName = "visitors.json";
+        string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        string filePath = Path.Combine(userDirectory, subdirectory, fileName);
+        
+        if (File.Exists(filePath))
+        {
+            string json = File.ReadAllText(filePath);
+            var visitors = JsonConvert.DeserializeObject<List<Visitor>>(json);
+            
+            visitors = visitors.Where(v => v.TourId == tourID).OrderBy(t => t.TourId).ToList();
+
+            if (visitors.Any())
+            {
+                Console.WriteLine("Add visitor(A)\nRemove visitor(R)");
+            }
+            else
+            {
+                Console.WriteLine("Add visitor(A)");
+            }
+        }
+            
         return ReadLineString();
     }
 

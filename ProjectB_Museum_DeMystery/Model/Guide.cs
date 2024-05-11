@@ -16,7 +16,7 @@ public class Guide : Person
         Name = name;
     }
 
-    public static bool AddVisistorToTour(int tourID)
+    public bool AddVisistorToTour(int tourID, string qr)
     {
         string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
         string fileName = "tours.json";
@@ -30,10 +30,8 @@ public class Guide : Person
 
             var tour = tours.FirstOrDefault(t => t.ID == tourID);
 
-            if (tour != null)
+            if (tour != null && tour.Status == true)
             {
-                string qr = QRVisitor.WhichVisitorQr();
-
                 Visitor visitor = new Visitor(tourID, qr);
                 
                 visitor.Reservate(tourID, visitor);
@@ -49,7 +47,7 @@ public class Guide : Person
         return false;
     }
 
-    public static void ViewTours(string guideName)
+    public void ViewTours(string guideName)
     {
         DateTime today = DateTime.Today;
         string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
@@ -77,7 +75,6 @@ public class Guide : Person
                 table.AddColumn("EndPoint");
                 table.AddColumn("Language");
                 table.AddColumn("Remaining spots");
-                table.AddColumn("Status");
                 
                 foreach (var tour in guideTours)
                 {
@@ -86,7 +83,6 @@ public class Guide : Person
                         string timeOnly = tour.Date.ToString("HH:mm");
                         string dateOnly = tour.Date.ToShortDateString();
                         int remainingSpots = Tour.maxParticipants - tour.ReservedVisitors.Count;
-                        string status = tour.Status ? "Active" : "Inactive";
                         
                         table.AddRow(
                             tour.ID.ToString(),
@@ -96,20 +92,20 @@ public class Guide : Person
                             GuidedTour.StartingPoint,
                             GuidedTour.EndPoint,
                             tour.Language,
-                            remainingSpots.ToString(),
-                            status
+                            remainingSpots.ToString()
                         );
                         
                         ctx.Refresh();
                     }
                 }
             });
-
-        GuideController.OptionsGuide();
+        GuideController guideController= new GuideController();
+        guideController.OptionsGuide(guideTours, Tour.guide);
     }
 
-    public static void StartTour(int tourID)
+    public void StartTour(int tourID)
     {
+        DateTime currentDate = DateTime.Now;
         string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
         string fileName = "tours.json";
         string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
@@ -122,8 +118,10 @@ public class Guide : Person
 
             var tour = tours.FirstOrDefault(t => t.ID == tourID);
 
-            if (tour != null)
+            if (tour != null && tour.Date.Date == currentDate.Date && tour.Date.TimeOfDay >= DateTime.Now.TimeOfDay && tour.Status)
             {
+                tour.Status = false;
+                Tour.SaveToursToFile(filePath, tours);
                 MessageTourReservation.ViewStart(tour);
             }
             else

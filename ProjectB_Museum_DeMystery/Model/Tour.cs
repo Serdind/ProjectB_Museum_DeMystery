@@ -188,7 +188,6 @@ static class Tour
                 table.AddColumn("Language");
                 table.AddColumn("Guide");
                 table.AddColumn("Remaining spots");
-                table.AddColumn("Status");
 
                 foreach (var tour in tours)
                 {
@@ -197,7 +196,6 @@ static class Tour
                         string timeOnly = tour.Date.ToString("HH:mm");
                         string dateOnly = tour.Date.ToShortDateString();
                         int remainingSpots = maxParticipants - tour.ReservedVisitors.Count;
-                        string status = tour.Status ? "Active" : "Inactive";
 
                         table.AddRow(
                             tour.ID.ToString(),
@@ -205,8 +203,7 @@ static class Tour
                             timeOnly,
                             tour.Language,
                             guide.Name,
-                            remainingSpots.ToString(),
-                            status
+                            remainingSpots.ToString()
                         );
                     }
                 }

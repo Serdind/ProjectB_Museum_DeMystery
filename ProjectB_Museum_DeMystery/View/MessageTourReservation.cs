@@ -5,6 +5,7 @@ public class MessageTourReservation
         string message = $"Reservation successful. You have reserved the following tour:\n" +
                         $"Date: {tour.Date.ToShortDateString()}\n" +
                         $"Time: {tour.Date.ToString("HH:mm")}\n" +
+                        $"Duration: 20 min\n" +
                         $"Language: {tour.Language}\n";
 
         return message;
@@ -14,6 +15,7 @@ public class MessageTourReservation
     {
         string message = $"Date: {tour.Date.ToShortDateString()}\n" +
                         $"Time: {tour.Date.ToString("HH:mm")}\n" +
+                        $"Duration: 20 min\n" +
                         $"Language: {tour.Language}\n";
 
         Console.WriteLine(message);

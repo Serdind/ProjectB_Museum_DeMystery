@@ -1,6 +1,6 @@
-public static class TourController
+public class TourController
 {
-    public static void ReservateTour(Visitor visitor)
+    public void ReservateTour(Visitor visitor)
     {
         Tour.OverviewTours(false);
         int tourID = TourId.WhichTourId();

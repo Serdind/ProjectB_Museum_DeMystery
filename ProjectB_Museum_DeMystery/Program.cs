@@ -16,9 +16,11 @@
 
         Tour.AddGuideToJSON();
 
+        UniqueCodes uniqueCodes = new UniqueCodes();
+
         if (UniqueCodes.IsNewDay(filePath))
         {
-            List<int> codes = UniqueCodes.GenerateUniqueCodes(50);
+            List<int> codes = uniqueCodes.GenerateUniqueCodes(50);
 
             UniqueCodes.SaveCodesToJson(codes, filePath);
         }
