@@ -30,7 +30,7 @@ public static class VisitorController
 
             string visitorsJson = JsonConvert.SerializeObject(visitors, Formatting.Indented);
             File.WriteAllText(filePath1, visitorsJson);
-            
+
             CancelReservationConfirmation.ReservationCancelled();
         }
         else if (confirmation == "n")

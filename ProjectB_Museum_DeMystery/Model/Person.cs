@@ -50,6 +50,13 @@ public class Person
         List<Guide> guides = Tour.LoadGuidesFromFile();
         List<DepartmentHead> admins = Tour.LoadAdminsFromFile();
 
+        string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
+        string fileName = "unique_codes.json";
+        string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        string filePath = Path.Combine(userDirectory, subdirectory, fileName);
+
+        List<string> uniqueCodes = UniqueCodes.LoadUniqueCodesFromFile(filePath);
+
         bool isGuide = guides.Any(g => g.QR == qr);
         bool isAdmin = admins.Any(a => a.QR == qr);
 
@@ -63,8 +70,16 @@ public class Person
         }
         else
         {
-            Visitor visitor = new Visitor(0, qr);
-            return true;
+            if (uniqueCodes.Contains(qr))
+            {
+                Visitor visitor = new Visitor(0, qr);
+                return true;
+            }
+            else
+            {
+                Console.WriteLine("Geen geldig code");
+                return false;
+            }
         }
     }
 }

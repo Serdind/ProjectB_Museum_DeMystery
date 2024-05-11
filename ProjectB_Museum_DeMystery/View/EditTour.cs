@@ -34,11 +34,11 @@ public class EditTour : View
     {
         if (status == true)
         {
-            Console.WriteLine($"Status set to inactive");
+            Console.WriteLine($"Status set to active");
         }
         else
         {
-            Console.WriteLine($"Status set to active");
+            Console.WriteLine($"Status set to inactive");
         }
     }
 }

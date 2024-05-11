@@ -14,7 +14,7 @@ public class Visitor : Person
         TourId = tourId;
     }
 
-    public static bool Reservate(int tourID, Visitor visitor)
+    public bool Reservate(int tourID, Visitor visitor)
     {
         if (ReservationMade(visitor.QR))
         {

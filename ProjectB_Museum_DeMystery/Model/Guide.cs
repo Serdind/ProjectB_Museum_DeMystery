@@ -36,7 +36,7 @@ public class Guide : Person
 
                 Visitor visitor = new Visitor(tourID, qr);
                 
-                Visitor.Reservate(tourID, visitor);
+                visitor.Reservate(tourID, visitor);
 
                 return true;
             }
@@ -81,24 +81,27 @@ public class Guide : Person
                 
                 foreach (var tour in guideTours)
                 {
-                    string timeOnly = tour.Date.ToString("HH:mm");
-                    string dateOnly = tour.Date.ToShortDateString();
-                    int remainingSpots = Tour.maxParticipants - tour.ReservedVisitors.Count;
-                    string status = tour.Status ? "Active" : "Inactive";
-                    
-                    table.AddRow(
-                        tour.ID.ToString(),
-                        tour.Name,
-                        dateOnly,
-                        timeOnly,
-                        GuidedTour.StartingPoint,
-                        GuidedTour.EndPoint,
-                        tour.Language,
-                        remainingSpots.ToString(),
-                        status
-                    );
-                    
-                    ctx.Refresh();
+                    if (tour.Date.Date == today.Date && tour.Date.TimeOfDay >= DateTime.Now.TimeOfDay && tour.Status)
+                    {
+                        string timeOnly = tour.Date.ToString("HH:mm");
+                        string dateOnly = tour.Date.ToShortDateString();
+                        int remainingSpots = Tour.maxParticipants - tour.ReservedVisitors.Count;
+                        string status = tour.Status ? "Active" : "Inactive";
+                        
+                        table.AddRow(
+                            tour.ID.ToString(),
+                            tour.Name,
+                            dateOnly,
+                            timeOnly,
+                            GuidedTour.StartingPoint,
+                            GuidedTour.EndPoint,
+                            tour.Language,
+                            remainingSpots.ToString(),
+                            status
+                        );
+                        
+                        ctx.Refresh();
+                    }
                 }
             });
 
