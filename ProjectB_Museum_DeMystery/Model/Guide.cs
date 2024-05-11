@@ -35,6 +35,7 @@ public class Guide : Person
                 Visitor visitor = new Visitor(tourID, qr);
                 
                 visitor.Reservate(tourID, visitor);
+                visitor.Reservate(tourID, visitor);
 
                 return true;
             }

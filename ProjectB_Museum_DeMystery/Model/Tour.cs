@@ -155,6 +155,7 @@ static class Tour
 
                         table.AddRow(
                             tour.ID.ToString(),
+                            tour.ID.ToString(),
                             dateOnly,
                             timeOnly,
                             tour.Language,
@@ -198,6 +199,7 @@ static class Tour
                         int remainingSpots = maxParticipants - tour.ReservedVisitors.Count;
 
                         table.AddRow(
+                            tour.ID.ToString(),
                             tour.ID.ToString(),
                             dateOnly,
                             timeOnly,
