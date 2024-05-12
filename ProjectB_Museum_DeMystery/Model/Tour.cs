@@ -200,7 +200,6 @@ static class Tour
 
                         table.AddRow(
                             tour.ID.ToString(),
-                            tour.ID.ToString(),
                             dateOnly,
                             timeOnly,
                             tour.Language,
