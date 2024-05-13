@@ -8,6 +8,11 @@
         string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
         string filePath = Path.Combine(userDirectory, subdirectory, fileName);
 
+        string subdirectory1 = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
+        string fileName1 = "visitors.json";
+        string userDirectory1 = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        string filePath1 = Path.Combine(userDirectory1, subdirectory1, fileName1);
+
         Tour.UpdateTours();
 
         Tour.OverviewTours(false);
@@ -15,6 +20,8 @@
         Tour.AddAdminToJSON();
 
         Tour.AddGuideToJSON();
+
+        Tour.CreateEmptyJsonVisitorFile(filePath1);
 
         UniqueCodes uniqueCodes = new UniqueCodes();
 

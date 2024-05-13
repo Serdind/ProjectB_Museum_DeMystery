@@ -501,4 +501,16 @@ static class Tour
             TourEmpty.Show();
         }
     }
+
+    public static void CreateEmptyJsonVisitorFile(string filePath)
+    {
+        if (File.Exists(filePath))
+        {
+            return;
+        }
+
+        string emptyJson = "[]";
+
+        File.WriteAllText(filePath, emptyJson);
+    }
 }
