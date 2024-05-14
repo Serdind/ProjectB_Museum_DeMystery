@@ -21,4 +21,17 @@ public class UniqueCodes
         string json = JsonConvert.SerializeObject(codes, Formatting.Indented);
         File.WriteAllText(fileName, json);
     }
+
+    public static List<string> LoadUniqueCodesFromFile(string fileName)
+    {
+        if (File.Exists(fileName))
+        {
+            string json = File.ReadAllText(fileName);
+            return JsonConvert.DeserializeObject<List<string>>(json);
+        }
+        else
+        {
+            return new List<string>();
+        }
+    }
 }
