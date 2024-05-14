@@ -34,4 +34,15 @@ public class UniqueCodes
             return new List<string>();
         }
     }
+
+     public static bool IsNewDay(string filePath)
+    {
+        if (File.Exists(filePath))
+        {
+            DateTime lastModified = File.GetLastWriteTime(filePath);
+
+            return lastModified.Date < DateTime.Today;
+        }
+        return true;
+    }
 }
