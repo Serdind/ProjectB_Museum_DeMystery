@@ -21,7 +21,7 @@
 
         Tour.AddGuideToJSON();
 
-        Tour.CreateEmptyJsonVisitorFile(filePath1);
+        Tour.CreateEmptyJsonFile(filePath1);
 
         UniqueCodes uniqueCodes = new UniqueCodes();
 
