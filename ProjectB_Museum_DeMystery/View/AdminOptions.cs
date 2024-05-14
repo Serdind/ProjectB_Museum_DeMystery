@@ -2,7 +2,7 @@ public class AdminOptions : View
 {
     public static string Options()
     {
-        Console.WriteLine("Overview tours(T)\nAdd tour (A)\nEdit tour (E)");
+        Console.WriteLine("Overview tours(T)\nAdd tour (A)\nEdit tour (E)\nGo back (B)");
         return ReadLineString();
     }
 
