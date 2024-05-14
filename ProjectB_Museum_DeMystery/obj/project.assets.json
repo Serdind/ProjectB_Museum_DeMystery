@@ -547,19 +547,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Serdi\\.nuget\\packages\\": {}
+    "C:\\Users\\miray\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Serdi\\Desktop\\ProjectB\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery.csproj",
+      "projectUniqueName": "C:\\Users\\miray\\OneDrive\\Masaüstü\\git\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery.csproj",
       "projectName": "ProjectB_Museum_DeMystery",
-      "projectPath": "C:\\Users\\Serdi\\Desktop\\ProjectB\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery.csproj",
-      "packagesPath": "C:\\Users\\Serdi\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Serdi\\Desktop\\ProjectB\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery\\obj\\",
+      "projectPath": "C:\\Users\\miray\\OneDrive\\Masaüstü\\git\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery.csproj",
+      "packagesPath": "C:\\Users\\miray\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\miray\\OneDrive\\Masaüstü\\git\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Serdi\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\miray\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net7.0"
