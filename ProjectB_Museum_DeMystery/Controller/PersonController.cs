@@ -55,6 +55,8 @@ public class PersonController
                     Tour.AddTour(new GuidedTour(name, date, language, Tour.guide.Name));
                     
                     Tour.SaveToursToFile(filePath, tours);
+
+                    MessageTourReservation.TourAdded();
                 }
                 else if (option.ToLower() == "e")
                 {
@@ -188,6 +190,7 @@ public class PersonController
                             }
                             EditTour.StatusSet(tour.Status);
                             Tour.SaveToursToFile(filePath, tours);
+                            Tour.OverviewTours(true);
                         }
                         else
                         {
@@ -195,7 +198,7 @@ public class PersonController
                         }
                     }
                 }
-                else if (option.ToLower() == "q")
+                else if (option.ToLower() == "b")
                 {
                     adminRunning = false;
                     continue;
