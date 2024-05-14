@@ -30,4 +30,9 @@ public class MessageTourReservation
 
         Console.WriteLine(message);
     }
+
+    public static void TourAdded()
+    {
+        Console.WriteLine("Tour succesfully added.");
+    }
 }
