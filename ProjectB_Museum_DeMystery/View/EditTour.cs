@@ -2,7 +2,7 @@ public class EditTour : View
 {
     public static string EditOptions()
     {
-        Console.WriteLine("What do you want to change? Name(N) Date(D) Time(T) Language(L) Guide(G)");
+        Console.WriteLine("What do you want to change? Name(N) Date(D) Time(T) Language(L) Guide(G) Status(S)");
         return ReadLineString();
     }
 
