@@ -43,7 +43,37 @@ public class GuideOptions : View
 
     public static string ViewTours()
     {
-        Console.WriteLine("My tours(M)");
+        Console.WriteLine("My tours(M)\nDone(D)");
         return ReadLineString();
+    }
+
+    public static void AddedVisitorToTour()
+    {
+        Console.WriteLine("Succesfully added visitor to tour.");
+    }
+
+    public static void RemovedVisitorFromTour()
+    {
+        Console.WriteLine("Succesfully removed visitor from tour.");
+    }
+
+    public static void VisitorNotFound()
+    {
+        Console.WriteLine("Visitor not found in the visitors list.");
+    }
+
+    public static void VisitorNotFoundInTour()
+    {
+        Console.WriteLine("Visitor not found in the tour's list of reserved visitors.");
+    }
+
+    public static void TourNotFoundOrActive()
+    {
+        Console.WriteLine("Tour not found or not active.");
+    }
+
+    public static void TourVisitorFileNotFound()
+    {
+        Console.WriteLine("Tour not found or not active.");
     }
 }
