@@ -15,4 +15,10 @@ public class UniqueCodes
         }
         return new List<int>(codesSet);
     }
+
+    public static void SaveCodesToJson(List<int> codes, string fileName)
+    {
+        string json = JsonConvert.SerializeObject(codes, Formatting.Indented);
+        File.WriteAllText(fileName, json);
+    }
 }
