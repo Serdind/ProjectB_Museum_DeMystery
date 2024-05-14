@@ -8,7 +8,6 @@ static class Tour
     public static readonly List<Guide> guides = new List<Guide>();
     public static List<Visitor> visitors = new List<Visitor>();
     public static Guide guide = new Guide("Casper", "4892579");
-    public static int maxParticipants = 13;
 
     public static void UpdateTours()
     {
@@ -49,7 +48,7 @@ static class Tour
                 AddTour(new GuidedTour("Museum tour", new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, 14, 00, 0), "Dutch", guide.Name));
                 AddTour(new GuidedTour("Museum tour", new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, 14, 30, 0), "English", guide.Name));
                 AddTour(new GuidedTour("Museum tour", new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, 15, 00, 0), "Dutch", guide.Name));
-                AddTour(new GuidedTour("Museum tour", new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, 16, 00, 0), "English", guide.Name));
+                AddTour(new GuidedTour("Museum tour", new   DateTime(currentDate.Year, currentDate.Month, currentDate.Day, 16, 00, 0), "English", guide.Name));
                 AddTour(new GuidedTour("Museum tour", new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, 16, 30, 0), "Dutch", guide.Name));
                 AddTour(new GuidedTour("Museum tour", new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, 17, 00, 0), "English", guide.Name));
             }
@@ -137,6 +136,7 @@ static class Tour
 
                 var table = new Table().Border(TableBorder.Rounded);
                 table.AddColumn("ID");
+                table.AddColumn("Name");
                 table.AddColumn("Date");
                 table.AddColumn("Time");
                 table.AddColumn("Language");
@@ -150,12 +150,12 @@ static class Tour
                     {
                         string timeOnly = tour.Date.ToString("HH:mm");
                         string dateOnly = tour.Date.ToShortDateString();
-                        int remainingSpots = maxParticipants - tour.ReservedVisitors.Count;
+                        int remainingSpots = tour.MaxParticipants - tour.ReservedVisitors.Count;
                         string status = tour.Status ? "Active" : "Inactive";
 
                         table.AddRow(
                             tour.ID.ToString(),
-                            tour.ID.ToString(),
+                            tour.Name,
                             dateOnly,
                             timeOnly,
                             tour.Language,
@@ -196,7 +196,7 @@ static class Tour
                     {
                         string timeOnly = tour.Date.ToString("HH:mm");
                         string dateOnly = tour.Date.ToShortDateString();
-                        int remainingSpots = maxParticipants - tour.ReservedVisitors.Count;
+                        int remainingSpots = tour.MaxParticipants - tour.ReservedVisitors.Count;
 
                         table.AddRow(
                             tour.ID.ToString(),
@@ -256,7 +256,7 @@ static class Tour
 
             string timeOnly = tour.Date.ToString("HH:mm");
             string dateOnly = tour.Date.ToShortDateString();
-            int remainingSpots = maxParticipants - tour.ReservedVisitors.Count;
+            int remainingSpots = tour.MaxParticipants - tour.ReservedVisitors.Count;
             string status = tour.Status ? "Active" : "Inactive";
 
             table.AddRow(
@@ -502,15 +502,11 @@ static class Tour
         }
     }
 
-    public static void CreateEmptyJsonVisitorFile(string filePath)
+    public static void CreateEmptyJsonFile(string filePath)
     {
-        if (File.Exists(filePath))
+        if (!File.Exists(filePath))
         {
-            return;
+            File.WriteAllText(filePath, "[]");
         }
-
-        string emptyJson = "[]";
-
-        File.WriteAllText(filePath, emptyJson);
     }
 }
