@@ -9,6 +9,7 @@ public class ReservationMenu : View
             Console.WriteLine("My reservations (M)");
             Console.WriteLine("Cancel reservation (C)");
         }
+        Console.WriteLine("Done (D)");
         return ReadLineString();
     }
 }
