@@ -35,7 +35,7 @@ public class Guide : Person
                 Visitor visitor = new Visitor(tourID, qr);
                 
                 visitor.Reservate(tourID, visitor);
-
+                GuideOptions.AddedVisitorToTour();
                 return true;
             }
             else
@@ -47,74 +47,64 @@ public class Guide : Person
         return false;
     }
 
-    public bool RemoveVisitorFromTour(int tourID, string visitorQR)
+    public bool RemoveVisitorFromTour(int tourID, string qr)
     {
         string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
-        string fileName = "tours.json";
+        string toursFileName = "tours.json";
+        string visitorsFileName = "visitors.json";
         string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-        string filePath = Path.Combine(userDirectory, subdirectory, fileName);
-        
-        string subdirectory1 = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
-        string fileName1 = "visitors.json";
-        string userDirectory1 = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-        string filePath1 = Path.Combine(userDirectory1, subdirectory1, fileName1);
+        string toursFilePath = Path.Combine(userDirectory, subdirectory, toursFileName);
+        string visitorsFilePath = Path.Combine(userDirectory, subdirectory, visitorsFileName);
 
-        List<Visitor> visitors;
-        if (File.Exists(filePath1))
+        if (File.Exists(toursFilePath) && File.Exists(visitorsFilePath))
         {
-            string json = File.ReadAllText(filePath1);
-            visitors = JsonConvert.DeserializeObject<List<Visitor>>(json);
-        }
-        else
-        {
-            Console.WriteLine("Visitors data file not found.");
-            return false;
-        }
+            string toursJson = File.ReadAllText(toursFilePath);
+            var tours = JsonConvert.DeserializeObject<List<GuidedTour>>(toursJson);
 
-        var visitorToRemove = visitors.FirstOrDefault(v => v.QR == visitorQR);
-        if (visitorToRemove != null)
-        {
-            visitors.Remove(visitorToRemove);
-            Console.WriteLine("Visitor succesfully removed from tour.");
-            File.WriteAllText(filePath1, JsonConvert.SerializeObject(visitors));
-        }
-        else
-        {
-            Console.WriteLine("Visitor not found in visitors list.");
-            return false;
-        }
+            var tour = tours.FirstOrDefault(t => t.ID == tourID);
 
-        List<GuidedTour> tours;
-        if (File.Exists(filePath))
-        {
-            string json = File.ReadAllText(filePath);
-            tours = JsonConvert.DeserializeObject<List<GuidedTour>>(json);
-        }
-        else
-        {
-            Console.WriteLine("Tours data file not found.");
-            return false;
-        }
-
-        var tour = tours.FirstOrDefault(t => t.ID == tourID);
-        if (tour != null)
-        {
-            var reservedVisitor = tour.ReservedVisitors.FirstOrDefault(v => v.QR == visitorQR);
-            if (reservedVisitor != null)
+            if (tour != null && tour.Status == true)
             {
-                tour.ReservedVisitors.Remove(reservedVisitor);
-                File.WriteAllText(filePath, JsonConvert.SerializeObject(tours));
-                return true;
+                var visitorToRemove = tour.ReservedVisitors.FirstOrDefault(visitor => visitor.QR == qr);
+
+                if (visitorToRemove != null)
+                {
+                    tour.ReservedVisitors.Remove(visitorToRemove);
+
+                    Tour.SaveToursToFile(toursFilePath, tours);
+
+                    string visitorsJson = File.ReadAllText(visitorsFilePath);
+                    var visitors = JsonConvert.DeserializeObject<List<Visitor>>(visitorsJson);
+                    var visitorInAllVisitors = visitors.FirstOrDefault(visitor => visitor.QR == qr);
+
+                    if (visitorInAllVisitors != null)
+                    {
+                        visitors.Remove(visitorInAllVisitors);
+                        File.WriteAllText(visitorsFilePath, JsonConvert.SerializeObject(visitors));
+                        GuideOptions.RemovedVisitorFromTour();
+                    }
+                    else
+                    {
+                        GuideOptions.VisitorNotFound();
+                    }
+
+                    return true;
+                }
+                else
+                {
+                    GuideOptions.VisitorNotFoundInTour();
+                    return false;
+                }
             }
             else
             {
-                Console.WriteLine("Visitor not found in the reserved list for this tour.");
+                GuideOptions.TourNotFoundOrActive();
                 return false;
             }
         }
         else
         {
-            Console.WriteLine("Tour not found.");
+            GuideOptions.TourVisitorFileNotFound();
             return false;
         }
     }
@@ -154,7 +144,7 @@ public class Guide : Person
                     {
                         string timeOnly = tour.Date.ToString("HH:mm");
                         string dateOnly = tour.Date.ToShortDateString();
-                        int remainingSpots = Tour.maxParticipants - tour.ReservedVisitors.Count;
+                        int remainingSpots = tour.MaxParticipants - tour.ReservedVisitors.Count;
                         
                         table.AddRow(
                             tour.ID.ToString(),
@@ -198,7 +188,7 @@ public class Guide : Person
             }
             else
             {
-                Console.WriteLine("Tour not found!");
+                TourNotFound.Show();
             }
         }
         else
