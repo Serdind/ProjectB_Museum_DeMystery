@@ -37,7 +37,7 @@ public class Visitor : Person
 
             if (tour != null && tour.Date.Date == currentDate.Date && tour.Date.TimeOfDay >= DateTime.Now.TimeOfDay && tour.Status)
             {
-                if (Tour.maxParticipants > tour.ReservedVisitors.Count())
+                if (tour.MaxParticipants > tour.ReservedVisitors.Count())
                 {
                     Tour.AddVisitorToJSON(tourID, visitor.QR);
 
@@ -62,20 +62,27 @@ public class Visitor : Person
 
                     File.WriteAllText(filePath, updatedJson);
 
-                    MessageTourReservation.ShowMessage(tour);
+                    string message = $"Reservation successful. You have reserved the following tour:\n" +
+                        $"Date: {tour.Date.ToShortDateString()}\n" +
+                        $"Time: {tour.Date.ToString("HH:mm")}\n" +
+                        $"Duration: 20 min\n" +
+                        $"Language: {tour.Language}\n";
+
+                    Console.WriteLine(message);
                     return true;
                 }
                 else
                 {
                     TourFull.Show();
+                    return false;
                 }
             }
             else
             {
                 TourNotAvailable.Show();
+                return false;
             }
         }
-
         return false;
     }
 
