@@ -19,6 +19,7 @@ public class GuidedTour
     public List <Visitor> ReservedVisitors;
     [JsonPropertyName("Status")]
     public bool Status;
+    public int MaxParticipants;
 
     public GuidedTour(string name, DateTime date, string language, string nameGuide)
     {
@@ -29,5 +30,6 @@ public class GuidedTour
         NameGuide = nameGuide;
         ReservedVisitors = new List<Visitor>();
         Status = true;
+        MaxParticipants = 13;
     }
 }
