@@ -47,6 +47,10 @@ public class ProgramController
                         {
                             visitor.CancelReservation(visitor);
                         }
+                        else if (option.ToLower() == "d")
+                        {
+                            visitorRunning = false;
+                        }
                         else
                         {
                             WrongInput.Show();
@@ -69,6 +73,10 @@ public class ProgramController
                         if (option.ToLower() == "m")
                         {
                             Tour.guide.ViewTours("Casper");
+                        }
+                        else if (option.ToLower() == "d")
+                        {
+                            guideRunning = false;
                         }
                         else
                         {
