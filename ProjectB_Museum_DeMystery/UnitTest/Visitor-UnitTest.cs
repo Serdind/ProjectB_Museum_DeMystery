@@ -1,47 +1,70 @@
-using NUnit.Framework;
+using NUnit.Framework.Internal;
 
-namespace VisitorUT.Tests
+namespace UnitTests;
+
+[TestClass]
+public class VisitorTests
 {
-    [TestFixture]
-    public class VisitorTests
+
+    [TestMethod]
+    public void VisitorTest()
     {
-        private Visitor visitor;
+        //Arrange
+        Visitor visitor = new Visitor(0, "78423");
+        
+        //Assert
+        Assert.IsNotNull(visitor);
+    }
 
-        [SetUp]
-        public void Setup()
-        {
-            string sampleQR = "11";
-            visitor = new Visitor(sampleQR);
-        }
+    [TestMethod]
+    public void ReservationSuccesTest()
+    {
+        //Arrange
+        FakeMuseum museum = new FakeMuseum();
+        string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery\TestData";
+        string fileName = "toursTest.json";
+        string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        string filePath = Path.Combine(userDirectory, subdirectory, fileName);
 
-        [Test]
-        public void TestReservation_Succes()
-        {
-            string TourID = "sampleTourID";
-            bool result = visitor.Reservate(TourID, visitor);
-            Assert.That(result, Is.True);
-        }
+        string subdirectory1 = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery\TestData";
+        string fileName1 = "visitorsTest.json";
+        string userDirectory1 = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        string filePath1 = Path.Combine(userDirectory1, subdirectory1, fileName1);
 
-        [Test]
-        public void TestViewReservationsMade_None()
-        {
-            bool result = visitor.ViewReservationsMade(101);
-            Assert.That(result, Is.False);
-        }
 
-        [Test]
-        public void TestViewReservationsMade()
-        {
-            bool result = visitor.ViewReservationsMade(102);
-            Assert.That(result, Is.True);
-        }
+        museum.Files[filePath] = @"
+        [
+            {
+                ""ID"": 1,
+                ""Name"": ""Museum tour"",
+                ""Date"": ""2024-05-11T11:30:00"",
+                ""Language"": ""English"",
+                ""NameGuide"": ""Casper"",
+                ""ReservedVisitors"": [],
+                ""Status"": true
+            }
+        ]
+        ";
 
-        [Test]
-        public void TestCancelReservation_Succes()
-        {
-            visitor.CancelReservation(visitor);
-            bool result = visitor.ViewReservationsMade(103);
-            Assert.That(result, Is.False);
-        }
+        museum.Files[filePath1] = @"
+        [
+            
+        ]
+        ";
+        TestableVisitor fakeVisitor = new TestableVisitor(museum);
+        Visitor visitor = new Visitor(0, "523523");
+
+        //Act
+        bool result = fakeVisitor.Reservate(1, visitor);
+
+        //Assert
+        Assert.IsTrue(result);
+        Assert.IsTrue(museum.GetWrittenLinesAsString().Contains(
+            $"Reservation successful. You have reserved the following tour:\n" +
+            $"Date: 11-5-2024\n" +
+            $"Time: 11:30\n" +
+            $"Duration: 20 min\n" +
+            $"Language: English\n"
+        ));
     }
 }
