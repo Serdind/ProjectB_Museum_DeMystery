@@ -40,6 +40,10 @@ public class GuideController
                     CodeNotValid.Show();
                 }
             }
+            else if (option.ToLower() == "b")
+            {
+                return;
+            }
             else
             {
                 WrongInput.Show();

@@ -19,11 +19,11 @@ public class GuideOptions : View
 
             if (visitors.Any())
             {
-                Console.WriteLine("Add visitor(A)\nRemove visitor(R)");
+                Console.WriteLine("Add visitor(A)\nRemove visitor(R)\nGo back(B)");
             }
             else
             {
-                Console.WriteLine("Add visitor(A)");
+                Console.WriteLine("Add visitor(A)\nGo back(B)");
             }
         }
             

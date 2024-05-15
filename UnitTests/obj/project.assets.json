@@ -2811,19 +2811,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\miray\\.nuget\\packages\\": {}
+    "C:\\Users\\serdi\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\miray\\OneDrive\\Masaüstü\\git\\ProjectB_Museum_DeMystery\\UnitTests\\UnitTests.csproj",
+      "projectUniqueName": "C:\\Users\\serdi\\Desktop\\ProjectB\\ProjectB_Museum_DeMystery\\UnitTests\\UnitTests.csproj",
       "projectName": "UnitTests",
-      "projectPath": "C:\\Users\\miray\\OneDrive\\Masaüstü\\git\\ProjectB_Museum_DeMystery\\UnitTests\\UnitTests.csproj",
-      "packagesPath": "C:\\Users\\miray\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\miray\\OneDrive\\Masaüstü\\git\\ProjectB_Museum_DeMystery\\UnitTests\\obj\\",
+      "projectPath": "C:\\Users\\serdi\\Desktop\\ProjectB\\ProjectB_Museum_DeMystery\\UnitTests\\UnitTests.csproj",
+      "packagesPath": "C:\\Users\\serdi\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\serdi\\Desktop\\ProjectB\\ProjectB_Museum_DeMystery\\UnitTests\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\miray\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\serdi\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net7.0"
@@ -2835,8 +2835,8 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "projectReferences": {
-            "C:\\Users\\miray\\OneDrive\\Masaüstü\\git\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery.csproj": {
-              "projectPath": "C:\\Users\\miray\\OneDrive\\Masaüstü\\git\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery.csproj"
+            "C:\\Users\\serdi\\Desktop\\ProjectB\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery.csproj": {
+              "projectPath": "C:\\Users\\serdi\\Desktop\\ProjectB\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery.csproj"
             }
           }
         }
@@ -2884,7 +2884,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.408\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.405\\RuntimeIdentifierGraph.json"
       }
     }
   }

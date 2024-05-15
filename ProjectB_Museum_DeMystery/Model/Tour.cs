@@ -139,6 +139,7 @@ static class Tour
                 table.AddColumn("Name");
                 table.AddColumn("Date");
                 table.AddColumn("Time");
+                table.AddColumn("Duration");
                 table.AddColumn("Language");
                 table.AddColumn("Guide");
                 table.AddColumn("Remaining spots");
@@ -158,6 +159,7 @@ static class Tour
                             tour.Name,
                             dateOnly,
                             timeOnly,
+                            "20 minutes",
                             tour.Language,
                             guide.Name,
                             remainingSpots.ToString(),
@@ -186,6 +188,7 @@ static class Tour
                 table.AddColumn("ID");
                 table.AddColumn("Date");
                 table.AddColumn("Time");
+                table.AddColumn("Duration");
                 table.AddColumn("Language");
                 table.AddColumn("Guide");
                 table.AddColumn("Remaining spots");
@@ -202,6 +205,7 @@ static class Tour
                             tour.ID.ToString(),
                             dateOnly,
                             timeOnly,
+                            "20 minutes",
                             tour.Language,
                             guide.Name,
                             remainingSpots.ToString()
