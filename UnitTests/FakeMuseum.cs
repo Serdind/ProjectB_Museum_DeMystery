@@ -40,4 +40,9 @@ public class FakeMuseum : IMuseum
     {
         return string.Join("\n", LinesWritten);
     }
+
+     public bool FileExists(string path)
+    {
+        return Files.ContainsKey(path);
+    }
 }

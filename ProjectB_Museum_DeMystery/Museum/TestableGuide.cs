@@ -10,17 +10,49 @@ public class TestableGuide
     {
         Museum = museum;
     }
-
-    public void StartTour(int tourID)
+    public bool AddVisistorToTour(int tourID, string qr)
     {
-        string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
-        string fileName = "tours.json";
+        string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery\TestData";
+        string fileName = "toursTest.json";
         string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
         string filePath = Path.Combine(userDirectory, subdirectory, fileName);
 
-        if (File.Exists(filePath))
+        if (Museum.FileExists(filePath))
         {
-            string json = File.ReadAllText(filePath);
+            string json = Museum.ReadAllText(filePath);
+            var tours = JsonConvert.DeserializeObject<List<GuidedTour>>(json);
+
+            var tour = tours.FirstOrDefault(t => t.ID == tourID);
+
+            if (tour != null && tour.Status == true)
+            {
+                Visitor visitor = new Visitor(tourID, qr);
+                
+                visitor.Reservate(tourID, visitor);
+                visitor.Reservate(tourID, visitor);
+
+                Museum.WriteLine("Succesfully added visitor to tour.");
+                return true;
+            }
+            else
+            {
+                Museum.WriteLine("Tour not found.");
+                return false;
+            }
+        }
+        return false;
+    }
+
+    public void StartTour(int tourID)
+    {
+        string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery\TestData";
+        string fileName = "toursTest.json";
+        string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        string filePath = Path.Combine(userDirectory, subdirectory, fileName);
+
+        if (Museum.FileExists(filePath))
+        {
+            string json = Museum.ReadAllText(filePath);
             var tours = JsonConvert.DeserializeObject<List<GuidedTour>>(json);
 
             var tour = tours.FirstOrDefault(t => t.ID == tourID);

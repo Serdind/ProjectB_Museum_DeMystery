@@ -24,4 +24,9 @@ public class RealMuseum : IMuseum
     {
         File.WriteAllText(path, contents);
     }
+
+    public bool FileExists(string path)
+    {
+        return File.Exists(path);
+    }
 }
