@@ -1,31 +1,33 @@
-using NUnit.Framework;
+using NUnit.Framework.Internal;
 
-[TestFixture]
+namespace UnitTests;
+
+[TestClass]
 public class PersonTests
 {
-    [Test]
+    [TestMethod]
     public void Login_ValidQR_ReturnsRole()
     {
-        // Arrange
+        //Arrange
         var person = new Person("12");
 
-        // Act
+        //Act
         var role = person.Login("12");
 
-        // Assert
+        //Assert
         Assert.AreEqual("Visitor", role);
     }
 
-    [Test]
+    [TestMethod]
     public void AccCreated_ValidQR_ReturnsTrue()
     {
-        // Arrange
+        //Arrange
         var person = new Person("12");
 
-        // Act
+        //Act
         var result = person.AccCreated("12");
 
-        // Assert
+        //Assert
         Assert.IsTrue(result);
     }
 }
