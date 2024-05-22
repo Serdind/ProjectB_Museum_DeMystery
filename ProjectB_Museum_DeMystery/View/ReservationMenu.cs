@@ -2,7 +2,7 @@ public class ReservationMenu : View
 {
     public static string Menu(string qr, Visitor visitor)
     {
-        Console.WriteLine("Make reservation (E)");
+        Console.WriteLine("Make reservation (R)");
 
         if (visitor.ReservationMade(qr))
         {
