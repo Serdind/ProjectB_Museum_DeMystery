@@ -159,7 +159,7 @@ static class Tour
                             tour.Name,
                             dateOnly,
                             timeOnly,
-                            "20 minutes",
+                            "40 minutes",
                             tour.Language,
                             guide.Name,
                             remainingSpots.ToString(),
@@ -205,7 +205,7 @@ static class Tour
                             tour.ID.ToString(),
                             dateOnly,
                             timeOnly,
-                            "20 minutes",
+                            "40 minutes",
                             tour.Language,
                             guide.Name,
                             remainingSpots.ToString()

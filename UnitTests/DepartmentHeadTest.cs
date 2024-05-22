@@ -9,7 +9,7 @@ namespace UnitTests
         [TestMethod]
         public void DepartmentHeadInitializationTest()
         {
-            // okee Arrange
+            // Arrange
             string name = "TestName";
             string qr = "123456";
 
