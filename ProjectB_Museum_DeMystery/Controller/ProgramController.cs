@@ -2,93 +2,126 @@ public class ProgramController
 {
     public static void Start()
     {
-        Visitor visitor = new Visitor(0,null);
-        string language = MainMenu.Menu();
+        Visitor visitor = new Visitor(0, null);
+        bool showIntro = true;
 
-        if (language.ToLower() == "e")
+        string language;
+        do
         {
-            string choice = LoginMenu.Login();
-
-            if (choice.ToLower() == "l")
+            if (showIntro)
             {
-                string qr = QRVisitor.ScanQr();
+                MainMenu.Intro();
+                showIntro = false;
+            }
 
-                bool accountCreated = visitor.AccCreated(qr);
+            language = MainMenu.Language();
 
-                string loginStatus;
+            if (!IsValidLanguage(language))
+            {
+                Console.WriteLine("Invalid language selection. Please choose again.");
+            }
 
-                if (accountCreated)
-                {
-                    loginStatus = "Visitor";
-                    visitor.QR = qr;
-                }
-                else
-                {
-                    loginStatus = visitor.Login(qr);
-                }
+        } while (!IsValidLanguage(language));
 
-                if (loginStatus == "Visitor")
-                {
-                    bool visitorRunning = true;
-                    while (visitorRunning)
-                    {
-                        string option = ReservationMenu.Menu(visitor.QR, visitor);
+        language = language.ToLower();
 
-                        if (option.ToLower() == "e")
-                        {
-                            TourController tourController = new TourController();
-                            tourController.ReservateTour(visitor);
-                        }
-                        else if (option.ToLower() == "m")
-                        {
-                            visitor.ViewReservationsMade(qr);
-                        }
-                        else if (option.ToLower() == "c")
-                        {
-                            visitor.CancelReservation(visitor);
-                        }
-                        else if (option.ToLower() == "d")
-                        {
-                            visitorRunning = false;
-                        }
-                        else
-                        {
-                            WrongInput.Show();
-                        }
-                    }
-                }
-                else if (loginStatus == "Admin")
-                {
-                    PersonController personController = new PersonController();
-                    personController.AdminMenu(language);
-                }
-                else if (loginStatus == "Guide")
-                {
-                    bool guideRunning = true;
+        string choice;
+        bool showLoginPrompt = true;
 
-                    while (guideRunning)
-                    {
-                        string option = GuideOptions.ViewTours();
-
-                        if (option.ToLower() == "m")
-                        {
-                            Tour.guide.ViewTours("Casper");
-                        }
-                        else if (option.ToLower() == "d")
-                        {
-                            guideRunning = false;
-                        }
-                        else
-                        {
-                            WrongInput.Show();
-                        }
-                    }
-                }
+        do
+        {
+            if (showLoginPrompt)
+            {
+                choice = LoginMenu.Login();
+                showLoginPrompt = false;
             }
             else
             {
-                WrongInput.Show();
+                choice = LoginMenu.Login();
+            }
+
+            if (choice.ToLower() != "l" && choice.ToLower() != "login")
+            {
+                Console.WriteLine("Invalid choice. Please try again.");
+            }
+
+        } while (choice.ToLower() != "l" && choice.ToLower() != "login");
+
+        string qr = QRVisitor.ScanQr();
+        bool accountCreated = visitor.AccCreated(qr);
+        string loginStatus;
+
+        if (accountCreated)
+        {
+            loginStatus = "Visitor";
+            visitor.QR = qr;
+        }
+        else
+        {
+            loginStatus = visitor.Login(qr);
+        }
+
+        if (loginStatus == "Visitor")
+        {
+            bool visitorRunning = true;
+            while (visitorRunning)
+            {
+                string option = ReservationMenu.Menu(visitor.QR, visitor);
+
+                if (option.ToLower() == "r" || option.ToLower() == "make reservation")
+                {
+                    TourController tourController = new TourController();
+                    tourController.ReservateTour(visitor);
+                }
+                else if (option.ToLower() == "m" || option.ToLower() == "my reservations")
+                {
+                    visitor.ViewReservationsMade(qr);
+                }
+                else if (option.ToLower() == "c" || option.ToLower() == "cancel reservation")
+                {
+                    visitor.CancelReservation(visitor);
+                }
+                else if (option.ToLower() == "l" || option.ToLower() == "log out")
+                {
+                    visitorRunning = false;
+                }
+                else
+                {
+                    WrongInput.Show();
+                }
             }
         }
+        else if (loginStatus == "Admin")
+        {
+            PersonController personController = new PersonController();
+            personController.AdminMenu(language);
+        }
+        else if (loginStatus == "Guide")
+        {
+            bool guideRunning = true;
+
+            while (guideRunning)
+            {
+                string option = GuideOptions.ViewTours();
+
+                if (option.ToLower() == "m" || option.ToLower() == "my tours")
+                {
+                    Tour.guide.ViewTours("Casper");
+                }
+                else if (option.ToLower() == "l" || option.ToLower() == "log out")
+                {
+                    guideRunning = false;
+                }
+                else
+                {
+                    WrongInput.Show();
+                }
+            }
+        }
+    }
+
+    private static bool IsValidLanguage(string language)
+    {
+        return language.ToLower() == "e" || language.ToLower() == "english";
     }
 }
