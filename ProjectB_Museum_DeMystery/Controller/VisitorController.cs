@@ -14,32 +14,44 @@ public class VisitorController
         string fileName1 = "visitors.json";
         string userDirectory1 = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
         string filePath1 = Path.Combine(userDirectory1, subdirectory1, fileName1);
-        string confirmation = CancelReservationConfirmation.Options();
 
-        if (confirmation == "y")
+        bool wrongInputShown = false;
+
+        while (true)
         {
-            foreach (var tour in tours)
+            string confirmation = CancelReservationConfirmation.Options();
+
+            if (confirmation.ToLower() == "y" || confirmation.ToLower() == "yes")
             {
-                tour.ReservedVisitors.RemoveAll(v => v.QR == visitor.QR);
+                foreach (var tour in tours)
+                {
+                    tour.ReservedVisitors.RemoveAll(v => v.QR == visitor.QR);
+                }
+
+                visitors.RemoveAll(v => v.QR == visitor.QR);
+
+                string toursJson = JsonConvert.SerializeObject(tours, Formatting.Indented);
+                File.WriteAllText(filePath, toursJson);
+
+                string visitorsJson = JsonConvert.SerializeObject(visitors, Formatting.Indented);
+                File.WriteAllText(filePath1, visitorsJson);
+
+                CancelReservationConfirmation.ReservationCancelled();
+                break;
             }
-
-            visitors.RemoveAll(v => v.QR == visitor.QR);
-
-            string toursJson = JsonConvert.SerializeObject(tours, Formatting.Indented);
-            File.WriteAllText(filePath, toursJson);
-
-            string visitorsJson = JsonConvert.SerializeObject(visitors, Formatting.Indented);
-            File.WriteAllText(filePath1, visitorsJson);
-
-            CancelReservationConfirmation.ReservationCancelled();
-        }
-        else if (confirmation == "n")
-        {
-            CancelReservationConfirmation.ReservationCancelDenied();
-        }
-        else
-        {
-            WrongInput.Show();
+            else if (confirmation.ToLower() == "n" || confirmation.ToLower() == "no")
+            {
+                CancelReservationConfirmation.ReservationCancelDenied();
+                break;
+            }
+            else
+            {
+                if (!wrongInputShown)
+                {
+                    WrongInput.Show();
+                    wrongInputShown = true;
+                }
+            }
         }
     }
 }
