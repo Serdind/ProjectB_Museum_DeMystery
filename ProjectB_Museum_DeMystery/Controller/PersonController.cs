@@ -17,7 +17,7 @@ public class PersonController
 
         List<GuidedTour> tours = Tour.LoadToursFromFile();
 
-        if (languageSelection.ToLower() == "e")
+        if (languageSelection.ToLower() == "e" || languageSelection.ToLower() == "english")
         {
             bool adminRunning = true;
 
@@ -25,47 +25,68 @@ public class PersonController
             {
                 string option = AdminOptions.Options();
                 
-                if (option.ToLower() == "t")
+                if (option.ToLower() == "t" || option.ToLower() == "overview tours")
                 {
                     Tour.OverviewTours(true);
                 }
-                else if (option.ToLower() == "a")
+                else if (option.ToLower() == "a" || option.ToLower() == "add tour")
                 {
-                    string name = TourInfo.Name();
-                    
+                    string name = "";
                     DateTime date = DateTime.MinValue;
-                    bool dateFormat = true;
-                    
-                    while (dateFormat)
+                    string language = "";
+
+                    bool tourAdded = false;
+
+                    AdminOptions.BackOption();
+
+                    while (true)
                     {
+                        name = TourInfo.Name();
+                    
+                        if (name.ToLower() == "b" || name.ToLower() == "back")
+                        {
+                            break;
+                        }
+
                         string dateString = TourInfo.Date();
                         
-                        if (!DateTime.TryParse(dateString, out date))
+                        if (dateString.ToLower() == "b" || name.ToLower() == "back")
+                        {
+                            break;
+                        }
+
+                        if (!DateTime.TryParseExact(dateString, "dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out date))
                         {
                             TourInfo.InvalidDate();
+                            continue;
                         }
-                        else
+
+                        language = TourInfo.Language();
+
+                        if (language.ToLower() == "b" || name.ToLower() == "back")
                         {
-                            dateFormat = false;
+                            break;
                         }
+
+                        tourAdded = true;
+                        break;
                     }
 
-                    string language = TourInfo.Language();
-
-                    Tour.AddTour(new GuidedTour(name, date, language, Tour.guide.Name));
+                    if (tourAdded)
+                    {
+                        Tour.AddTour(new GuidedTour(name, date, language, Tour.guide.Name));
                     
-                    Tour.SaveToursToFile(filePath, tours);
+                        Tour.SaveToursToFile(filePath, tours);
 
-                    MessageTourReservation.TourAdded();
+                        MessageTourReservation.TourAdded();
+                    }
                 }
-                else if (option.ToLower() == "e")
+                else if (option.ToLower() == "e" || option.ToLower() == "edit tour")
                 {
                     Tour.OverviewTours(true);
                     int id = TourId.WhichTourId();
 
-                    int actualID = id;
-
-                    GuidedTour tour = tours.FirstOrDefault(v => v.ID == actualID);
+                    GuidedTour tour = tours.FirstOrDefault(v => v.ID == id);
 
                     if (tour != null)
                     {
@@ -103,7 +124,7 @@ public class PersonController
                         
                         string change = EditTour.EditOptions();
                         
-                        if (change.ToLower() == "n")
+                        if (change.ToLower() == "n" || change.ToLower() == "name")
                         {
                             string name = TourInfo.Name();
 
@@ -112,7 +133,7 @@ public class PersonController
                             Tour.SaveToursToFile(filePath, tours);
                             
                         }
-                        else if (change.ToLower() == "d")
+                        else if (change.ToLower() == "d" || change.ToLower() == "date")
                         {
                             DateTime date = DateTime.MinValue;
                             bool dateFormat = true;
@@ -121,9 +142,10 @@ public class PersonController
                             {
                                 string dateString = TourInfo.Date();
                                 
-                                if (!DateTime.TryParse(dateString, out date))
+                                if (!DateTime.TryParseExact(dateString, "dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out date))
                                 {
                                     TourInfo.InvalidDate();
+                                    continue;
                                 }
                                 else
                                 {
@@ -139,12 +161,12 @@ public class PersonController
                             Tour.SaveToursToFile(filePath, tours);
                             
                         }
-                        else if (change.ToLower() == "t")
+                        else if (change.ToLower() == "t" || change.ToLower() == "time")
                         {
                             string timeString = TourInfo.Time();
 
                             DateTime time;
-                            if (!DateTime.TryParseExact(timeString, "H:m:s", CultureInfo.InvariantCulture, DateTimeStyles.None, out time))
+                            if (!DateTime.TryParseExact(timeString, "H:m", CultureInfo.InvariantCulture, DateTimeStyles.None, out time))
                             {
                                 TourInfo.InvalidTime();
                                 return;
@@ -159,7 +181,7 @@ public class PersonController
                             EditTour.TimeSet(updatedDateTime.TimeOfDay);
                             Tour.SaveToursToFile(filePath, tours);
                         }
-                        else if (change.ToLower() == "l")
+                        else if (change.ToLower() == "l" || change.ToLower() == "language")
                         {
                             string language = TourInfo.Language();
 
@@ -169,7 +191,7 @@ public class PersonController
                             Tour.SaveToursToFile(filePath, tours);
                         }
 
-                        else if (change.ToLower() == "g")
+                        else if (change.ToLower() == "g" || change.ToLower() == "guide")
                         {
                             string guide = TourInfo.Guide();
 
@@ -178,7 +200,7 @@ public class PersonController
                             EditTour.GuideSet(guide);
                             Tour.SaveToursToFile(filePath, tours);
                         }
-                        else if (change.ToLower() == "s")
+                        else if (change.ToLower() == "s" || change.ToLower() == "status")
                         {
                             if (tour.Status == true)
                             {
@@ -192,16 +214,19 @@ public class PersonController
                             Tour.SaveToursToFile(filePath, tours);
                             Tour.OverviewTours(true);
                         }
+                        else if (change.ToLower() == "b" || change.ToLower() == "go back")
+                        {
+                            break;
+                        }
                         else
                         {
                             WrongInput.Show();
                         }
                     }
                 }
-                else if (option.ToLower() == "b")
+                else if (option.ToLower() == "l" || option.ToLower() == "log out")
                 {
                     adminRunning = false;
-                    continue;
                 }
                 else
                 {
