@@ -13,40 +13,68 @@ public class GuideController
         {
             Tour.OverviewVisitorsTour(tourId);
 
-            string option = GuideOptions.Options(tourId);
-
-            if (option.ToLower() == "a")
+            while (true)
             {
-                string qr = QRVisitor.WhichVisitorQr();
+                string option = GuideOptions.Options(tourId);
 
-                if (uniqueCodes.Contains(qr))
+                if (option.ToLower() == "a" || option.ToLower() == "add visitor")
                 {
-                    guide.AddVisistorToTour(tourId, qr);
+                    bool codeValid = false;
+
+                    while (!codeValid)
+                    {
+                        AdminOptions.BackOption();
+                        string qr = QRVisitor.WhichVisitorQr();
+
+                        if (qr.ToLower() == "b" || qr.ToLower() == "back")
+                        {
+                            break;
+                        }
+
+                        if (uniqueCodes.Contains(qr))
+                        {
+                            guide.AddVisistorToTour(tourId, qr);
+                            codeValid = true;
+                        }
+                        else
+                        {
+                            CodeNotValid.Show();
+                        }
+                    }
+                }
+                else if (option.ToLower() == "r" || option.ToLower() == "remove visitor")
+                {
+                    bool codeValid = false;
+
+                    while (!codeValid)
+                    {
+                        AdminOptions.BackOption();
+                        string qr = QRVisitor.WhichVisitorQr();
+
+                        if (qr.ToLower() == "b" || qr.ToLower() == "back")
+                        {
+                            break;
+                        }
+
+                        if (uniqueCodes.Contains(qr))
+                        {
+                            guide.RemoveVisitorFromTour(tourId, qr);
+                            codeValid = true;
+                        }
+                        else
+                        {
+                            CodeNotValid.Show();
+                        }
+                    }
+                }
+                else if (option.ToLower() == "b" || option.ToLower() == "go back")
+                {
+                    break;
                 }
                 else
                 {
-                    CodeNotValid.Show();
+                    WrongInput.Show();
                 }
-            }
-            else if (option.ToLower() == "r")
-            {
-                string qr = QRVisitor.WhichVisitorQr();
-                if (uniqueCodes.Contains(qr))
-                {
-                    guide.RemoveVisitorFromTour(tourId, qr);
-                }
-                else
-                {
-                    CodeNotValid.Show();
-                }
-            }
-            else if (option.ToLower() == "b")
-            {
-                return;
-            }
-            else
-            {
-                WrongInput.Show();
             }
         }
         else
@@ -54,36 +82,61 @@ public class GuideController
             TourNotAvailable.Show();
         }
     }
+
     public void OptionsGuide(List<GuidedTour> tours, Guide guide)
     {
-        string option = ViewVisitors.Show();
-        int tourID;
-
-        if (option.ToLower() == "v")
+        while (true)
         {
-            tourID = TourId.WhichTourId();
-            foreach (var tour in tours)
+            string option = ViewVisitors.Show();
+            int tourID;
+
+            if (option.ToLower() == "v" || option.ToLower() == "view visitors")
             {
-                if (tour.ID == tourID)
+                AdminOptions.BackOption();
+                tourID = TourId.WhichTourId();
+
+                if (tourID == -1)
                 {
-                    ViewVisitorsTour(tourID, tour, guide);
-                    return;
+                    break;
+                }
+
+                bool tourFound = false;
+                foreach (var tour in tours)
+                {
+                    if (tour.ID == tourID)
+                    {
+                        ViewVisitorsTour(tourID, tour, guide);
+                        tourFound = true;
+                        break;
+                    }
+                }
+
+                if (!tourFound)
+                {
+                    TourNotFound.Show();
                 }
             }
-            TourNotFound.Show();
-        }
-        else if (option.ToLower() == "s")
-        {
-            tourID = TourId.WhichTourId();
-            Tour.guide.StartTour(tourID);
-        }
-        else if (option.ToLower() == "b")
-        {
-            return;
-        }
-        else
-        {
-            WrongInput.Show();
+            else if (option.ToLower() == "s" || option.ToLower() == "start tour")
+            {
+                AdminOptions.BackOption();
+                tourID = TourId.WhichTourId();
+
+                if (tourID == -1)
+                {
+                    break;
+                }
+
+                Tour.guide.StartTour(tourID);
+                break;
+            }
+            else if (option.ToLower() == "b" || option.ToLower() == "go back")
+            {
+                break;
+            }
+            else
+            {
+                WrongInput.Show();
+            }
         }
     }
 }
