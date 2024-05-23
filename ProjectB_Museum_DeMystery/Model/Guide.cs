@@ -34,7 +34,7 @@ public class Guide : Person
             {
                 Visitor visitor = new Visitor(tourID, qr);
                 
-                visitor.Reservate(tourID, visitor);
+                visitor.ReservateByGuide(tourID, visitor);
                 GuideOptions.AddedVisitorToTour();
                 return true;
             }
@@ -161,7 +161,7 @@ public class Guide : Person
                     }
                 }
             });
-        GuideController guideController= new GuideController();
+        GuideController guideController = new GuideController();
         guideController.OptionsGuide(guideTours, Tour.guide);
     }
 
