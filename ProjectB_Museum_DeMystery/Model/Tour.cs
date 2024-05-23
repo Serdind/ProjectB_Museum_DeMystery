@@ -115,7 +115,7 @@ static class Tour
         File.WriteAllText(filePath, updatedJson);
     }
 
-    public static void OverviewTours(bool edit)
+    public static bool OverviewTours(bool edit)
     {
         DateTime currentDate = DateTime.Today;
         string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
@@ -169,10 +169,12 @@ static class Tour
                 }
 
                 AnsiConsole.Render(table);
+                return true;
             }
             else
             {
                 TourEmpty.Show();
+                return false;
             }
         }
         else
@@ -193,10 +195,13 @@ static class Tour
                 table.AddColumn("Guide");
                 table.AddColumn("Remaining spots");
 
+                bool anyToursToday = false;
+
                 foreach (var tour in tours)
                 {
                     if (tour.Date.Date == currentDate.Date && tour.Date.TimeOfDay >= DateTime.Now.TimeOfDay && tour.Status)
                     {
+                        anyToursToday = true;
                         string timeOnly = tour.Date.ToString("HH:mm");
                         string dateOnly = tour.Date.ToShortDateString();
                         int remainingSpots = tour.MaxParticipants - tour.ReservedVisitors.Count;
@@ -213,12 +218,22 @@ static class Tour
                     }
                 }
 
-                AnsiConsole.Render(table);
+                if (anyToursToday)
+                {
+                    AnsiConsole.Render(table);
+                    return true;
+                }
+                else
+                {
+                    TourInfo.NoToursToday();
+                    return false;
+                }
             }
             else
             {
                 TourEmpty.Show();
             }
+            return false;
         }
     }
 

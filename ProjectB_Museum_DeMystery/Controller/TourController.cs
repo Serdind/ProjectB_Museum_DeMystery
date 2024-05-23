@@ -2,7 +2,12 @@ public class TourController
 {
     public void ReservateTour(Visitor visitor)
     {
-        Tour.OverviewTours(false);
+        bool toursAvailable = Tour.OverviewTours(false);
+        if (!toursAvailable)
+        {
+            return;
+        };
+
         int tourID = TourId.WhichTourId();
 
         visitor.Reservate(tourID, visitor);
