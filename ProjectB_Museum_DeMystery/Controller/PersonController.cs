@@ -55,7 +55,7 @@ public class PersonController
                             break;
                         }
 
-                        if (!DateTime.TryParseExact(dateString, "dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out date))
+                        if (!DateTime.TryParseExact(dateString, "d-M-yyyy HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out date))
                         {
                             TourInfo.InvalidDate();
                             continue;
@@ -83,145 +83,156 @@ public class PersonController
                 }
                 else if (option.ToLower() == "e" || option.ToLower() == "edit tour")
                 {
-                    Tour.OverviewTours(true);
-                    int id = TourId.WhichTourId();
+                    bool toursFound = Tour.OverviewTours(true);
 
-                    GuidedTour tour = tours.FirstOrDefault(v => v.ID == id);
-
-                    if (tour != null)
+                    if (toursFound)
                     {
-                        var table = new Table().LeftAligned();
+                        int id = TourId.WhichTourId();
 
-                        AnsiConsole.Live(table)
-                            .AutoClear(false)
-                            .Overflow(VerticalOverflow.Ellipsis)
-                            .Cropping(VerticalOverflowCropping.Top)
-                            .Start(ctx =>
-                            {
-                                table.AddColumn("Name");
-                                table.AddColumn("Date");
-                                table.AddColumn("Time");
-                                table.AddColumn("Language");
-                                table.AddColumn("Guide");
-                                table.AddColumn("Status");
-                                
-                                DateTime dateValue = Convert.ToDateTime(tour.Date);
-                                string timeOnly = dateValue.ToString("HH:mm");
-                                string dateOnly = dateValue.ToShortDateString();
-                                string status = tour.Status ? "Active" : "Inactive";
+                        GuidedTour tour = tours.FirstOrDefault(v => v.ID == id);
 
-                                table.AddRow(
-                                    tour.Name.ToString(),
-                                    dateOnly,
-                                    timeOnly,
-                                    tour.Language.ToString(),
-                                    tour.NameGuide.ToString(),
-                                    status
-                                );
-
-                                ctx.Refresh();
-                            });
-                        
-                        string change = EditTour.EditOptions();
-                        
-                        if (change.ToLower() == "n" || change.ToLower() == "name")
+                        if (tour != null)
                         {
-                            string name = TourInfo.Name();
+                            var table = new Table().LeftAligned();
 
-                            tour.Name = name;
-                            EditTour.NameSet(name);
-                            Tour.SaveToursToFile(filePath, tours);
-                            
-                        }
-                        else if (change.ToLower() == "d" || change.ToLower() == "date")
-                        {
-                            DateTime date = DateTime.MinValue;
-                            bool dateFormat = true;
-                            
-                            while (dateFormat)
-                            {
-                                string dateString = TourInfo.Date();
-                                
-                                if (!DateTime.TryParseExact(dateString, "dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out date))
+                            AnsiConsole.Live(table)
+                                .AutoClear(false)
+                                .Overflow(VerticalOverflow.Ellipsis)
+                                .Cropping(VerticalOverflowCropping.Top)
+                                .Start(ctx =>
                                 {
-                                    TourInfo.InvalidDate();
-                                    continue;
+                                    table.AddColumn("Name");
+                                    table.AddColumn("Date");
+                                    table.AddColumn("Time");
+                                    table.AddColumn("Language");
+                                    table.AddColumn("Guide");
+                                    table.AddColumn("Status");
+                                    
+                                    DateTime dateValue = Convert.ToDateTime(tour.Date);
+                                    string timeOnly = dateValue.ToString("HH:mm");
+                                    string dateOnly = dateValue.ToShortDateString();
+                                    string status = tour.Status ? "Active" : "Inactive";
+
+                                    table.AddRow(
+                                        tour.Name.ToString(),
+                                        dateOnly,
+                                        timeOnly,
+                                        tour.Language.ToString(),
+                                        tour.NameGuide.ToString(),
+                                        status
+                                    );
+
+                                    ctx.Refresh();
+                                });
+                            
+                            string change = EditTour.EditOptions();
+                            
+                            if (change.ToLower() == "n" || change.ToLower() == "name")
+                            {
+                                string name = TourInfo.Name();
+
+                                tour.Name = name;
+                                EditTour.NameSet(name);
+                                Tour.SaveToursToFile(filePath, tours);
+                                
+                            }
+                            else if (change.ToLower() == "d" || change.ToLower() == "date")
+                            {
+                                bool validDateSelected = false;
+                                DateTime selectedDate = DateTime.MinValue;
+
+                                while (!validDateSelected)
+                                {
+                                    string dateString = TourInfo.Date();
+
+                                    if (dateString.ToLower() == "b" || dateString.ToLower() == "back")
+                                    {
+                                        break;
+                                    }
+
+                                    if (DateTime.TryParseExact(dateString, "d-M-yyyy HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out selectedDate))
+                                    {
+                                        validDateSelected = true;
+                                    }
+                                    else
+                                    {
+                                        TourInfo.InvalidDate();
+                                    }
+                                }
+
+                                if (validDateSelected)
+                                {
+                                    tour.Date = selectedDate;
+                                    EditTour.DateSet(selectedDate);
+                                    Tour.SaveToursToFile(filePath, tours);
+                                }
+                            }
+                            else if (change.ToLower() == "t" || change.ToLower() == "time")
+                            {
+                                string timeString = TourInfo.Time();
+
+                                DateTime time;
+                                if (!DateTime.TryParseExact(timeString, "H:m", CultureInfo.InvariantCulture, DateTimeStyles.None, out time))
+                                {
+                                    TourInfo.InvalidTime();
+                                    return;
+                                }
+
+                                DateTime currentDate = tour.Date.Date;
+
+                                DateTime updatedDateTime = currentDate.Add(time.TimeOfDay);
+
+                                tour.Date = updatedDateTime;
+
+                                EditTour.TimeSet(updatedDateTime.TimeOfDay);
+                                Tour.SaveToursToFile(filePath, tours);
+                            }
+                            else if (change.ToLower() == "l" || change.ToLower() == "language")
+                            {
+                                string language = TourInfo.Language();
+
+                                tour.Language = language;
+
+                                EditTour.LanguageSet(language);
+                                Tour.SaveToursToFile(filePath, tours);
+                            }
+
+                            else if (change.ToLower() == "g" || change.ToLower() == "guide")
+                            {
+                                string guide = TourInfo.Guide();
+
+                                tour.NameGuide = guide;
+
+                                EditTour.GuideSet(guide);
+                                Tour.SaveToursToFile(filePath, tours);
+                            }
+                            else if (change.ToLower() == "s" || change.ToLower() == "status")
+                            {
+                                if (tour.Status == true)
+                                {
+                                    tour.Status = false;
                                 }
                                 else
                                 {
-                                    dateFormat = false;
+                                    tour.Status = true;
                                 }
+                                EditTour.StatusSet(tour.Status);
+                                Tour.SaveToursToFile(filePath, tours);
+                                Tour.OverviewTours(true);
                             }
-
-                            date = date.Date;
-
-                            tour.Date = date;
-                            
-                            EditTour.DateSet(date);
-                            Tour.SaveToursToFile(filePath, tours);
-                            
-                        }
-                        else if (change.ToLower() == "t" || change.ToLower() == "time")
-                        {
-                            string timeString = TourInfo.Time();
-
-                            DateTime time;
-                            if (!DateTime.TryParseExact(timeString, "H:m", CultureInfo.InvariantCulture, DateTimeStyles.None, out time))
+                            else if (change.ToLower() == "b" || change.ToLower() == "go back")
                             {
-                                TourInfo.InvalidTime();
-                                return;
-                            }
-
-                            DateTime currentDate = tour.Date.Date;
-
-                            DateTime updatedDateTime = currentDate.Add(time.TimeOfDay);
-
-                            tour.Date = updatedDateTime;
-
-                            EditTour.TimeSet(updatedDateTime.TimeOfDay);
-                            Tour.SaveToursToFile(filePath, tours);
-                        }
-                        else if (change.ToLower() == "l" || change.ToLower() == "language")
-                        {
-                            string language = TourInfo.Language();
-
-                            tour.Language = language;
-
-                            EditTour.LanguageSet(language);
-                            Tour.SaveToursToFile(filePath, tours);
-                        }
-
-                        else if (change.ToLower() == "g" || change.ToLower() == "guide")
-                        {
-                            string guide = TourInfo.Guide();
-
-                            tour.NameGuide = guide;
-
-                            EditTour.GuideSet(guide);
-                            Tour.SaveToursToFile(filePath, tours);
-                        }
-                        else if (change.ToLower() == "s" || change.ToLower() == "status")
-                        {
-                            if (tour.Status == true)
-                            {
-                                tour.Status = false;
+                                
                             }
                             else
                             {
-                                tour.Status = true;
+                                WrongInput.Show();
                             }
-                            EditTour.StatusSet(tour.Status);
-                            Tour.SaveToursToFile(filePath, tours);
-                            Tour.OverviewTours(true);
                         }
-                        else if (change.ToLower() == "b" || change.ToLower() == "go back")
-                        {
-                            break;
-                        }
-                        else
-                        {
-                            WrongInput.Show();
-                        }
+                    }
+                    else
+                    {
+                        
                     }
                 }
                 else if (option.ToLower() == "l" || option.ToLower() == "log out")
