@@ -36,44 +36,60 @@ public class GuideOptions : View
                         $"Tour: {tour.Name}\n" +
                         $"Date: {tour.Date.ToShortDateString()}\n" +
                         $"Time: {tour.Date.ToString("HH:mm")}\n" +
-                        $"Language: {tour.Language}\n";
+                        $"Duration: 40 min\n" +
+                        $"Language: {tour.Language}\n" +
+                        $"Guide: {tour.NameGuide}\n";
 
         Console.WriteLine(message);
+        Console.WriteLine("Press any key to continue...\n");
+        Console.ReadKey(true);
     }
 
     public static string ViewTours()
     {
-        Console.WriteLine("My tours(M)\nDone(D)");
+        Console.WriteLine("My tours(M)\nLog out(L)");
         return ReadLineString();
     }
 
     public static void AddedVisitorToTour()
     {
         Console.WriteLine("Succesfully added visitor to tour.");
+        Console.WriteLine("Press any key to continue...\n");
+        Console.ReadKey(true);
     }
 
     public static void RemovedVisitorFromTour()
     {
         Console.WriteLine("Succesfully removed visitor from tour.");
+        Console.WriteLine("Press any key to continue...\n");
+        Console.ReadKey(true);
     }
 
     public static void VisitorNotFound()
     {
         Console.WriteLine("Visitor not found in the visitors list.");
+        Console.WriteLine("Press any key to continue...\n");
+        Console.ReadKey(true);
     }
 
     public static void VisitorNotFoundInTour()
     {
         Console.WriteLine("Visitor not found in the tour's list of reserved visitors.");
+        Console.WriteLine("Press any key to continue...\n");
+        Console.ReadKey(true);
     }
 
     public static void TourNotFoundOrActive()
     {
         Console.WriteLine("Tour not found or not active.");
+        Console.WriteLine("Press any key to continue...\n");
+        Console.ReadKey(true);
     }
 
     public static void TourVisitorFileNotFound()
     {
         Console.WriteLine("Tour not found or not active.");
+        Console.WriteLine("Press any key to continue...\n");
+        Console.ReadKey(true);
     }
 }
