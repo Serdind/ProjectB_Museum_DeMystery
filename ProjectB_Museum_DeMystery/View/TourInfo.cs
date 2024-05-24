@@ -13,13 +13,15 @@ public class TourInfo : View
 
     public static string Date()
     {
-        Console.WriteLine("\nDate (Y-M-D H:M:S): ");
+        Console.WriteLine("\nDate (Day-Month-Year Hour:Minutes): ");
         return ReadLineString();
     }
 
     public static void InvalidDate()
     {
         Console.WriteLine("Invalid date format. Please enter a valid date.");
+        Console.WriteLine("Press any key to continue...\n");
+        Console.ReadKey(true);
     }
 
     public static string Language()
@@ -30,13 +32,15 @@ public class TourInfo : View
 
     public static string Time()
     {
-        Console.WriteLine("Time (H:M:S):");
+        Console.WriteLine("Time (Hour:Minutes):");
         return ReadLineString();
     }
 
     public static void InvalidTime()
     {
-        Console.WriteLine("Invalid time format. Please enter a valid time (H:M:S).");
+        Console.WriteLine("Invalid time format. Please enter a valid time (Hour:Minutes).");
+        Console.WriteLine("Press any key to continue...\n");
+        Console.ReadKey(true);
     }
 
     public static string Guide()
@@ -48,10 +52,27 @@ public class TourInfo : View
     public static void TourRemoved()
     {
         Console.WriteLine("Tour removed successfully.");
+        Console.WriteLine("Press any key to continue...\n");
+        Console.ReadKey(true);
     }
 
     public static void TourRestored()
     {
         Console.WriteLine("Tour successfully restored.");
+        Console.WriteLine("Press any key to continue...\n");
+        Console.ReadKey(true);
+    }
+
+    public static void NoToursToday()
+    {
+        Console.WriteLine("No tours available for today.");
+        Console.WriteLine("Press any key to continue...\n");
+        Console.ReadKey(true);
+    }
+
+    public static string WhichDate()
+    {
+        Console.WriteLine("Which date? (Day-Month-Year)");
+        return ReadLineString();
     }
 }

@@ -1,5 +1,6 @@
 using Spectre.Console;
 using Newtonsoft.Json;
+using System.Globalization;
 
 static class Tour
 {
@@ -125,51 +126,82 @@ static class Tour
 
         if (edit)
         {
-            currentDate = currentDate.AddDays(1);
+            bool validDateSelected = false;
+            DateTime selectedDate = DateTime.MinValue;
+            PersonController personController = new PersonController();
+
+            while (!validDateSelected)
+            {
+                string dateString = TourInfo.WhichDate();
+
+                if (dateString.ToLower() == "b" || dateString.ToLower() == "back")
+                {
+                    personController.AdminMenu("e");
+                }
+
+                if (DateTime.TryParseExact(dateString, "d-M-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out selectedDate))
+                {
+                    validDateSelected = true;
+                }
+                else
+                {
+                    TourInfo.InvalidDate();
+                }
+            }
 
             if (File.Exists(filePath))
             {
                 string json = File.ReadAllText(filePath);
                 var tours = JsonConvert.DeserializeObject<List<GuidedTour>>(json);
 
-                tours = tours.OrderBy(t => t.Date).ToList();
+                bool tourFound = tours.Any(t => t.Date.Date == selectedDate.Date);
 
-                var table = new Table().Border(TableBorder.Rounded);
-                table.AddColumn("ID");
-                table.AddColumn("Name");
-                table.AddColumn("Date");
-                table.AddColumn("Time");
-                table.AddColumn("Duration");
-                table.AddColumn("Language");
-                table.AddColumn("Guide");
-                table.AddColumn("Remaining spots");
-                table.AddColumn("Status");
-
-                foreach (var tour in tours)
+                if (tourFound)
                 {
-                    if (tour.Date.Date == currentDate.Date)
+                    tours = tours.OrderBy(t => t.Date).ToList();
+
+                    var table = new Table().Border(TableBorder.Rounded);
+                    table.AddColumn("ID");
+                    table.AddColumn("Name");
+                    table.AddColumn("Date");
+                    table.AddColumn("Time");
+                    table.AddColumn("Duration");
+                    table.AddColumn("Language");
+                    table.AddColumn("Guide");
+                    table.AddColumn("Remaining spots");
+                    table.AddColumn("Status");
+
+                    foreach (var tour in tours)
                     {
-                        string timeOnly = tour.Date.ToString("HH:mm");
-                        string dateOnly = tour.Date.ToShortDateString();
-                        int remainingSpots = tour.MaxParticipants - tour.ReservedVisitors.Count;
-                        string status = tour.Status ? "Active" : "Inactive";
+                        if (tour.Date.Date == selectedDate.Date)
+                        {
+                            string timeOnly = tour.Date.ToString("HH:mm");
+                            string dateOnly = tour.Date.ToShortDateString();
+                            int remainingSpots = tour.MaxParticipants - tour.ReservedVisitors.Count;
+                            string status = tour.Status ? "Active" : "Inactive";
 
-                        table.AddRow(
-                            tour.ID.ToString(),
-                            tour.Name,
-                            dateOnly,
-                            timeOnly,
-                            "40 minutes",
-                            tour.Language,
-                            guide.Name,
-                            remainingSpots.ToString(),
-                            status
-                        );
+                            table.AddRow(
+                                tour.ID.ToString(),
+                                tour.Name,
+                                dateOnly,
+                                timeOnly,
+                                "40 minutes",
+                                tour.Language,
+                                guide.Name,
+                                remainingSpots.ToString(),
+                                status
+                            );
+                        }
                     }
-                }
 
-                AnsiConsole.Render(table);
-                return true;
+                    AnsiConsole.Render(table);
+                    return true;
+                }
+                else
+                {
+                    TourInfo.NoTours();
+                    return false;
+                }
             }
             else
             {
