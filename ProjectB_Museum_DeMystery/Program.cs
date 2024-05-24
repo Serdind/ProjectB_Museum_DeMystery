@@ -15,8 +15,6 @@
 
         Tour.UpdateTours();
 
-        Tour.OverviewTours(false);
-
         Tour.AddAdminToJSON();
 
         Tour.AddGuideToJSON();
