@@ -1,6 +1,11 @@
+using System.Text.Json.Serialization;
+using Spectre.Console;
+using Newtonsoft.Json;
+using System.Globalization;
+
 public class FakeMuseum : IMuseum
 {
-    private DateTime? _now = null;
+    private DateTime? _now = DateTime.Now;
 
     public DateTime Now
     {
@@ -14,8 +19,8 @@ public class FakeMuseum : IMuseum
     {
         LinesWritten.Add(line);
     }
-    
-    public List<string> LinesToRead { private get; set; } = new();
+
+    public List<string> LinesToRead { get; set; } = new();
 
     public string ReadLine()
     {
@@ -41,8 +46,23 @@ public class FakeMuseum : IMuseum
         return string.Join("\n", LinesWritten);
     }
 
-     public bool FileExists(string path)
+    public bool FileExists(string path)
     {
         return Files.ContainsKey(path);
+    }
+
+    public DateTime GetLastWriteTime(string path)
+    {
+        return DateTime.Now;
+    }
+
+    public bool TryParseExact(string? s, string? format, IFormatProvider? provider, DateTimeStyles style, out DateTime result)
+    {
+        return DateTime.TryParseExact(s, format, provider, style, out result);
+    }
+
+    public DateTime MinValue
+    {
+        get => DateTime.MinValue;
     }
 }

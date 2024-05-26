@@ -10,7 +10,7 @@ namespace UnitTests
         [TestMethod]
         public void GuidedTourInitializationTest()
         {
-            // Arrange Weet niet zeker of deze goed is 
+            // Arrange
             string name = "TestTour";
             DateTime date = DateTime.Now;
             string language = "English";

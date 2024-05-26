@@ -1,3 +1,8 @@
+using System.Text.Json.Serialization;
+using Spectre.Console;
+using Newtonsoft.Json;
+using System.Globalization;
+
 public class RealMuseum : IMuseum
 {
     public DateTime Now
@@ -28,5 +33,28 @@ public class RealMuseum : IMuseum
     public bool FileExists(string path)
     {
         return File.Exists(path);
+    }
+
+    public DateTime GetLastWriteTime(string path)
+    {
+        try
+        {
+            FileInfo fileInfo = new FileInfo(path);
+            return fileInfo.LastWriteTime;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+    }
+
+    public bool TryParseExact(string? s, string? format, IFormatProvider? provider, DateTimeStyles style, out DateTime result)
+    {
+        return DateTime.TryParseExact(s, format, provider, style, out result);
+    }
+
+    public DateTime MinValue
+    {
+        get => DateTime.MinValue;
     }
 }

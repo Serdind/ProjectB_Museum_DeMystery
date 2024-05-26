@@ -81,6 +81,69 @@ public class TestableVisitor
         return false;
     }
 
+    public bool ReservateByGuide(int tourID, Visitor visitor)
+    {
+        if (ReservationMade(visitor.QR))
+        {
+            Museum.WriteLine("Maximum reservation limit reached.");
+            return false;
+        }
+
+        DateTime currentDate = DateTime.Now;
+        string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery\TestData";
+        string fileName = "toursTest.json";
+        string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        string filePath = Path.Combine(userDirectory, subdirectory, fileName);
+
+        if (Museum.FileExists(filePath))
+        {
+            string json = Museum.ReadAllText(filePath);
+            var tours = JsonConvert.DeserializeObject<List<GuidedTour>>(json);
+
+            var tour = tours.FirstOrDefault(t => t.ID == tourID);
+
+            if (tour != null && tour.Status)
+            {
+                if (tour.MaxParticipants > tour.ReservedVisitors.Count())
+                {
+                    AddVisitorToTestJSON(tourID, visitor.QR);
+
+                    tour.ReservedVisitors.Add(visitor);
+                    visitor.TourId = tour.ID;
+                    string subdirectory1 = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery\TestData";
+                    string fileName1 = "visitorsTest.json";
+                    string userDirectory1 = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+                    string filePath1 = Path.Combine(userDirectory1, subdirectory1, fileName1);
+
+                    if (Museum.FileExists(filePath1))
+                    {
+                        string json1 = Museum.ReadAllText(filePath1);
+                        var visitors = JsonConvert.DeserializeObject<List<Visitor>>(json1);
+
+                        var v = visitors.FirstOrDefault(t => t.QR == visitor.QR);
+
+                        visitor.Id = v.Id;
+                    }
+
+                    string updatedJson = JsonConvert.SerializeObject(tours, Formatting.Indented);
+
+                    Museum.WriteAllText(filePath, updatedJson);
+
+                    return true;
+                }
+                else
+                {
+                    Museum.WriteLine("Tour is full.");
+                }
+            }
+            else
+            {
+                Museum.WriteLine("Tour is not available.");
+            }
+        }
+        return false;
+    }
+
     public void AddVisitorToTestJSON(int tourId, string qr)
     {
         List<Visitor> existingVisitors = LoadVisitorsFromTestFile();
