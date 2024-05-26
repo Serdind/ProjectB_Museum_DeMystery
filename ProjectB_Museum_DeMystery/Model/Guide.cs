@@ -82,13 +82,13 @@ public class Guide : Person
                         visitors.Remove(visitorInAllVisitors);
                         File.WriteAllText(visitorsFilePath, JsonConvert.SerializeObject(visitors));
                         GuideOptions.RemovedVisitorFromTour();
+                        return true;
                     }
                     else
                     {
                         GuideOptions.VisitorNotFound();
+                        return false;
                     }
-
-                    return true;
                 }
                 else
                 {
@@ -109,60 +109,59 @@ public class Guide : Person
         }
     }
 
-    public void ViewTours(string guideName)
+    public bool ViewTours(string guideName)
     {
         DateTime today = DateTime.Today;
         string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
         string fileName = "tours.json";
         string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
         string filePath = Path.Combine(userDirectory, subdirectory, fileName);
-        string jsonData = File.ReadAllText(filePath);
-        
-        List<GuidedTour> tours = JsonConvert.DeserializeObject<List<GuidedTour>>(jsonData);
-        
-        List<GuidedTour> guideTours = tours.FindAll(tour => tour.NameGuide == guideName && tour.Date.Date == today);
-        
-        var table = new Table().LeftAligned();
-        AnsiConsole.Live(table)
-            .AutoClear(false)
-            .Overflow(VerticalOverflow.Ellipsis)
-            .Cropping(VerticalOverflowCropping.Top)
-            .Start(ctx =>
+
+        if (File.Exists(filePath))
+        {
+            string jsonData = File.ReadAllText(filePath);
+            List<GuidedTour> tours = JsonConvert.DeserializeObject<List<GuidedTour>>(jsonData);
+
+            List<GuidedTour> guideTours = tours.FindAll(tour => tour.NameGuide == guideName && tour.Date.Date == today);
+
+            var table = new Table().LeftAligned();
+            table.AddColumn("ID");
+            table.AddColumn("Name");
+            table.AddColumn("Date");
+            table.AddColumn("Time");
+            table.AddColumn("StartingPoint");
+            table.AddColumn("EndPoint");
+            table.AddColumn("Language");
+            table.AddColumn("Remaining spots");
+
+            foreach (var tour in guideTours)
             {
-                table.AddColumn("ID");
-                table.AddColumn("Name");
-                table.AddColumn("Date");
-                table.AddColumn("Time");
-                table.AddColumn("StartingPoint");
-                table.AddColumn("EndPoint");
-                table.AddColumn("Language");
-                table.AddColumn("Remaining spots");
-                
-                foreach (var tour in guideTours)
+                if (tour.Date.Date == today.Date && tour.Date.TimeOfDay >= DateTime.Now.TimeOfDay && tour.Status)
                 {
-                    if (tour.Date.Date == today.Date && tour.Date.TimeOfDay >= DateTime.Now.TimeOfDay && tour.Status)
-                    {
-                        string timeOnly = tour.Date.ToString("HH:mm");
-                        string dateOnly = tour.Date.ToShortDateString();
-                        int remainingSpots = tour.MaxParticipants - tour.ReservedVisitors.Count;
-                        
-                        table.AddRow(
-                            tour.ID.ToString(),
-                            tour.Name,
-                            dateOnly,
-                            timeOnly,
-                            GuidedTour.StartingPoint,
-                            GuidedTour.EndPoint,
-                            tour.Language,
-                            remainingSpots.ToString()
-                        );
-                        
-                        ctx.Refresh();
-                    }
+                    string timeOnly = tour.Date.ToString("HH:mm");
+                    string dateOnly = tour.Date.ToShortDateString();
+                    int remainingSpots = tour.MaxParticipants - tour.ReservedVisitors.Count;
+
+                    table.AddRow(
+                        tour.ID.ToString(),
+                        tour.Name,
+                        dateOnly,
+                        timeOnly,
+                        GuidedTour.StartingPoint,
+                        GuidedTour.EndPoint,
+                        tour.Language,
+                        remainingSpots.ToString()
+                    );
                 }
-            });
-        GuideController guideController = new GuideController();
-        guideController.OptionsGuide(guideTours, Tour.guide);
+            }
+
+            AnsiConsole.Render(table);
+            GuideController guideController = new GuideController();
+            guideController.OptionsGuide(guideTours, Tour.guide);
+            return true;
+        }
+
+        return false;
     }
 
     public void StartTour(int tourID)
