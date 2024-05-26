@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\serdi\\Desktop\\ProjectB\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery.csproj": {}
+    "C:\\Users\\Wisha\\OneDrive\\Bureaublad\\ProjectB\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery.csproj": {}
   },
   "projects": {
-    "C:\\Users\\serdi\\Desktop\\ProjectB\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery.csproj": {
+    "C:\\Users\\Wisha\\OneDrive\\Bureaublad\\ProjectB\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\serdi\\Desktop\\ProjectB\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery.csproj",
+        "projectUniqueName": "C:\\Users\\Wisha\\OneDrive\\Bureaublad\\ProjectB\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery.csproj",
         "projectName": "ProjectB_Museum_DeMystery",
-        "projectPath": "C:\\Users\\serdi\\Desktop\\ProjectB\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery.csproj",
-        "packagesPath": "C:\\Users\\serdi\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\serdi\\Desktop\\ProjectB\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery\\obj\\",
+        "projectPath": "C:\\Users\\Wisha\\OneDrive\\Bureaublad\\ProjectB\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery.csproj",
+        "packagesPath": "C:\\Users\\Wisha\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Wisha\\OneDrive\\Bureaublad\\ProjectB\\ProjectB_Museum_DeMystery\\ProjectB_Museum_DeMystery\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\serdi\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\Wisha\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
@@ -79,7 +79,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.405\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.406\\RuntimeIdentifierGraph.json"
         }
       }
     }

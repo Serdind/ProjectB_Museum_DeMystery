@@ -57,4 +57,9 @@ public class RealMuseum : IMuseum
     {
         get => DateTime.MinValue;
     }
+
+    public ConsoleKeyInfo ReadKey()
+    {
+        return Console.ReadKey();
+    }
 }

@@ -70,7 +70,7 @@ public class TestablePerson
             }
             else
             {
-                Console.WriteLine("Code is not valid.");
+                Museum.WriteLine("Code is not valid.");
                 return false;
             }
         }

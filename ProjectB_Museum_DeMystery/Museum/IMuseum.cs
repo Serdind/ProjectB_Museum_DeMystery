@@ -22,4 +22,6 @@ public interface IMuseum
     bool TryParseExact(string? s, string? format, IFormatProvider? provider, DateTimeStyles style, out DateTime result);
 
     DateTime MinValue { get; }
+
+    ConsoleKeyInfo ReadKey();
 }

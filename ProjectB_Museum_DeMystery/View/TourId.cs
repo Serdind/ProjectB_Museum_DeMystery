@@ -4,7 +4,7 @@ public class TourId : View
     {
         while (true)
         {
-            Console.Write("Enter tour ID:\n");
+            Console.WriteLine("Enter tour ID:\n");
             string input = Console.ReadLine();
 
             if (input.ToLower() == "b" || input.ToLower() == "back")
