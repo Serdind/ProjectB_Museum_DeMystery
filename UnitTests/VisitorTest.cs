@@ -63,7 +63,7 @@ public class VisitorTests
             $"Reservation successful. You have reserved the following tour:\n" +
             $"Date: 11-5-2024\n" +
             $"Time: 11:30\n" +
-            $"Duration: 20 min\n" +
+            $"Duration: 40 min\n" +
             $"Language: English\n"
         ));
     }
@@ -304,7 +304,7 @@ public class VisitorTests
         Assert.IsTrue(museum.GetWrittenLinesAsString().Contains(
             $"Date: 11-5-2024\n" +
             $"Time: 11:30\n" +
-            $"Duration: 20 min\n" +
+            $"Duration: 40 min\n" +
             $"Language: English\n"
         ));
     }

@@ -11,7 +11,7 @@ public class TestableTourId : View
     {
         while (true)
         {
-            Museum.WriteLine("Enter tour ID:\n");
+            Museum.WriteLine("Enter tour ID:");
             string input = Museum.ReadLine();
 
             if (input.ToLower() == "b" || input.ToLower() == "back")
@@ -25,8 +25,6 @@ public class TestableTourId : View
             else
             {
                 Museum.WriteLine("Invalid input. Please enter a valid numeric tour ID.");
-                Museum.WriteLine("Press any key to continue...\n");
-                Museum.ReadKey();
             }
         }
     }

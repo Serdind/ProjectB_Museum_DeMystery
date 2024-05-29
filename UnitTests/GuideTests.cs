@@ -40,7 +40,7 @@ public class GuideTests
         TestableGuide guide = new TestableGuide(museum);
 
         //Act
-        bool result = guide.AddVisistorToTour(1, "782620");
+        bool result = guide.AddVisitorToTour(1, "782620");
 
         //Assert
         Assert.IsTrue(result);
@@ -73,7 +73,7 @@ public class GuideTests
         TestableGuide guide = new TestableGuide(museum);
 
         //Act
-        bool result = guide.AddVisistorToTour(2, visitor.QR);
+        bool result = guide.AddVisitorToTour(2, visitor.QR);
 
         //Assert
         Assert.IsFalse(result);
@@ -195,7 +195,7 @@ public class GuideTests
                 ""Name"": ""Museum tour"",
                 ""Date"": ""2024-05-11T11:30:00"",
                 ""Language"": ""English"",
-                ""NameGuide"": ""Casper"",
+                ""NameGuide"": ""TestGuide"",
                 ""ReservedVisitors"": [],
                 ""Status"": true,
                 ""MaxParticipants"": 20
@@ -205,7 +205,7 @@ public class GuideTests
                 ""Name"": ""Another tour"",
                 ""Date"": ""2024-05-11T15:00:00"",
                 ""Language"": ""English"",
-                ""NameGuide"": ""Casper"",
+                ""NameGuide"": ""TestGuide"",
                 ""ReservedVisitors"": [],
                 ""Status"": false,
                 ""MaxParticipants"": 20
@@ -215,7 +215,7 @@ public class GuideTests
                 ""Name"": ""Future tour"",
                 ""Date"": ""2024-05-12T10:00:00"",
                 ""Language"": ""English"",
-                ""NameGuide"": ""Casper"",
+                ""NameGuide"": ""TestGuide"",
                 ""ReservedVisitors"": [],
                 ""Status"": true,
                 ""MaxParticipants"": 20
@@ -223,9 +223,11 @@ public class GuideTests
         ]";
         
         TestableGuide testableGuide = new TestableGuide(museum);
+
+        museum.LinesToRead = new List<string> { "b" };
         
         // Act
-        bool result = testableGuide.ViewTours("Casper");
+        bool result = testableGuide.ViewTours("TestGuide");
 
         // Assert
         Assert.IsTrue(result);

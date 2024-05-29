@@ -10,15 +10,8 @@ public class TestableTourController
 
     public void ReservateTour(Visitor visitor, TestableVisitor testVisitor)
     {
-        TestableTour testableTour = new TestableTour(Museum);
-        
-        bool toursAvailable = testableTour.OverviewTours(false);
-        if (!toursAvailable)
-        {
-            return;
-        };
-
-        int tourID = TourId.WhichTourId();
+        TestableTourId testableTourId = new TestableTourId(Museum);
+        int tourID = testableTourId.WhichTourId();
 
         testVisitor.Reservate(tourID, visitor);
     }

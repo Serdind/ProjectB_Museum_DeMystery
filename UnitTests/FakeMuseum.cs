@@ -65,4 +65,9 @@ public class FakeMuseum : IMuseum
     {
         get => DateTime.MinValue;
     }
+
+    public ConsoleKeyInfo ReadKey()
+    {
+        return new ConsoleKeyInfo('\r', ConsoleKey.Enter, false, false, false);
+    }
 }

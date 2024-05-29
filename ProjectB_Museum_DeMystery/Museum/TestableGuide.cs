@@ -11,7 +11,8 @@ public class TestableGuide
     {
         Museum = museum;
     }
-    public bool AddVisistorToTour(int tourID, string qr)
+
+    public bool AddVisitorToTour(int tourID, string qr)
     {
         string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery\TestData";
         string fileName = "toursTest.json";
@@ -31,7 +32,6 @@ public class TestableGuide
                 TestableVisitor testVisitor = new TestableVisitor(Museum);
                 
                 testVisitor.ReservateByGuide(tourID, visitor);
-
                 Museum.WriteLine("Succesfully added visitor to tour.");
                 return true;
             }
@@ -111,15 +111,14 @@ public class TestableGuide
 
     public bool ViewTours(string guideName)
     {
-        DateTime today = DateTime.Today;
         string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery\TestData";
         string fileName = "toursTest.json";
         string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
         string filePath = Path.Combine(userDirectory, subdirectory, fileName);
-        string jsonData = Museum.ReadAllText(filePath);
         
         if (Museum.FileExists(filePath))
         {
+            string jsonData = Museum.ReadAllText(filePath);
             List<GuidedTour> tours = JsonConvert.DeserializeObject<List<GuidedTour>>(jsonData);
             
             List<GuidedTour> guideTours = tours.FindAll(tour => tour.NameGuide == guideName);
@@ -154,6 +153,9 @@ public class TestableGuide
                     );
                     
                     Museum.WriteLine(table.ToString());
+                    TestableGuideController guideController = new TestableGuideController(Museum);
+                    TestableGuide testableGuide = new TestableGuide(Museum);
+                    guideController.OptionsGuide(guideTours, testableGuide);
                     return true;
                 }
                 else

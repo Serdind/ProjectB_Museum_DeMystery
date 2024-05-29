@@ -491,7 +491,18 @@
     "Date": "2024-05-27T14:00:00",
     "Language": "Dutch",
     "NameGuide": "Casper",
-    "ReservedVisitors": [],
+    "ReservedVisitors": [
+      {
+        "Id": 2,
+        "TourId": 49,
+        "QR": "629534"
+      },
+      {
+        "Id": 3,
+        "TourId": 49,
+        "QR": "223223"
+      }
+    ],
     "Status": true,
     "MaxParticipants": 13
   },
@@ -501,7 +512,13 @@
     "Date": "2024-05-27T14:30:00",
     "Language": "English",
     "NameGuide": "Casper",
-    "ReservedVisitors": [],
+    "ReservedVisitors": [
+      {
+        "Id": 4,
+        "TourId": 50,
+        "QR": "523052"
+      }
+    ],
     "Status": true,
     "MaxParticipants": 13
   },
@@ -551,7 +568,13 @@
     "Date": "2024-05-28T11:30:00",
     "Language": "English",
     "NameGuide": "Casper",
-    "ReservedVisitors": [],
+    "ReservedVisitors": [
+      {
+        "Id": 5,
+        "TourId": 55,
+        "QR": "691967"
+      }
+    ],
     "Status": true,
     "MaxParticipants": 13
   },
@@ -581,7 +604,13 @@
     "Date": "2024-05-28T14:00:00",
     "Language": "Dutch",
     "NameGuide": "Casper",
-    "ReservedVisitors": [],
+    "ReservedVisitors": [
+      {
+        "Id": 6,
+        "TourId": 58,
+        "QR": "246102"
+      }
+    ],
     "Status": true,
     "MaxParticipants": 13
   },
@@ -631,7 +660,13 @@
     "Date": "2024-05-28T17:00:00",
     "Language": "English",
     "NameGuide": "Casper",
-    "ReservedVisitors": [],
+    "ReservedVisitors": [
+      {
+        "Id": 7,
+        "TourId": 63,
+        "QR": "822105"
+      }
+    ],
     "Status": true,
     "MaxParticipants": 13
   },
@@ -717,7 +752,7 @@
   },
   {
     "ID": 72,
-    "Name": "Museum tour",
+    "Name": "d",
     "Date": "2024-05-29T17:00:00",
     "Language": "English",
     "NameGuide": "Casper",
@@ -730,6 +765,42 @@
     "Name": "Museum test",
     "Date": "2024-05-24T10:10:00",
     "Language": "English",
+    "NameGuide": "Casper",
+    "ReservedVisitors": [],
+    "Status": true,
+    "MaxParticipants": 13
+  },
+  {
+    "ID": 74,
+    "Name": "Museum tour",
+    "Date": "2024-05-28T20:00:00",
+    "Language": "Dutch",
+    "NameGuide": "Casper",
+    "ReservedVisitors": [
+      {
+        "Id": 8,
+        "TourId": 74,
+        "QR": "485267"
+      }
+    ],
+    "Status": false,
+    "MaxParticipants": 13
+  },
+  {
+    "ID": 75,
+    "Name": "Museum tour",
+    "Date": "2024-05-28T23:00:00",
+    "Language": "Dutch",
+    "NameGuide": "Casper",
+    "ReservedVisitors": [],
+    "Status": false,
+    "MaxParticipants": 13
+  },
+  {
+    "ID": 76,
+    "Name": "s",
+    "Date": "2024-05-25T19:00:00",
+    "Language": "d",
     "NameGuide": "Casper",
     "ReservedVisitors": [],
     "Status": true,

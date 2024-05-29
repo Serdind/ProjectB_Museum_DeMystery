@@ -62,7 +62,7 @@ public class TestableVisitor
                     string message = $"Reservation successful. You have reserved the following tour:\n" +
                         $"Date: {tour.Date.ToShortDateString()}\n" +
                         $"Time: {tour.Date.ToString("HH:mm")}\n" +
-                        $"Duration: 20 min\n" +
+                        $"Duration: 40 min\n" +
                         $"Language: {tour.Language}\n";
 
                     Museum.WriteLine(message);
@@ -128,7 +128,6 @@ public class TestableVisitor
                     string updatedJson = JsonConvert.SerializeObject(tours, Formatting.Indented);
 
                     Museum.WriteAllText(filePath, updatedJson);
-
                     return true;
                 }
                 else
@@ -184,7 +183,7 @@ public class TestableVisitor
 
             string message = $"Date: {tour.Date.ToShortDateString()}\n" +
                         $"Time: {tour.Date.ToString("HH:mm")}\n" +
-                        $"Duration: 20 min\n" +
+                        $"Duration: 40 min\n" +
                         $"Language: {tour.Language}\n";
 
             Museum.WriteLine(message);

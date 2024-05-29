@@ -134,8 +134,36 @@ public class TestableProgramController
                 else
                 {
                     Museum.WriteLine("Wrong input. Try again.");
-                    Museum.WriteLine("Press any key to continue...\n");
-                    Museum.ReadKey();
+                }
+            }
+        }
+        else if (loginStatus == "Admin")
+        {
+            TestablePersonController personController = new TestablePersonController(Museum);
+            personController.AdminMenu(language);
+        }
+        else if (loginStatus == "Guide")
+        {
+            bool guideRunning = true;
+            TestableGuide testableGuide = new TestableGuide(Museum);
+
+            while (guideRunning)
+            {
+                
+                Museum.WriteLine("My tours(M)\nLog out(L)");
+                string option = Museum.ReadLine();
+
+                if (option.ToLower() == "m" || option.ToLower() == "my tours")
+                {
+                    testableGuide.ViewTours("TestGuide");
+                }
+                else if (option.ToLower() == "l" || option.ToLower() == "log out")
+                {
+                    guideRunning = false;
+                }
+                else
+                {
+                    Museum.WriteLine("Wrong input. Try again.");
                 }
             }
         }
