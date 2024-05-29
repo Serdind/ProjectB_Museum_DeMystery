@@ -155,7 +155,7 @@ public class TestableProgramController
 
                 if (option.ToLower() == "m" || option.ToLower() == "my tours")
                 {
-                    testableGuide.ViewTours("TestGuide");
+                    testableGuide.ViewTours("TestGuide1");
                 }
                 else if (option.ToLower() == "l" || option.ToLower() == "log out")
                 {
