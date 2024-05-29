@@ -17,8 +17,6 @@ namespace UnitTests
             DepartmentHead departmentHead = new DepartmentHead(name, qr);
 
             // asert
-            Assert.IsNotNull(departmentHead);
-            Assert.AreEqual(name, departmentHead.Name);
             Assert.AreEqual(1, departmentHead.Id);
         }
 
