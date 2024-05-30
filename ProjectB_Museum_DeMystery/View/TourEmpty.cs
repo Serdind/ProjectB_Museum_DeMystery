@@ -1,21 +1,22 @@
 public class TourEmpty : View
 {
+    private static IMuseum museum = Program.Museum;
     public static void Show()
     {
-        Console.WriteLine("Tour is empty.");
-        Console.WriteLine("Press any key to continue...\n");
-        Console.ReadKey(true);
+        museum.WriteLine("Tour is empty.");
+        museum.WriteLine("Press any key to continue...\n");
+        museum.ReadKey();
     }
 
     public static void RemovedToursEmpty()
     {
-        Console.WriteLine("The removedTours.json file is empty.");
+        museum.WriteLine("The removedTours.json file is empty.");
     }
 
     public static void NoVisitorsInTour()
     {
-        Console.WriteLine("No visitors found for the specified tour.");
-        Console.WriteLine("Press any key to continue...\n");
-        Console.ReadKey(true);
+        museum.WriteLine("No visitors found for the specified tour.");
+        museum.WriteLine("Press any key to continue...\n");
+        museum.ReadKey();
     }
 }

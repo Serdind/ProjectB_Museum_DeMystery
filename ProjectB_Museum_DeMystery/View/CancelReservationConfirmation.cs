@@ -1,22 +1,23 @@
 public class CancelReservationConfirmation : View
 {
+    private static IMuseum museum = Program.Museum;
     public static string Options()
     {
-        Console.WriteLine("Are you sure you want to cancel your reservation?\nYes or Y to comfirm\nNo or N to decline");
+        museum.WriteLine("Are you sure you want to cancel your reservation?\nYes or Y to comfirm\nNo or N to decline");
         return ReadLineString();
     }
 
     public static void ReservationCancelled()
     {
-        Console.WriteLine("Reservation cancelled successfully.");
-        Console.WriteLine("Press any key to continue...\n");
-        Console.ReadKey(true);
+        museum.WriteLine("Reservation cancelled successfully.");
+        museum.WriteLine("Press any key to continue...\n");
+        museum.ReadKey();
     }
 
     public static void ReservationCancelDenied()
     {
-        Console.WriteLine("Reservation cancellation cancelled.");
-        Console.WriteLine("Press any key to continue...\n");
-        Console.ReadKey(true);
+        museum.WriteLine("Reservation cancellation cancelled.");
+        museum.WriteLine("Press any key to continue...\n");
+        museum.ReadKey();
     }
 }

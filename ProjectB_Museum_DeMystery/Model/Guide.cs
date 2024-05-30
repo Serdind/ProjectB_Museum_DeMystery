@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 
 public class Guide : Person
 {
+    private static IMuseum museum = Program.Museum;
     private static int lastId = 0;
     [JsonPropertyName("Id")]
     public int Id;
@@ -23,9 +24,9 @@ public class Guide : Person
         string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
         string filePath = Path.Combine(userDirectory, subdirectory, fileName);
 
-        if (File.Exists(filePath))
+        if (museum.FileExists(filePath))
         {
-            string json = File.ReadAllText(filePath);
+            string json = museum.ReadAllText(filePath);
             var tours = JsonConvert.DeserializeObject<List<GuidedTour>>(json);
 
             var tour = tours.FirstOrDefault(t => t.ID == tourID);
@@ -56,9 +57,9 @@ public class Guide : Person
         string toursFilePath = Path.Combine(userDirectory, subdirectory, toursFileName);
         string visitorsFilePath = Path.Combine(userDirectory, subdirectory, visitorsFileName);
 
-        if (File.Exists(toursFilePath) && File.Exists(visitorsFilePath))
+        if (museum.FileExists(toursFilePath) && museum.FileExists(visitorsFilePath))
         {
-            string toursJson = File.ReadAllText(toursFilePath);
+            string toursJson = museum.ReadAllText(toursFilePath);
             var tours = JsonConvert.DeserializeObject<List<GuidedTour>>(toursJson);
 
             var tour = tours.FirstOrDefault(t => t.ID == tourID);
@@ -73,14 +74,14 @@ public class Guide : Person
 
                     Tour.SaveToursToFile(toursFilePath, tours);
 
-                    string visitorsJson = File.ReadAllText(visitorsFilePath);
+                    string visitorsJson = museum.ReadAllText(visitorsFilePath);
                     var visitors = JsonConvert.DeserializeObject<List<Visitor>>(visitorsJson);
                     var visitorInAllVisitors = visitors.FirstOrDefault(visitor => visitor.QR == qr);
 
                     if (visitorInAllVisitors != null)
                     {
                         visitors.Remove(visitorInAllVisitors);
-                        File.WriteAllText(visitorsFilePath, JsonConvert.SerializeObject(visitors));
+                        museum.WriteAllText(visitorsFilePath, JsonConvert.SerializeObject(visitors));
                         GuideOptions.RemovedVisitorFromTour();
                         return true;
                     }
@@ -117,9 +118,9 @@ public class Guide : Person
         string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
         string filePath = Path.Combine(userDirectory, subdirectory, fileName);
 
-        if (File.Exists(filePath))
+        if (museum.FileExists(filePath))
         {
-            string jsonData = File.ReadAllText(filePath);
+            string jsonData = museum.ReadAllText(filePath);
             List<GuidedTour> tours = JsonConvert.DeserializeObject<List<GuidedTour>>(jsonData);
 
             List<GuidedTour> guideTours = tours.FindAll(tour => tour.NameGuide == guideName && tour.Date.Date == today);
@@ -172,9 +173,9 @@ public class Guide : Person
         string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
         string filePath = Path.Combine(userDirectory, subdirectory, fileName);
 
-        if (File.Exists(filePath))
+        if (museum.FileExists(filePath))
         {
-            string json = File.ReadAllText(filePath);
+            string json = museum.ReadAllText(filePath);
             var tours = JsonConvert.DeserializeObject<List<GuidedTour>>(json);
 
             var tour = tours.FirstOrDefault(t => t.ID == tourID);

@@ -4,6 +4,8 @@ public class UniqueCodes
 {
     private static Random random = new Random();
 
+    private static IMuseum museum = Program.Museum;
+
     public List<int> GenerateUniqueCodes(int count)
     {
         string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
@@ -13,9 +15,9 @@ public class UniqueCodes
         string guidesFilePath = Path.Combine(userDirectory, subdirectory, "guides.json");
 
         HashSet<int> existingCodes = new HashSet<int>();
-        if (File.Exists(adminsFilePath))
+        if (museum.FileExists(adminsFilePath))
         {
-            string json = File.ReadAllText(adminsFilePath);
+            string json = museum.ReadAllText(adminsFilePath);
             var admins = JsonConvert.DeserializeObject<List<DepartmentHead>>(json);
             foreach (var admin in admins)
             {
@@ -23,9 +25,9 @@ public class UniqueCodes
             }
         }
 
-        if (File.Exists(guidesFilePath))
+        if (museum.FileExists(guidesFilePath))
         {
-            string json1 = File.ReadAllText(guidesFilePath);
+            string json1 = museum.ReadAllText(guidesFilePath);
             var guides = JsonConvert.DeserializeObject<List<Guide>>(json1);
             foreach (var guide in guides)
             {
@@ -50,14 +52,14 @@ public class UniqueCodes
     public static void SaveCodesToJson(List<int> codes, string fileName)
     {
         string json = JsonConvert.SerializeObject(codes, Formatting.Indented);
-        File.WriteAllText(fileName, json);
+        museum.WriteAllText(fileName, json);
     }
 
     public static List<string> LoadUniqueCodesFromFile(string fileName)
     {
-        if (File.Exists(fileName))
+        if (museum.FileExists(fileName))
         {
-            string json = File.ReadAllText(fileName);
+            string json = museum.ReadAllText(fileName);
             return JsonConvert.DeserializeObject<List<string>>(json);
         }
         else
@@ -68,9 +70,9 @@ public class UniqueCodes
 
      public static bool IsNewDay(string filePath)
     {
-        if (File.Exists(filePath))
+        if (museum.FileExists(filePath))
         {
-            DateTime lastModified = File.GetLastWriteTime(filePath);
+            DateTime lastModified = museum.GetLastWriteTime(filePath);
 
             return lastModified.Date < DateTime.Today;
         }

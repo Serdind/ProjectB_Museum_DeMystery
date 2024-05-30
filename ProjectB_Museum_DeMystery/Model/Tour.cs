@@ -10,6 +10,8 @@ static class Tour
     public static List<Visitor> visitors = new List<Visitor>();
     public static Guide guide = new Guide("Casper", "4892579");
 
+    private static IMuseum museum = Program.Museum;
+
     public static void UpdateTours()
     {
         DateTime today = DateTime.Today;
@@ -19,9 +21,9 @@ static class Tour
         string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
         string filePath = Path.Combine(userDirectory, subdirectory, fileName);
             
-        if (File.Exists(filePath))
+        if (museum.FileExists(filePath))
         {
-            DateTime lastWriteTime = File.GetLastWriteTime(filePath).Date;
+            DateTime lastWriteTime = museum.GetLastWriteTime(filePath).Date;
             
             if (lastWriteTime.Year < endDate.Year)
             {
@@ -84,9 +86,9 @@ static class Tour
     public static void SaveToursToFile(string filePath, List<GuidedTour> tours)
     {
         List<GuidedTour> existingTours;
-        if (File.Exists(filePath))
+        if (museum.FileExists(filePath))
         {
-            string existingJson = File.ReadAllText(filePath);
+            string existingJson = museum.ReadAllText(filePath);
             existingTours = JsonConvert.DeserializeObject<List<GuidedTour>>(existingJson);
         }
         else
@@ -113,12 +115,12 @@ static class Tour
         }
 
         string updatedJson = JsonConvert.SerializeObject(updatedTours, Formatting.Indented);
-        File.WriteAllText(filePath, updatedJson);
+        museum.WriteAllText(filePath, updatedJson);
     }
 
     public static bool OverviewTours(bool edit)
     {
-        DateTime currentDate = DateTime.Today;
+        DateTime currentDate = museum.Today;
         string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
         string fileName = "tours.json";
         string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
@@ -127,7 +129,7 @@ static class Tour
         if (edit)
         {
             bool validDateSelected = false;
-            DateTime selectedDate = DateTime.MinValue;
+            DateTime selectedDate = museum.MinValue;
             PersonController personController = new PersonController();
 
             while (!validDateSelected)
@@ -149,9 +151,9 @@ static class Tour
                 }
             }
 
-            if (File.Exists(filePath))
+            if (museum.FileExists(filePath))
             {
-                string json = File.ReadAllText(filePath);
+                string json = museum.ReadAllText(filePath);
                 var tours = JsonConvert.DeserializeObject<List<GuidedTour>>(json);
 
                 bool tourFound = tours.Any(t => t.Date.Date == selectedDate.Date);
@@ -211,9 +213,9 @@ static class Tour
         }
         else
         {
-            if (File.Exists(filePath))
+            if (museum.FileExists(filePath))
             {
-                string json = File.ReadAllText(filePath);
+                string json = museum.ReadAllText(filePath);
                 var tours = JsonConvert.DeserializeObject<List<GuidedTour>>(json);
 
                 tours = tours.OrderBy(t => t.Date).ToList();
@@ -271,16 +273,16 @@ static class Tour
 
     public static void OverviewRemovedTours()
     {
-        DateTime currentDate = DateTime.Today;
+        DateTime currentDate = museum.Today;
 
         string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
         string fileName = "removedTours.json";
         string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
         string filePath = Path.Combine(userDirectory, subdirectory, fileName);
 
-        if (File.Exists(filePath))
+        if (museum.FileExists(filePath))
         {
-            string json = File.ReadAllText(filePath);
+            string json = museum.ReadAllText(filePath);
 
             if (string.IsNullOrWhiteSpace(json))
             {
@@ -337,15 +339,15 @@ static class Tour
         string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
         string filePath = Path.Combine(userDirectory, subdirectory, fileName);
         
-        if (File.Exists(filePath))
+        if (museum.FileExists(filePath))
         {
-            string json = File.ReadAllText(filePath);
+            string json = museum.ReadAllText(filePath);
             List<GuidedTour> tours = JsonConvert.DeserializeObject<List<GuidedTour>>(json);
 
             tours.RemoveAll(tour => tour.Date.Date == date.Date);
 
             string updatedJson = JsonConvert.SerializeObject(tours, Formatting.Indented);
-            File.WriteAllText(filePath, updatedJson);
+            museum.WriteAllText(filePath, updatedJson);
         }
     }
 
@@ -356,9 +358,9 @@ static class Tour
         string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
         string filePath = Path.Combine(userDirectory, subdirectory, fileName);
 
-        if (File.Exists(filePath))
+        if (museum.FileExists(filePath))
         {
-            string json = File.ReadAllText(filePath);
+            string json = museum.ReadAllText(filePath);
             return JsonConvert.DeserializeObject<List<GuidedTour>>(json);
         }
 
@@ -372,9 +374,9 @@ static class Tour
         string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
         string filePath = Path.Combine(userDirectory, subdirectory, fileName);
 
-        if (File.Exists(filePath))
+        if (museum.FileExists(filePath))
         {
-            string json = File.ReadAllText(filePath);
+            string json = museum.ReadAllText(filePath);
             return JsonConvert.DeserializeObject<List<GuidedTour>>(json);
         }
 
@@ -401,7 +403,7 @@ static class Tour
     {
         string json = JsonConvert.SerializeObject(admins, Formatting.Indented);
 
-        File.WriteAllText(filePath, json);
+        museum.WriteAllText(filePath, json);
     }
 
     public static List<DepartmentHead> LoadAdminsFromFile()
@@ -411,9 +413,9 @@ static class Tour
         string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
         string filePath = Path.Combine(userDirectory, subdirectory, fileName);
 
-        if (File.Exists(filePath))
+        if (museum.FileExists(filePath))
         {
-            string json = File.ReadAllText(filePath);
+            string json = museum.ReadAllText(filePath);
             return JsonConvert.DeserializeObject<List<DepartmentHead>>(json);
         }
         else
@@ -442,7 +444,7 @@ static class Tour
     {
         string json = JsonConvert.SerializeObject(guides, Formatting.Indented);
 
-        File.WriteAllText(filePath, json);
+        museum.WriteAllText(filePath, json);
     }
 
     public static List<Guide> LoadGuidesFromFile()
@@ -452,9 +454,9 @@ static class Tour
         string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
         string filePath = Path.Combine(userDirectory, subdirectory, fileName);
 
-        if (File.Exists(filePath))
+        if (museum.FileExists(filePath))
         {
-            string json = File.ReadAllText(filePath);
+            string json = museum.ReadAllText(filePath);
             return JsonConvert.DeserializeObject<List<Guide>>(json);
         }
         else
@@ -485,9 +487,9 @@ static class Tour
         string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
         string filePath = Path.Combine(userDirectory, subdirectory, fileName);
 
-        if (File.Exists(filePath))
+        if (museum.FileExists(filePath))
         {
-            string json = File.ReadAllText(filePath);
+            string json = museum.ReadAllText(filePath);
             return JsonConvert.DeserializeObject<List<Visitor>>(json);
         }
         else
@@ -509,7 +511,7 @@ static class Tour
         string filePath = Path.Combine(userDirectory, subdirectory, fileName);
 
         string json = JsonConvert.SerializeObject(visitors, Formatting.Indented);
-        File.WriteAllText(filePath, json);
+        museum.WriteAllText(filePath, json);
     }
 
     public static void OverviewVisitorsTour(int tourID)
@@ -519,9 +521,9 @@ static class Tour
         string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
         string filePath = Path.Combine(userDirectory, subdirectory, fileName);
         
-        if (File.Exists(filePath))
+        if (museum.FileExists(filePath))
         {
-            string json = File.ReadAllText(filePath);
+            string json = museum.ReadAllText(filePath);
             var visitors = JsonConvert.DeserializeObject<List<Visitor>>(json);
             
             visitors = visitors.Where(v => v.TourId == tourID).OrderBy(t => t.TourId).ToList();
@@ -555,9 +557,9 @@ static class Tour
 
     public static void CreateEmptyJsonFile(string filePath)
     {
-        if (!File.Exists(filePath))
+        if (!museum.FileExists(filePath))
         {
-            File.WriteAllText(filePath, "[]");
+            museum.WriteAllText(filePath, "[]");
         }
     }
 }

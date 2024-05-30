@@ -2,6 +2,7 @@ using System.Text.Json.Serialization;
 using Newtonsoft.Json;
 public class Visitor : Person
 {
+    private static IMuseum museum = Program.Museum;
     private static int lastId = 1;
     [JsonPropertyName("Id")]
     public int Id;
@@ -22,20 +23,20 @@ public class Visitor : Person
             return false;
         }
 
-        DateTime currentDate = DateTime.Now;
+        DateTime currentDate = museum.Now;
         string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
         string fileName = "tours.json";
         string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
         string filePath = Path.Combine(userDirectory, subdirectory, fileName);
 
-        if (File.Exists(filePath))
+        if (museum.FileExists(filePath))
         {
-            string json = File.ReadAllText(filePath);
+            string json = museum.ReadAllText(filePath);
             var tours = JsonConvert.DeserializeObject<List<GuidedTour>>(json);
 
             var tour = tours.FirstOrDefault(t => t.ID == tourID);
 
-            if (tour != null && tour.Date.Date == currentDate.Date && tour.Date.TimeOfDay >= DateTime.Now.TimeOfDay && tour.Status)
+            if (tour != null && tour.Date.Date == currentDate.Date && tour.Date.TimeOfDay >= museum.Now.TimeOfDay && tour.Status)
             {
                 if (tour.MaxParticipants > tour.ReservedVisitors.Count())
                 {
@@ -48,9 +49,9 @@ public class Visitor : Person
                     string userDirectory1 = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
                     string filePath1 = Path.Combine(userDirectory1, subdirectory1, fileName1);
 
-                    if (File.Exists(filePath1))
+                    if (museum.FileExists(filePath1))
                     {
-                        string json1 = File.ReadAllText(filePath1);
+                        string json1 = museum.ReadAllText(filePath1);
                         var visitors = JsonConvert.DeserializeObject<List<Visitor>>(json1);
 
                         var v = visitors.FirstOrDefault(t => t.QR == visitor.QR);
@@ -60,7 +61,7 @@ public class Visitor : Person
 
                     string updatedJson = JsonConvert.SerializeObject(tours, Formatting.Indented);
 
-                    File.WriteAllText(filePath, updatedJson);
+                    museum.WriteAllText(filePath, updatedJson);
 
                     MessageTourReservation.ShowMessage(tour);
                     return true;
@@ -88,20 +89,20 @@ public class Visitor : Person
             return false;
         }
 
-        DateTime currentDate = DateTime.Now;
+        DateTime currentDate = museum.Now;
         string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
         string fileName = "tours.json";
         string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
         string filePath = Path.Combine(userDirectory, subdirectory, fileName);
 
-        if (File.Exists(filePath))
+        if (museum.FileExists(filePath))
         {
-            string json = File.ReadAllText(filePath);
+            string json = museum.ReadAllText(filePath);
             var tours = JsonConvert.DeserializeObject<List<GuidedTour>>(json);
 
             var tour = tours.FirstOrDefault(t => t.ID == tourID);
 
-            if (tour != null && tour.Date.Date == currentDate.Date && tour.Date.TimeOfDay >= DateTime.Now.TimeOfDay && tour.Status)
+            if (tour != null && tour.Date.Date == currentDate.Date && tour.Date.TimeOfDay >= museum.Now.TimeOfDay && tour.Status)
             {
                 if (tour.MaxParticipants > tour.ReservedVisitors.Count())
                 {
@@ -114,9 +115,9 @@ public class Visitor : Person
                     string userDirectory1 = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
                     string filePath1 = Path.Combine(userDirectory1, subdirectory1, fileName1);
 
-                    if (File.Exists(filePath1))
+                    if (museum.FileExists(filePath1))
                     {
-                        string json1 = File.ReadAllText(filePath1);
+                        string json1 = museum.ReadAllText(filePath1);
                         var visitors = JsonConvert.DeserializeObject<List<Visitor>>(json1);
 
                         var v = visitors.FirstOrDefault(t => t.QR == visitor.QR);
@@ -126,7 +127,7 @@ public class Visitor : Person
 
                     string updatedJson = JsonConvert.SerializeObject(tours, Formatting.Indented);
 
-                    File.WriteAllText(filePath, updatedJson);
+                    museum.WriteAllText(filePath, updatedJson);
 
                     return true;
                 }

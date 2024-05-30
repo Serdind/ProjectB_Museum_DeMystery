@@ -143,8 +143,7 @@ public class TestableGuideController
             if (option.ToLower() == "v" || option.ToLower() == "view visitors")
             {
                 Museum.WriteLine("Insert (Back or B) if you want to go back");
-                TestableTourId testableTourId = new TestableTourId(Museum);
-                tourID = testableTourId.WhichTourId();
+                tourID = TourId.WhichTourId();
 
                 if (tourID == -1)
                 {
@@ -170,8 +169,7 @@ public class TestableGuideController
             else if (option.ToLower() == "s" || option.ToLower() == "start tour")
             {
                 Museum.WriteLine("Insert (Back or B) if you want to go back");
-                TestableTourId testableTourId = new TestableTourId(Museum);
-                tourID = testableTourId.WhichTourId();
+                tourID = TourId.WhichTourId();
 
                 if (tourID == -1)
                 {

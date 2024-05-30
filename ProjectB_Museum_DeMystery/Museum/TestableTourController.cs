@@ -10,8 +10,7 @@ public class TestableTourController
 
     public void ReservateTour(Visitor visitor, TestableVisitor testVisitor)
     {
-        TestableTourId testableTourId = new TestableTourId(Museum);
-        int tourID = testableTourId.WhichTourId();
+        int tourID = TourId.WhichTourId();
 
         testVisitor.Reservate(tourID, visitor);
     }

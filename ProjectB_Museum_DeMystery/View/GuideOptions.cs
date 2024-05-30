@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 
 public class GuideOptions : View
 {
+    private static IMuseum museum = Program.Museum;
     public static string Options(int tourID)
     {
         string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
@@ -19,11 +20,11 @@ public class GuideOptions : View
 
             if (visitors.Any())
             {
-                Console.WriteLine("Add visitor(A)\nRemove visitor(R)\nGo back(B)");
+                museum.WriteLine("Add visitor(A)\nRemove visitor(R)\nGo back(B)");
             }
             else
             {
-                Console.WriteLine("Add visitor(A)\nGo back(B)");
+                museum.WriteLine("Add visitor(A)\nGo back(B)");
             }
         }
             
@@ -40,56 +41,56 @@ public class GuideOptions : View
                         $"Language: {tour.Language}\n" +
                         $"Guide: {tour.NameGuide}\n";
 
-        Console.WriteLine(message);
-        Console.WriteLine("Press any key to continue...\n");
-        Console.ReadKey(true);
+        museum.WriteLine(message);
+        museum.WriteLine("Press any key to continue...\n");
+        museum.ReadKey();
     }
 
     public static string ViewTours()
     {
-        Console.WriteLine("My tours(M)\nLog out(L)");
+        museum.WriteLine("My tours(M)\nLog out(L)");
         return ReadLineString();
     }
 
     public static void AddedVisitorToTour()
     {
-        Console.WriteLine("Succesfully added visitor to tour.");
-        Console.WriteLine("Press any key to continue...\n");
-        Console.ReadKey(true);
+        museum.WriteLine("Succesfully added visitor to tour.");
+        museum.WriteLine("Press any key to continue...\n");
+        museum.ReadKey();
     }
 
     public static void RemovedVisitorFromTour()
     {
-        Console.WriteLine("Succesfully removed visitor from tour.");
-        Console.WriteLine("Press any key to continue...\n");
-        Console.ReadKey(true);
+        museum.WriteLine("Succesfully removed visitor from tour.");
+        museum.WriteLine("Press any key to continue...\n");
+        museum.ReadKey();
     }
 
     public static void VisitorNotFound()
     {
-        Console.WriteLine("Visitor not found in the visitors list.");
-        Console.WriteLine("Press any key to continue...\n");
-        Console.ReadKey(true);
+        museum.WriteLine("Visitor not found in the visitors list.");
+        museum.WriteLine("Press any key to continue...\n");
+        museum.ReadKey();
     }
 
     public static void VisitorNotFoundInTour()
     {
-        Console.WriteLine("Visitor not found in the tour's list of reserved visitors.");
-        Console.WriteLine("Press any key to continue...\n");
-        Console.ReadKey(true);
+        museum.WriteLine("Visitor not found in the tour's list of reserved visitors.");
+        museum.WriteLine("Press any key to continue...\n");
+        museum.ReadKey();
     }
 
     public static void TourNotFoundOrActive()
     {
-        Console.WriteLine("Tour not found or not active.");
-        Console.WriteLine("Press any key to continue...\n");
-        Console.ReadKey(true);
+        museum.WriteLine("Tour not found or not active.");
+        museum.WriteLine("Press any key to continue...\n");
+        museum.ReadKey();
     }
 
     public static void TourVisitorFileNotFound()
     {
-        Console.WriteLine("Tour not found or not active.");
-        Console.WriteLine("Press any key to continue...\n");
-        Console.ReadKey(true);
+        museum.WriteLine("Tour not found or not active.");
+        museum.WriteLine("Press any key to continue...\n");
+        museum.ReadKey();
     }
 }

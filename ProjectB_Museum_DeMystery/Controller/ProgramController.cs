@@ -1,5 +1,6 @@
 public class ProgramController
 {
+    private static IMuseum museum = Program.Museum;
     public static void Start()
     {
         Visitor visitor = new Visitor(0, null);
@@ -18,7 +19,7 @@ public class ProgramController
 
             if (!IsValidLanguage(language))
             {
-                Console.WriteLine("Invalid language selection. Please choose again.");
+                museum.WriteLine("Invalid language selection. Please choose again.");
             }
 
         } while (!IsValidLanguage(language));
@@ -42,7 +43,7 @@ public class ProgramController
 
             if (choice.ToLower() != "l" && choice.ToLower() != "login")
             {
-                Console.WriteLine("Invalid choice. Please try again.");
+                museum.WriteLine("Invalid choice. Please try again.");
             }
 
         } while (choice.ToLower() != "l" && choice.ToLower() != "login");

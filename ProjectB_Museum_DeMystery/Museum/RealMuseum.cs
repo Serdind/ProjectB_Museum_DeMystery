@@ -10,6 +10,11 @@ public class RealMuseum : IMuseum
         get => DateTime.Now;
     }
 
+    public DateTime Today
+    {
+        get => DateTime.Today;
+    }
+
     public void WriteLine(string line)
     {
         Console.WriteLine(line);

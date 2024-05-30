@@ -1,15 +1,16 @@
 public class ReservationMenu : View
 {
+    private static IMuseum museum = Program.Museum;
     public static string Menu(string qr, Visitor visitor)
     {
-        Console.WriteLine("Make reservation(R)");
+        museum.WriteLine("Make reservation(R)");
 
         if (visitor.ReservationMade(qr))
         {
-            Console.WriteLine("My reservations(M)");
-            Console.WriteLine("Cancel reservation(C)");
+            museum.WriteLine("My reservations(M)");
+            museum.WriteLine("Cancel reservation(C)");
         }
-        Console.WriteLine("Log out(L)");
+        museum.WriteLine("Log out(L)");
         return ReadLineString();
     }
 }

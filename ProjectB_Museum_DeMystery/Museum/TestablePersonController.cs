@@ -28,7 +28,6 @@ public class TestablePersonController
         {
             bool adminRunning = true;
             TestableTour testableTour = new TestableTour(Museum);
-            TestableTourId testableTourId = new TestableTourId(Museum);
 
             while (adminRunning)
             {
@@ -100,7 +99,7 @@ public class TestablePersonController
 
                     if (toursFound)
                     {
-                        int id = testableTourId.WhichTourId();
+                        int id = TourId.WhichTourId();
 
                         GuidedTour tour = tours.FirstOrDefault(v => v.ID == id);
 

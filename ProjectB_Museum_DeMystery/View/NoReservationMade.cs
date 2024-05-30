@@ -1,9 +1,10 @@
 public class NoReservationMade
 {
+    private static IMuseum museum = Program.Museum;
     public static void Show()
     {
-        Console.WriteLine("No reservations made.");
-        Console.WriteLine("Press any key to continue...\n");
-        Console.ReadKey(true);
+        museum.WriteLine("No reservations made.");
+        museum.WriteLine("Press any key to continue...\n");
+        museum.ReadKey();
     }
 }

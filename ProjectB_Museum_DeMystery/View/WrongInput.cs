@@ -1,9 +1,10 @@
 public class WrongInput
 {
+    private static IMuseum museum = Program.Museum;
     public static void Show()
     {
-        Console.WriteLine("Wrong input. Try again.");
-        Console.WriteLine("Press any key to continue...\n");
-        Console.ReadKey(true);
+        museum.WriteLine("Wrong input. Try again.");
+        museum.WriteLine("Press any key to continue...\n");
+        museum.ReadKey();
     }
 }

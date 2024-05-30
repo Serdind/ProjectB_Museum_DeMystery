@@ -1,7 +1,8 @@
 public class JsonFile : View
 {
+    private static IMuseum museum = Program.Museum;
     public static void RemovedToursDoesNotExist()
     {
-        Console.WriteLine("The removedTours.json file does not exist.");
+        museum.WriteLine("The removedTours.json file does not exist.");
     }
 }

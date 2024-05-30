@@ -1,11 +1,12 @@
 public class TourId : View
 {
+    private static IMuseum museum = Program.Museum;
     public static int WhichTourId()
     {
         while (true)
         {
-            Console.WriteLine("Enter tour ID:\n");
-            string input = Console.ReadLine();
+            museum.WriteLine("Enter tour ID:\n");
+            string input = museum.ReadLine();
 
             if (input.ToLower() == "b" || input.ToLower() == "back")
             {
@@ -17,9 +18,9 @@ public class TourId : View
             }
             else
             {
-                Console.WriteLine("Invalid input. Please enter a valid numeric tour ID.");
-                Console.WriteLine("Press any key to continue...\n");
-                Console.ReadKey(true);
+                museum.WriteLine("Invalid input. Please enter a valid numeric tour ID.");
+                museum.WriteLine("Press any key to continue...\n");
+                museum.ReadKey();
             }
         }
     }

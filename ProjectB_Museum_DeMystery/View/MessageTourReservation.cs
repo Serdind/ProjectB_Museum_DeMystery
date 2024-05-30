@@ -1,5 +1,6 @@
 public class MessageTourReservation
 {
+    private static IMuseum museum = Program.Museum;
     public static void ShowMessage(GuidedTour tour)
     {
         string message = $"Reservation successful. You have reserved the following tour:\n" +
@@ -9,9 +10,9 @@ public class MessageTourReservation
                         $"Language: {tour.Language}\n" +
                         $"Guide: {tour.NameGuide}\n";
 
-        Console.WriteLine(message);
-        Console.WriteLine("Press any key to continue...\n");
-        Console.ReadKey(true);
+        museum.WriteLine(message);
+        museum.WriteLine("Press any key to continue...\n");
+        museum.ReadKey();
     }
 
     public static void ViewReservation(GuidedTour tour)
@@ -22,9 +23,9 @@ public class MessageTourReservation
                         $"Language: {tour.Language}\n" +
                         $"Guide: {tour.NameGuide}\n";
 
-        Console.WriteLine(message);
-        Console.WriteLine("Press any key to continue...\n");
-        Console.ReadKey(true);
+        museum.WriteLine(message);
+        museum.WriteLine("Press any key to continue...\n");
+        museum.ReadKey();
     }
 
     public static void ViewStart(GuidedTour tour)
@@ -35,15 +36,15 @@ public class MessageTourReservation
                         $"Language: {tour.Language}\n" +
                         $"Guide: {tour.NameGuide}\n";
 
-        Console.WriteLine(message);
-        Console.WriteLine("Press any key to continue...\n");
-        Console.ReadKey(true);
+        museum.WriteLine(message);
+        museum.WriteLine("Press any key to continue...\n");
+        museum.ReadKey();
     }
 
     public static void TourAdded()
     {
-        Console.WriteLine("Tour succesfully added.");
-        Console.WriteLine("Press any key to continue...\n");
-        Console.ReadKey(true);
+        museum.WriteLine("Tour succesfully added.");
+        museum.WriteLine("Press any key to continue...\n");
+        museum.ReadKey();
     }
 }

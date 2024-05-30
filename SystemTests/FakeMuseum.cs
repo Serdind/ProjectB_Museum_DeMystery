@@ -6,12 +6,19 @@ using System.Globalization;
 public class FakeMuseum : IMuseum
 {
     private DateTime? _now = DateTime.Now;
+    private DateTime? _today = DateTime.Today;
     private int _readKeyCount = 0;
 
     public DateTime Now
     {
         get => _now ?? throw new NullReferenceException();
         set => _now = value;
+    }
+
+    public DateTime Today
+    {
+        get => _today ?? throw new NullReferenceException();
+        set => _today = value;
     }
 
     public List<string> LinesWritten { get; } = new();

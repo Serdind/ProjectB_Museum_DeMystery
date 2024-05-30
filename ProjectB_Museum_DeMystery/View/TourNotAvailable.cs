@@ -1,9 +1,10 @@
 public class TourNotAvailable : View
 {
+    private static IMuseum museum = Program.Museum;
     public static void Show()
     {
-        Console.WriteLine("Tour is not available.");
-        Console.WriteLine("Press any key to continue...\n");
-        Console.ReadKey(true);
+        museum.WriteLine("Tour is not available.");
+        museum.WriteLine("Press any key to continue...\n");
+        museum.ReadKey();
     }
 }

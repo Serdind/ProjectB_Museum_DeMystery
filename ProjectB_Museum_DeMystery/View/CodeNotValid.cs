@@ -1,9 +1,10 @@
 public class CodeNotValid : View
 {
+    private static IMuseum museum = Program.Museum;
     public static void Show()
     {
-        Console.WriteLine("Code is not valid.");
-        Console.WriteLine("Press any key to continue...\n");
-        Console.ReadKey(true);
+        museum.WriteLine("Code is not valid.");
+        museum.WriteLine("Press any key to continue...\n");
+        museum.ReadKey();
     }
 }

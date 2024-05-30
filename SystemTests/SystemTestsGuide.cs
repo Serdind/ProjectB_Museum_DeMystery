@@ -1,3 +1,4 @@
+using Microsoft.VisualStudio.TestPlatform.TestHost;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.IO;
@@ -81,7 +82,7 @@ namespace SystemTests
             };
 
             // Act
-            testableProgramController.Start();
+            ProgramController.Start();
 
             // Assert
             string writtenLines = museum.GetWrittenLinesAsString();

@@ -1,4 +1,4 @@
-﻿class Program
+﻿public static class Program
 {
     public static IMuseum Museum = new RealMuseum();
     public static void Main()

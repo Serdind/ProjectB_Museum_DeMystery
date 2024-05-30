@@ -1,14 +1,15 @@
 public class QRVisitor : View
 {
+    private static IMuseum museum = Program.Museum;
     public static string WhichVisitorQr()
     {
-        Console.WriteLine("QR visitor:");
+        museum.WriteLine("QR visitor:");
         return ReadLineString();
     }
 
     public static string ScanQr()
     {
-        Console.WriteLine("Scan your QR code:");
+        museum.WriteLine("Scan your QR code:");
         return ReadLineString();
     }
 }

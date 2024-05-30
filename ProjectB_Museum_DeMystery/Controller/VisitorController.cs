@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 
 public class VisitorController
 {
+    private static IMuseum museum = Program.Museum;
     public void ReservationCancel(List<GuidedTour> tours, List<Visitor> visitors, Visitor visitor)
     {
         string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
@@ -31,10 +32,10 @@ public class VisitorController
                 visitors.RemoveAll(v => v.QR == visitor.QR);
 
                 string toursJson = JsonConvert.SerializeObject(tours, Formatting.Indented);
-                File.WriteAllText(filePath, toursJson);
+                museum.WriteAllText(filePath, toursJson);
 
                 string visitorsJson = JsonConvert.SerializeObject(visitors, Formatting.Indented);
-                File.WriteAllText(filePath1, visitorsJson);
+                museum.WriteAllText(filePath1, visitorsJson);
 
                 CancelReservationConfirmation.ReservationCancelled();
                 break;

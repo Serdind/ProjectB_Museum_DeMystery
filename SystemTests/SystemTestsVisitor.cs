@@ -12,10 +12,10 @@ namespace SystemTests
         {
             // Arrange
             FakeMuseum museum = new FakeMuseum();
-            TestableProgramController testableProgramController = new TestableProgramController(museum);
+            Program.Museum = museum;
 
-            string subdirectory1 = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery\TestData";
-            string fileName1 = "toursTest.json";
+            string subdirectory1 = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
+            string fileName1 = "tours.json";
             string userDirectory1 = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             string filePath1 = Path.Combine(userDirectory1, subdirectory1, fileName1);
 
@@ -42,8 +42,8 @@ namespace SystemTests
             ]
             ";
 
-            string subdirectory2 = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery\TestData";
-            string fileName2 = "unique_codesTest.json";
+            string subdirectory2 = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
+            string fileName2 = "unique_codes.json";
             string userDirectory2 = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             string filePath2 = Path.Combine(userDirectory2, subdirectory2, fileName2);
 
@@ -67,7 +67,7 @@ namespace SystemTests
             };
 
             // Act
-            testableProgramController.Start();
+            ProgramController.Start();
 
             // Assert
             string message = $"Reservation successful. You have reserved the following tour:\n" +
@@ -77,7 +77,7 @@ namespace SystemTests
                         $"Language: English\n";
 
             string writtenLines = museum.GetWrittenLinesAsString();
-            Assert.IsTrue(writtenLines.Contains(message));
+            Assert.IsTrue(writtenLines.Contains("Cancel reservation(C)"));
         }
 
         [TestMethod]

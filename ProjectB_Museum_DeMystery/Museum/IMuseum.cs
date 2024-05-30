@@ -6,6 +6,8 @@ using System.Globalization;
 public interface IMuseum
 {
     DateTime Now { get; }
+    
+    DateTime Today { get; }
 
     void WriteLine(string line);
 

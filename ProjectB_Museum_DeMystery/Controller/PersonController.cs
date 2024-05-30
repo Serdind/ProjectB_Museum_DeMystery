@@ -8,6 +8,7 @@ using System.Linq;
 
 public class PersonController
 {
+    private static IMuseum museum = Program.Museum;
     public void AdminMenu(string languageSelection)
     {
         string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
@@ -32,7 +33,7 @@ public class PersonController
                 else if (option.ToLower() == "a" || option.ToLower() == "add tour")
                 {
                     string name = "";
-                    DateTime date = DateTime.MinValue;
+                    DateTime date = museum.MinValue;
                     string language = "";
 
                     bool tourAdded = false;
@@ -139,7 +140,7 @@ public class PersonController
                             else if (change.ToLower() == "d" || change.ToLower() == "date")
                             {
                                 bool validDateSelected = false;
-                                DateTime selectedDate = DateTime.MinValue;
+                                DateTime selectedDate = museum.MinValue;
 
                                 while (!validDateSelected)
                                 {

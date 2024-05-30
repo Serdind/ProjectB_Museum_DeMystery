@@ -1,14 +1,15 @@
 public class TourNotFound
 {
+    private static IMuseum museum = Program.Museum;
     public static void Show()
     {
-        Console.WriteLine("Tour not found.");
-        Console.WriteLine("Press any key to continue...\n");
-        Console.ReadKey(true);
+        museum.WriteLine("Tour not found.");
+        museum.WriteLine("Press any key to continue...\n");
+        museum.ReadKey();
     }
 
     public static void RemovedToursNotFound()
     {
-        Console.WriteLine("No tour found in the removedTours.json file.");
+        museum.WriteLine("No tour found in the removedTours.json file.");
     }
 }
