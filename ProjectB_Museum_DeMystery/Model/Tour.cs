@@ -16,10 +16,7 @@ static class Tour
     {
         DateTime today = DateTime.Today;
         DateTime endDate = today.AddDays(7);
-        string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
-        string fileName = "tours.json";
-        string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-        string filePath = Path.Combine(userDirectory, subdirectory, fileName);
+        string filePath = Model<GuidedTour>.GetFileNameTours();
             
         if (museum.FileExists(filePath))
         {
@@ -58,10 +55,7 @@ static class Tour
             currentDate = currentDate.AddDays(1);
         }
 
-        string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
-        string fileName = "tours.json";
-        string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-        string filePath = Path.Combine(userDirectory, subdirectory, fileName);
+        string filePath = Model<GuidedTour>.GetFileNameTours();
         SaveToursToFile(filePath, guidedTour);
     }
 
@@ -75,10 +69,7 @@ static class Tour
         tour.ID = newID;
         tours.Add(tour);
 
-        string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
-        string fileName = "tours.json";
-        string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-        string filePath = Path.Combine(userDirectory, subdirectory, fileName);
+        string filePath = Model<GuidedTour>.GetFileNameTours();
         
         SaveToursToFile(filePath, tours);
     }
@@ -121,10 +112,7 @@ static class Tour
     public static bool OverviewTours(bool edit)
     {
         DateTime currentDate = museum.Today;
-        string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
-        string fileName = "tours.json";
-        string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-        string filePath = Path.Combine(userDirectory, subdirectory, fileName);
+        string filePath = Model<GuidedTour>.GetFileNameTours();
 
         if (edit)
         {
@@ -271,73 +259,9 @@ static class Tour
         }
     }
 
-    public static void OverviewRemovedTours()
-    {
-        DateTime currentDate = museum.Today;
-
-        string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
-        string fileName = "removedTours.json";
-        string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-        string filePath = Path.Combine(userDirectory, subdirectory, fileName);
-
-        if (museum.FileExists(filePath))
-        {
-            string json = museum.ReadAllText(filePath);
-
-            if (string.IsNullOrWhiteSpace(json))
-            {
-                TourEmpty.RemovedToursEmpty();
-                return;
-            }
-
-            var tour = JsonConvert.DeserializeObject<List<GuidedTour>>(json).FirstOrDefault();
-
-            if (tour == null)
-            {
-                TourNotFound.RemovedToursNotFound();
-                return;
-            }
-
-            var table = new Table().Border(TableBorder.Rounded);
-            table.AddColumn("ID");
-            table.AddColumn("Name");
-            table.AddColumn("Date");
-            table.AddColumn("Time");
-            table.AddColumn("Language");
-            table.AddColumn("Guide");
-            table.AddColumn("Remaining spots");
-
-            string timeOnly = tour.Date.ToString("HH:mm");
-            string dateOnly = tour.Date.ToShortDateString();
-            int remainingSpots = tour.MaxParticipants - tour.ReservedVisitors.Count;
-            string status = tour.Status ? "Active" : "Inactive";
-
-            table.AddRow(
-                tour.ID.ToString(),
-                tour.Name,
-                dateOnly,
-                timeOnly,
-                tour.Language,
-                tour.NameGuide,
-                remainingSpots.ToString(),
-                status
-            );
-
-            AnsiConsole.Render(table);
-        }
-        else
-        {
-            JsonFile.RemovedToursDoesNotExist();
-        }
-    }
-    
-
     private static void RemoveToursFromDate(DateTime date)
     {
-        string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
-        string fileName = "tours.json";
-        string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-        string filePath = Path.Combine(userDirectory, subdirectory, fileName);
+        string filePath = Model<GuidedTour>.GetFileNameTours();
         
         if (museum.FileExists(filePath))
         {
@@ -353,26 +277,7 @@ static class Tour
 
     public static List<GuidedTour> LoadToursFromFile()
     {
-        string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
-        string fileName = "tours.json";
-        string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-        string filePath = Path.Combine(userDirectory, subdirectory, fileName);
-
-        if (museum.FileExists(filePath))
-        {
-            string json = museum.ReadAllText(filePath);
-            return JsonConvert.DeserializeObject<List<GuidedTour>>(json);
-        }
-
-        return new List<GuidedTour>();
-    }
-
-    public static List<GuidedTour> LoadRemovedToursFromFile()
-    {
-        string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
-        string fileName = "removedTours.json";
-        string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-        string filePath = Path.Combine(userDirectory, subdirectory, fileName);
+        string filePath = Model<GuidedTour>.GetFileNameTours();
 
         if (museum.FileExists(filePath))
         {
@@ -387,10 +292,7 @@ static class Tour
     {
         AddAdmin(new DepartmentHead("Frans", "6457823"));
 
-        string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
-        string fileName = "admins.json";
-        string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-        string filePath = Path.Combine(userDirectory, subdirectory, fileName);
+        string filePath = Model<DepartmentHead>.GetFileNameAdmins();
         SaveAdminToFile(filePath);
     }
 
@@ -408,10 +310,7 @@ static class Tour
 
     public static List<DepartmentHead> LoadAdminsFromFile()
     {
-        string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
-        string fileName = "admins.json";
-        string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-        string filePath = Path.Combine(userDirectory, subdirectory, fileName);
+        string filePath = Model<DepartmentHead>.GetFileNameAdmins();
 
         if (museum.FileExists(filePath))
         {
@@ -428,10 +327,7 @@ static class Tour
     {
         AddGuide(new Guide("Casper", "4892579"));
 
-        string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
-        string fileName = "guides.json";
-        string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-        string filePath = Path.Combine(userDirectory, subdirectory, fileName);
+        string filePath = Model<Guide>.GetFileNameGuides();
         SaveGuideToFile(filePath);
     }
 
@@ -449,10 +345,7 @@ static class Tour
 
     public static List<Guide> LoadGuidesFromFile()
     {
-        string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
-        string fileName = "guides.json";
-        string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-        string filePath = Path.Combine(userDirectory, subdirectory, fileName);
+        string filePath = Model<Guide>.GetFileNameGuides();
 
         if (museum.FileExists(filePath))
         {
@@ -482,10 +375,7 @@ static class Tour
 
     public static List<Visitor> LoadVisitorsFromFile()
     {
-        string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
-        string fileName = "visitors.json";
-        string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-        string filePath = Path.Combine(userDirectory, subdirectory, fileName);
+        string filePath = Model<Visitor>.GetFileNameVisitors();
 
         if (museum.FileExists(filePath))
         {
@@ -505,10 +395,7 @@ static class Tour
 
     public static void SaveVisitorToFile(List<Visitor> visitors)
     {
-        string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
-        string fileName = "visitors.json";
-        string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-        string filePath = Path.Combine(userDirectory, subdirectory, fileName);
+        string filePath = Model<Visitor>.GetFileNameVisitors();
 
         string json = JsonConvert.SerializeObject(visitors, Formatting.Indented);
         museum.WriteAllText(filePath, json);
@@ -516,10 +403,7 @@ static class Tour
 
     public static void OverviewVisitorsTour(int tourID)
     {
-        string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
-        string fileName = "visitors.json";
-        string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-        string filePath = Path.Combine(userDirectory, subdirectory, fileName);
+        string filePath = Model<Visitor>.GetFileNameVisitors();
         
         if (museum.FileExists(filePath))
         {

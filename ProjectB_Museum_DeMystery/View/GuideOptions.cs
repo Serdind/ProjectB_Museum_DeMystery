@@ -6,10 +6,7 @@ public class GuideOptions : View
     private static IMuseum museum = Program.Museum;
     public static string Options(int tourID)
     {
-        string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
-        string fileName = "visitors.json";
-        string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-        string filePath = Path.Combine(userDirectory, subdirectory, fileName);
+        string filePath = Model<Visitor>.GetFileNameVisitors();
         
         if (File.Exists(filePath))
         {

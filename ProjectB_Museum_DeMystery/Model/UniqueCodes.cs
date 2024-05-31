@@ -8,11 +8,8 @@ public class UniqueCodes
 
     public List<int> GenerateUniqueCodes(int count)
     {
-        string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
-        string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-
-        string adminsFilePath = Path.Combine(userDirectory, subdirectory, "admins.json");
-        string guidesFilePath = Path.Combine(userDirectory, subdirectory, "guides.json");
+        string adminsFilePath = Model<DepartmentHead>.GetFileNameAdmins();
+        string guidesFilePath = Model<Guide>.GetFileNameGuides();
 
         HashSet<int> existingCodes = new HashSet<int>();
         if (museum.FileExists(adminsFilePath))
