@@ -2,7 +2,7 @@ public class TourController
 {
     public bool ReservateTour(Visitor visitor)
     {
-        bool toursAvailable = Tour.OverviewTours();
+        bool toursAvailable = Tour.OverviewTours(false);
         if (!toursAvailable)
         {
             return false;

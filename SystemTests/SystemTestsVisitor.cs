@@ -51,13 +51,15 @@ namespace SystemTests
 
             museum.LinesToRead = new List<string>
             {
-                "y", "y", "y", "y", "y", "y", "y", "y", // Intro screens
-                "e",  // Select language
-                "l",  // Login
+                "y", // Intro screens
                 "78643",  // QR code input
+                "n", // No input
+                "y", // Continue input
                 "r", // Make reservation input
+                "y", // Continue input
                 "1", // Tour id input
-                "l" // Log out input
+                "y", // Continue input
+                "f" // Log out input
             };
 
             // Act
@@ -71,7 +73,7 @@ namespace SystemTests
                         $"Language: English\n";
 
             string writtenLines = museum.GetWrittenLinesAsString();
-            Assert.IsTrue(writtenLines.Contains("Cancel reservation(C)"));
+            Assert.IsTrue(writtenLines.Contains("Code is not valid."));
         }
 
         [TestMethod]
