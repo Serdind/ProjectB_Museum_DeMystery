@@ -4,6 +4,8 @@ public class ProgramController
     {
         Visitor visitor = new Visitor(0, null);
 
+        MainMenu.Welcome();
+
         string qr = QRVisitor.ScanQr();
         bool accountCreated = visitor.AccCreated(qr);
         string loginStatus;

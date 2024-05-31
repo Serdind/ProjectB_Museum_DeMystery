@@ -7,9 +7,4 @@ public class TourNotFound
         museum.WriteLine("Press anything to continue...\n");
         museum.ReadKey();
     }
-
-    public static void RemovedToursNotFound()
-    {
-        museum.WriteLine("No tour found in the removedTours.json file.");
-    }
 }

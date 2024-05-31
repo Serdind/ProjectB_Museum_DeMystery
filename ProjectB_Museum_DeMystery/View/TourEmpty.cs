@@ -8,11 +8,6 @@ public class TourEmpty : View
         museum.ReadKey();
     }
 
-    public static void RemovedToursEmpty()
-    {
-        museum.WriteLine("The removedTours.json file is empty.");
-    }
-
     public static void NoVisitorsInTour()
     {
         museum.WriteLine("No visitors found for the specified tour.");

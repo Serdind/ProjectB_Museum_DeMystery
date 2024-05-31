@@ -1,14 +1,11 @@
 public class MainMenu : View
 {
     private static IMuseum museum = Program.Museum;
-    public static string Language()
+    public static void Welcome()
     {
-        museum.WriteLine("Welcome to Het Depot!");
+        museum.WriteLine("Welcome to The Depot!");
         museum.WriteLine("Press anything to continue...\n");
         museum.ReadKey();
-        museum.WriteLine("Select language");
-        museum.WriteLine("English(E)");
-        return ReadLineString();
     }
 
     public static void Intro()

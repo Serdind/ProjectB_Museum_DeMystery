@@ -23,7 +23,7 @@ public class PersonController
 
             if (option.ToLower() == "t" || option.ToLower() == "overview tours")
             {
-                Tour.OverviewToursEdit();
+                Tour.OverviewTours();
             }
             else if (option.ToLower() == "a" || option.ToLower() == "add tour")
             {

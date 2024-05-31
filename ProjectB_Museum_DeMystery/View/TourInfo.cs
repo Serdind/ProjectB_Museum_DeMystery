@@ -1,11 +1,6 @@
 public class TourInfo : View
 {
     private static IMuseum museum = Program.Museum;
-    public static string Name()
-    {
-        museum.WriteLine("Name:");
-        return ReadLineString();
-    }
 
     public static void Status()
     {
@@ -14,7 +9,7 @@ public class TourInfo : View
 
     public static string Date()
     {
-        museum.WriteLine("\nDate (Day-Month-Year Hour:Minutes): ");
+        museum.WriteLine("\nWhich date? Example: 01-6-2024 16:00 ");
         return ReadLineString();
     }
 
@@ -27,13 +22,13 @@ public class TourInfo : View
 
     public static string Language()
     {
-        museum.WriteLine("\nLanguage: ");
+        museum.WriteLine("\nWhich language?: ");
         return ReadLineString();
     }
 
     public static string Time()
     {
-        museum.WriteLine("Time (Hour:Minutes):");
+        museum.WriteLine("Which time? Example: 16:00:");
         return ReadLineString();
     }
 
@@ -46,24 +41,10 @@ public class TourInfo : View
 
     public static string Guide()
     {
-        museum.WriteLine("Guide:");
+        museum.WriteLine("Which guide:");
         return ReadLineString();
     }
-
-    public static void TourRemoved()
-    {
-        museum.WriteLine("Tour removed successfully.");
-        museum.WriteLine("Press anything to continue...\n");
-        museum.ReadKey();
-    }
-
-    public static void TourRestored()
-    {
-        museum.WriteLine("Tour successfully restored.");
-        museum.WriteLine("Press anything to continue...\n");
-        museum.ReadKey();
-    }
-
+    
     public static void NoToursToday()
     {
         museum.WriteLine("No tours available for today.");
@@ -73,7 +54,7 @@ public class TourInfo : View
 
     public static string WhichDate()
     {
-        museum.WriteLine("Which date? (Day-Month-Year)");
+        museum.WriteLine("Which date? Example: 01-6-2024:");
         return ReadLineString();
     }
 
