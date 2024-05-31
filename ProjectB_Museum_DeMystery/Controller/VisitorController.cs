@@ -6,15 +6,9 @@ public class VisitorController
     private static IMuseum museum = Program.Museum;
     public void ReservationCancel(List<GuidedTour> tours, List<Visitor> visitors, Visitor visitor)
     {
-        string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
-        string fileName = "tours.json";
-        string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-        string filePath = Path.Combine(userDirectory, subdirectory, fileName);
+        string filePath = Model<GuidedTour>.GetFileNameTours();
 
-        string subdirectory1 = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
-        string fileName1 = "visitors.json";
-        string userDirectory1 = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-        string filePath1 = Path.Combine(userDirectory1, subdirectory1, fileName1);
+        string filePath1 = Model<Visitor>.GetFileNameVisitors();
 
         bool wrongInputShown = false;
 

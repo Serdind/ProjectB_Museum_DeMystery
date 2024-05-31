@@ -11,10 +11,7 @@ public class PersonController
     private static IMuseum museum = Program.Museum;
     public void AdminMenu(string languageSelection)
     {
-        string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
-        string fileName = "tours.json";
-        string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-        string filePath = Path.Combine(userDirectory, subdirectory, fileName);
+        string filePath = Model<GuidedTour>.GetFileNameTours();
 
         List<GuidedTour> tours = Tour.LoadToursFromFile();
 

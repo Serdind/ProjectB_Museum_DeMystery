@@ -19,10 +19,7 @@ public class Guide : Person
 
     public bool AddVisistorToTour(int tourID, string qr)
     {
-        string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
-        string fileName = "tours.json";
-        string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-        string filePath = Path.Combine(userDirectory, subdirectory, fileName);
+        string filePath = Model<GuidedTour>.GetFileNameTours();
 
         if (museum.FileExists(filePath))
         {
@@ -50,12 +47,8 @@ public class Guide : Person
 
     public bool RemoveVisitorFromTour(int tourID, string qr)
     {
-        string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
-        string toursFileName = "tours.json";
-        string visitorsFileName = "visitors.json";
-        string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-        string toursFilePath = Path.Combine(userDirectory, subdirectory, toursFileName);
-        string visitorsFilePath = Path.Combine(userDirectory, subdirectory, visitorsFileName);
+        string toursFilePath = Model<GuidedTour>.GetFileNameTours();
+        string visitorsFilePath = Model<Visitor>.GetFileNameVisitors();
 
         if (museum.FileExists(toursFilePath) && museum.FileExists(visitorsFilePath))
         {
@@ -113,10 +106,7 @@ public class Guide : Person
     public bool ViewTours(string guideName)
     {
         DateTime today = DateTime.Today;
-        string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
-        string fileName = "tours.json";
-        string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-        string filePath = Path.Combine(userDirectory, subdirectory, fileName);
+        string filePath = Model<GuidedTour>.GetFileNameTours();
 
         if (museum.FileExists(filePath))
         {
@@ -168,10 +158,7 @@ public class Guide : Person
     public void StartTour(int tourID)
     {
         DateTime currentDate = DateTime.Now;
-        string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
-        string fileName = "tours.json";
-        string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-        string filePath = Path.Combine(userDirectory, subdirectory, fileName);
+        string filePath = Model<GuidedTour>.GetFileNameTours();
 
         if (museum.FileExists(filePath))
         {

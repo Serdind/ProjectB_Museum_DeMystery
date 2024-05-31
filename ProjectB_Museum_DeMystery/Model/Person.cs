@@ -52,10 +52,7 @@ public class Person
         List<Guide> guides = Tour.LoadGuidesFromFile();
         List<DepartmentHead> admins = Tour.LoadAdminsFromFile();
 
-        string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
-        string fileName = "unique_codes.json";
-        string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-        string filePath = Path.Combine(userDirectory, subdirectory, fileName);
+        string filePath = Model<UniqueCodes>.GetFileNameUniqueCodes();
 
         List<string> uniqueCodes = UniqueCodes.LoadUniqueCodesFromFile(filePath);
 

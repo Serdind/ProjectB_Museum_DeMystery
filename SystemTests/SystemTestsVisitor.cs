@@ -14,10 +14,7 @@ namespace SystemTests
             FakeMuseum museum = new FakeMuseum();
             Program.Museum = museum;
 
-            string subdirectory1 = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
-            string fileName1 = "tours.json";
-            string userDirectory1 = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            string filePath1 = Path.Combine(userDirectory1, subdirectory1, fileName1);
+            string filePath1 = Model<GuidedTour>.GetFileNameTours();
 
             museum.Files[filePath1] = @"
             [
@@ -42,10 +39,7 @@ namespace SystemTests
             ]
             ";
 
-            string subdirectory2 = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery";
-            string fileName2 = "unique_codes.json";
-            string userDirectory2 = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            string filePath2 = Path.Combine(userDirectory2, subdirectory2, fileName2);
+            string filePath2 = Model<UniqueCodes>.GetFileNameUniqueCodes();
 
             museum.Files[filePath2] = @"
             [
@@ -60,7 +54,7 @@ namespace SystemTests
                 "y", "y", "y", "y", "y", "y", "y", "y", // Intro screens
                 "e",  // Select language
                 "l",  // Login
-                "124678",  // QR code input
+                "78643",  // QR code input
                 "r", // Make reservation input
                 "1", // Tour id input
                 "l" // Log out input
@@ -85,12 +79,9 @@ namespace SystemTests
         {
             // Arrange
             FakeMuseum museum = new FakeMuseum();
-            TestableProgramController testableProgramController = new TestableProgramController(museum);
+            Program.Museum = museum;
 
-            string subdirectory1 = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery\TestData";
-            string fileName1 = "toursTest.json";
-            string userDirectory1 = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            string filePath1 = Path.Combine(userDirectory1, subdirectory1, fileName1);
+            string filePath1 = Model<GuidedTour>.GetFileNameTours();
 
             museum.Files[filePath1] = @"
             [
@@ -106,10 +97,7 @@ namespace SystemTests
             ]
             ";
 
-            string subdirectory2 = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery\TestData";
-            string fileName2 = "unique_codesTest.json";
-            string userDirectory2 = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            string filePath2 = Path.Combine(userDirectory2, subdirectory2, fileName2);
+            string filePath2 = Model<UniqueCodes>.GetFileNameUniqueCodes();
 
             museum.Files[filePath2] = @"
             [
@@ -133,7 +121,7 @@ namespace SystemTests
             };
 
             // Act
-            testableProgramController.Start();
+            ProgramController.Start();
 
             // Assert
             string message = $"Date: 25-5-2024\n" +
