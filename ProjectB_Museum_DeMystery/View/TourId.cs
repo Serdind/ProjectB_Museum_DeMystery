@@ -5,8 +5,7 @@ public class TourId : View
     {
         while (true)
         {
-            AdminOptions.BackOption();
-            museum.WriteLine("Enter tour ID:\n");
+            museum.WriteLine("Enter tour ID:");
             string input = museum.ReadLine();
 
             if (input.ToLower() == "b" || input.ToLower() == "back")

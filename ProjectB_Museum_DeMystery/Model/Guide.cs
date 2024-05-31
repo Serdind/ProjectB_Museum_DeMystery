@@ -34,12 +34,12 @@ public class Guide : Person
                 
                 if (visitor.ReservateByGuide(tourID, visitor))
                 {
-                    visitor.ReservateByGuide(tourID, visitor);
                     GuideOptions.AddedVisitorToTour();
                     return true;
                 }
                 else
                 {
+                    MaxReservation.GuideShow();
                     return false;
                 }
             }

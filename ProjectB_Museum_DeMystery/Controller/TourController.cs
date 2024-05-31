@@ -8,6 +8,7 @@ public class TourController
             return false;
         };
 
+        AdminOptions.BackOption();
         int tourID = TourId.WhichTourId();
 
         if (tourID == -1)

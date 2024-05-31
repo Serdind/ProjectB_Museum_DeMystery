@@ -22,11 +22,9 @@ public class GuideController
 
                 if (option.ToLower() == "a" || option.ToLower() == "add visitor")
                 {
-                    bool codeValid = false;
-
-                    while (!codeValid)
+                    AdminOptions.BackOption();
+                    while (true)
                     {
-                        AdminOptions.BackOption();
                         string qr = QRVisitor.WhichVisitorQr();
 
                         if (qr.ToLower() == "b" || qr.ToLower() == "back")
@@ -37,7 +35,6 @@ public class GuideController
                         if (uniqueCodes.Contains(qr))
                         {
                             guide.AddVisistorToTour(tourId, qr);
-                            codeValid = true;
                         }
                         else
                         {
@@ -98,6 +95,7 @@ public class GuideController
 
             if (option.ToLower() == "v" || option.ToLower() == "view visitors")
             {
+                AdminOptions.BackOption();
                 while (!tourFound)
                 {
                     ShowTableTours(guide);
@@ -131,6 +129,7 @@ public class GuideController
             }
             else if (option.ToLower() == "s" || option.ToLower() == "start tour")
             {
+                AdminOptions.BackOption();
                 tourID = TourId.WhichTourId();
 
                 if (tourID == -1)

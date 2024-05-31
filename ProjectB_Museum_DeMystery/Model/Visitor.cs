@@ -80,7 +80,6 @@ public class Visitor : Person
     {
         if (ReservationMade(visitor.QR))
         {
-            MaxReservation.GuideShow();
             return false;
         }
 
