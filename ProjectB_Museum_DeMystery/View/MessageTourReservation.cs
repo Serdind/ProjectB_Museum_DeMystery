@@ -8,10 +8,10 @@ public class MessageTourReservation
                         $"Time: {tour.Date.ToString("HH:mm")}\n" +
                         $"Duration: 40 min\n" +
                         $"Language: {tour.Language}\n" +
-                        $"Guide: {tour.NameGuide}\n";
+                        $"Name of guide: {tour.NameGuide}\n";
 
         museum.WriteLine(message);
-        museum.WriteLine("Press any key to continue...\n");
+        museum.WriteLine("Press anything to continue...\n");
         museum.ReadKey();
     }
 
@@ -21,10 +21,11 @@ public class MessageTourReservation
                         $"Time: {tour.Date.ToString("HH:mm")}\n" +
                         $"Duration: 40 min\n" +
                         $"Language: {tour.Language}\n" +
-                        $"Guide: {tour.NameGuide}\n";
+                        $"Name of guide: {tour.NameGuide}\n";
 
+        museum.WriteLine("Here are the details of your reservation:\n");
         museum.WriteLine(message);
-        museum.WriteLine("Press any key to continue...\n");
+        museum.WriteLine("Press anything to continue...\n");
         museum.ReadKey();
     }
 
@@ -32,19 +33,19 @@ public class MessageTourReservation
     {
         string message = $"Tour has been started:\n" +
                         $"Date: {tour.Date.ToShortDateString()}\n" +
-                        $"Time: {tour.Date.ToString("HH:mm")}\n" +
+                        $"Duration: {tour.Date.ToString("HH:mm")}\n" +
                         $"Language: {tour.Language}\n" +
-                        $"Guide: {tour.NameGuide}\n";
+                        $"Name of guide: {tour.NameGuide}\n";
 
         museum.WriteLine(message);
-        museum.WriteLine("Press any key to continue...\n");
+        museum.WriteLine("Press anything to continue...\n");
         museum.ReadKey();
     }
 
     public static void TourAdded()
     {
         museum.WriteLine("Tour succesfully added.");
-        museum.WriteLine("Press any key to continue...\n");
+        museum.WriteLine("Press anything to continue...\n");
         museum.ReadKey();
     }
 }

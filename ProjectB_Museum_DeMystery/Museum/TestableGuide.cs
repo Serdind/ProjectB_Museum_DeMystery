@@ -125,7 +125,6 @@ public class TestableGuide
             
             var table = new Table().LeftAligned();
             table.AddColumn("ID");
-            table.AddColumn("Name");
             table.AddColumn("Date");
             table.AddColumn("Time");
             table.AddColumn("StartingPoint");
@@ -143,7 +142,6 @@ public class TestableGuide
                     
                     table.AddRow(
                         tour.ID.ToString(),
-                        tour.Name,
                         dateOnly,
                         timeOnly,
                         GuidedTour.StartingPoint,
@@ -184,7 +182,6 @@ public class TestableGuide
             if (tour != null)
             {
                 string message = $"Tour has been started:\n" +
-                    $"Tour: {tour.Name}\n" +
                     $"Date: {tour.Date.ToShortDateString()}\n" +
                     $"Time: {tour.Date.ToString("HH:mm")}\n" +
                     $"Language: {tour.Language}\n";

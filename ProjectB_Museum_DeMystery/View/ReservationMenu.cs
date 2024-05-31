@@ -10,7 +10,29 @@ public class ReservationMenu : View
             museum.WriteLine("My reservations(M)");
             museum.WriteLine("Cancel reservation(C)");
         }
-        museum.WriteLine("Log out(L)");
+        museum.WriteLine("Help(H)");
+        museum.WriteLine("Finish(F)");
+        return ReadLineString();
+    }
+
+    public static string Help()
+    {
+        museum.WriteLine("Do you want information about how to use this application first?");
+        museum.WriteLine("Yes or Y to comfirm\nNo or N to decline\nBack or b to go back");
+        return ReadLineString();
+    }
+
+    public static void HelpActive()
+    {
+        museum.WriteLine("You can read the information at any time using this application with the Help(H) option.");
+        museum.WriteLine("Press anything to continue...\n");
+        museum.ReadKey();
+    }
+
+    public static string Finish()
+    {
+        museum.WriteLine("Are you sure you are done? You haven't made a reservation yet.");
+        museum.WriteLine("Yes or Y to comfirm\nNo or N to decline");
         return ReadLineString();
     }
 }

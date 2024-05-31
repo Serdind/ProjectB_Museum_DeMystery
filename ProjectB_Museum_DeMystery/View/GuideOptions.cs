@@ -31,7 +31,6 @@ public class GuideOptions : View
     public static void StartTour(GuidedTour tour)
     {
         string message = $"The tour has been started:" +
-                        $"Tour: {tour.Name}\n" +
                         $"Date: {tour.Date.ToShortDateString()}\n" +
                         $"Time: {tour.Date.ToString("HH:mm")}\n" +
                         $"Duration: 40 min\n" +
@@ -39,7 +38,7 @@ public class GuideOptions : View
                         $"Guide: {tour.NameGuide}\n";
 
         museum.WriteLine(message);
-        museum.WriteLine("Press any key to continue...\n");
+        museum.WriteLine("Press anything to continue...\n");
         museum.ReadKey();
     }
 
@@ -52,42 +51,42 @@ public class GuideOptions : View
     public static void AddedVisitorToTour()
     {
         museum.WriteLine("Succesfully added visitor to tour.");
-        museum.WriteLine("Press any key to continue...\n");
+        museum.WriteLine("Press anything to continue...\n");
         museum.ReadKey();
     }
 
     public static void RemovedVisitorFromTour()
     {
         museum.WriteLine("Succesfully removed visitor from tour.");
-        museum.WriteLine("Press any key to continue...\n");
+        museum.WriteLine("Press anything to continue...\n");
         museum.ReadKey();
     }
 
     public static void VisitorNotFound()
     {
         museum.WriteLine("Visitor not found in the visitors list.");
-        museum.WriteLine("Press any key to continue...\n");
+        museum.WriteLine("Press anything to continue...\n");
         museum.ReadKey();
     }
 
     public static void VisitorNotFoundInTour()
     {
         museum.WriteLine("Visitor not found in the tour's list of reserved visitors.");
-        museum.WriteLine("Press any key to continue...\n");
+        museum.WriteLine("Press anything to continue...\n");
         museum.ReadKey();
     }
 
     public static void TourNotFoundOrActive()
     {
         museum.WriteLine("Tour not found or not active.");
-        museum.WriteLine("Press any key to continue...\n");
+        museum.WriteLine("Press anything to continue...\n");
         museum.ReadKey();
     }
 
     public static void TourVisitorFileNotFound()
     {
         museum.WriteLine("Tour not found or not active.");
-        museum.WriteLine("Press any key to continue...\n");
+        museum.WriteLine("Press anything to continue...\n");
         museum.ReadKey();
     }
 }

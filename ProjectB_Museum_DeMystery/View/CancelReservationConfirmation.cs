@@ -10,14 +10,14 @@ public class CancelReservationConfirmation : View
     public static void ReservationCancelled()
     {
         museum.WriteLine("Reservation cancelled successfully.");
-        museum.WriteLine("Press any key to continue...\n");
+        museum.WriteLine("Press anything to continue...\n");
         museum.ReadKey();
     }
 
     public static void ReservationCancelDenied()
     {
         museum.WriteLine("Reservation cancellation cancelled.");
-        museum.WriteLine("Press any key to continue...\n");
+        museum.WriteLine("Press anything to continue...\n");
         museum.ReadKey();
     }
 }

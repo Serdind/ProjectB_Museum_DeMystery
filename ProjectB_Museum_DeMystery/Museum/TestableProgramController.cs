@@ -21,30 +21,30 @@ public class TestableProgramController
             if (showIntro)
             {
                 Museum.WriteLine("Here are some tips to help you with the application.");
-                Museum.WriteLine("Press any key to continue...\n");
+                Museum.WriteLine("Press anything to continue...\n");
                 Museum.ReadKey();
                 Museum.WriteLine("When you have to choose between options, you can write the whole option name or you can write the given letter.");
-                Museum.WriteLine("Press any key to continue...\n");
+                Museum.WriteLine("Press anything to continue...\n");
                 Museum.ReadKey();
                 Museum.WriteLine("It doesn't matter if it's lowercase (example: abc) or uppercase (example: ABC).");
-                Museum.WriteLine("Press any key to continue...\n");
+                Museum.WriteLine("Press anything to continue...\n");
                 Museum.ReadKey();
                 Museum.WriteLine("For example, the options are: Make reservation(R) and Cancel reservation(C)");
-                Museum.WriteLine("Press any key to continue...\n");
+                Museum.WriteLine("Press anything to continue...\n");
                 Museum.ReadKey();
                 Museum.WriteLine("You can choose to insert the whole option name, for example: Make reservation, or you can choose R.");
-                Museum.WriteLine("Press any key to continue...\n");
+                Museum.WriteLine("Press anything to continue...\n");
                 Museum.ReadKey();
                 Museum.WriteLine("It's recommended to insert the given letter.");
-                Museum.WriteLine("Press any key to continue...\n");
+                Museum.WriteLine("Press anything to continue...\n");
                 Museum.ReadKey();
                 Museum.WriteLine("Press enter when the desired input is given.");
-                Museum.WriteLine("Press any key to continue...\n");
+                Museum.WriteLine("Press anything to continue...\n");
                 Museum.ReadKey();
                 showIntro = false;
             }
             Museum.WriteLine("Welcome to Het Depot!");
-            Museum.WriteLine("Press any key to continue...\n");
+            Museum.WriteLine("Press anything to continue...\n");
             Museum.ReadKey();
             Museum.WriteLine("Select language");
             Museum.WriteLine("English(E)");

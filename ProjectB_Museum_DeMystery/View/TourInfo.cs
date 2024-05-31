@@ -21,7 +21,7 @@ public class TourInfo : View
     public static void InvalidDate()
     {
         museum.WriteLine("Invalid date format. Please enter a valid date.");
-        museum.WriteLine("Press any key to continue...\n");
+        museum.WriteLine("Press anything to continue...\n");
         museum.ReadKey();
     }
 
@@ -40,7 +40,7 @@ public class TourInfo : View
     public static void InvalidTime()
     {
         museum.WriteLine("Invalid time format. Please enter a valid time (Hour:Minutes).");
-        museum.WriteLine("Press any key to continue...\n");
+        museum.WriteLine("Press anything to continue...\n");
         museum.ReadKey();
     }
 
@@ -53,21 +53,21 @@ public class TourInfo : View
     public static void TourRemoved()
     {
         museum.WriteLine("Tour removed successfully.");
-        museum.WriteLine("Press any key to continue...\n");
+        museum.WriteLine("Press anything to continue...\n");
         museum.ReadKey();
     }
 
     public static void TourRestored()
     {
         museum.WriteLine("Tour successfully restored.");
-        museum.WriteLine("Press any key to continue...\n");
+        museum.WriteLine("Press anything to continue...\n");
         museum.ReadKey();
     }
 
     public static void NoToursToday()
     {
         museum.WriteLine("No tours available for today.");
-        museum.WriteLine("Press any key to continue...\n");
+        museum.WriteLine("Press anything to continue...\n");
         museum.ReadKey();
     }
 
@@ -80,7 +80,14 @@ public class TourInfo : View
     public static void NoTours()
     {
         museum.WriteLine("No tours available for that day.");
-        museum.WriteLine("Press any key to continue...\n");
+        museum.WriteLine("Press anything to continue...\n");
+        museum.ReadKey();
+    }
+
+    public static void ToursAlreadyExist()
+    {
+        museum.WriteLine("There already are tours for that time.");
+        museum.WriteLine("Press anything to continue...\n");
         museum.ReadKey();
     }
 }

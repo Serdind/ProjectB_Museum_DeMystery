@@ -5,8 +5,6 @@ public class GuidedTour
     private static int nextID = 1;
     [JsonPropertyName("Id")]
     public int ID;
-    [JsonPropertyName("Name")]
-    public string Name;
     [JsonPropertyName("Date")]
     public DateTime Date;
     public const string StartingPoint = "Room 1";
@@ -21,10 +19,9 @@ public class GuidedTour
     public bool Status;
     public int MaxParticipants;
 
-    public GuidedTour(string name, DateTime date, string language, string nameGuide)
+    public GuidedTour(DateTime date, string language, string nameGuide)
     {
         ID = nextID++;
-        Name = name;
         Date = date;
         Language = language;
         NameGuide = nameGuide;

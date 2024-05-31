@@ -32,9 +32,16 @@ public class Guide : Person
             {
                 Visitor visitor = new Visitor(tourID, qr);
                 
-                visitor.ReservateByGuide(tourID, visitor);
-                GuideOptions.AddedVisitorToTour();
-                return true;
+                if (visitor.ReservateByGuide(tourID, visitor))
+                {
+                    visitor.ReservateByGuide(tourID, visitor);
+                    GuideOptions.AddedVisitorToTour();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
             else
             {
@@ -114,44 +121,11 @@ public class Guide : Person
             List<GuidedTour> tours = JsonConvert.DeserializeObject<List<GuidedTour>>(jsonData);
 
             List<GuidedTour> guideTours = tours.FindAll(tour => tour.NameGuide == guideName && tour.Date.Date == today);
-
-            var table = new Table().LeftAligned();
-            table.AddColumn("ID");
-            table.AddColumn("Name");
-            table.AddColumn("Date");
-            table.AddColumn("Time");
-            table.AddColumn("StartingPoint");
-            table.AddColumn("EndPoint");
-            table.AddColumn("Language");
-            table.AddColumn("Remaining spots");
-
-            foreach (var tour in guideTours)
-            {
-                if (tour.Date.Date == today.Date && tour.Date.TimeOfDay >= DateTime.Now.TimeOfDay && tour.Status)
-                {
-                    string timeOnly = tour.Date.ToString("HH:mm");
-                    string dateOnly = tour.Date.ToShortDateString();
-                    int remainingSpots = tour.MaxParticipants - tour.ReservedVisitors.Count;
-
-                    table.AddRow(
-                        tour.ID.ToString(),
-                        tour.Name,
-                        dateOnly,
-                        timeOnly,
-                        GuidedTour.StartingPoint,
-                        GuidedTour.EndPoint,
-                        tour.Language,
-                        remainingSpots.ToString()
-                    );
-                }
-            }
-
-            AnsiConsole.Render(table);
+            
             GuideController guideController = new GuideController();
             guideController.OptionsGuide(guideTours, Tour.guide);
             return true;
         }
-
         return false;
     }
 

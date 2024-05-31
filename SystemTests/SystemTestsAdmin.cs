@@ -71,7 +71,6 @@ namespace SystemTests
             
             var table = new Table().Border(TableBorder.Rounded);
                 table.AddColumn("ID");
-                table.AddColumn("Name");
                 table.AddColumn("Date");
                 table.AddColumn("Time");
                 table.AddColumn("Duration");
@@ -89,7 +88,6 @@ namespace SystemTests
 
                     table.AddRow(
                         tour.ID.ToString(),
-                        tour.Name,
                         dateOnly,
                         timeOnly,
                         "40 minutes",

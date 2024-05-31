@@ -22,6 +22,7 @@ public class Visitor : Person
             MaxReservation.Show();
             return false;
         }
+        
 
         DateTime currentDate = museum.Now;
         string filePath = Model<GuidedTour>.GetFileNameTours();
@@ -79,7 +80,7 @@ public class Visitor : Person
     {
         if (ReservationMade(visitor.QR))
         {
-            MaxReservation.Show();
+            MaxReservation.GuideShow();
             return false;
         }
 

@@ -58,7 +58,7 @@ public class TestableGuideController
                     while (!codeValid)
                     {
                         Museum.WriteLine("Insert (Back or B) if you want to go back");
-                        Museum.WriteLine("Press any key to continue...\n");
+                        Museum.WriteLine("Press anything to continue...\n");
                         Museum.ReadKey();
                         Museum.WriteLine("QR visitor:");
                         string qr = Museum.ReadLine();
@@ -76,7 +76,7 @@ public class TestableGuideController
                         else
                         {
                             Museum.WriteLine("Code is not valid.");
-                            Museum.WriteLine("Press any key to continue...\n");
+                            Museum.WriteLine("Press anything to continue...\n");
                             Museum.ReadKey();
                         }
                     }
@@ -88,7 +88,7 @@ public class TestableGuideController
                     while (!codeValid)
                     {
                         Museum.WriteLine("Insert (Back or B) if you want to go back");
-                        Museum.WriteLine("Press any key to continue...\n");
+                        Museum.WriteLine("Press anything to continue...\n");
                         Museum.ReadKey();
                         Museum.WriteLine("QR visitor:");
                         string qr = Museum.ReadLine();
@@ -106,7 +106,7 @@ public class TestableGuideController
                         else
                         {
                             Museum.WriteLine("Code is not valid.");
-                            Museum.WriteLine("Press any key to continue...\n");
+                            Museum.WriteLine("Press anything to continue...\n");
                             Museum.ReadKey();
                         }
                     }
@@ -124,7 +124,7 @@ public class TestableGuideController
         else
         {
             Museum.WriteLine("Tour is not available.");
-            Museum.WriteLine("Press any key to continue...\n");
+            Museum.WriteLine("Press anything to continue...\n");
             Museum.ReadKey();
         }
     }

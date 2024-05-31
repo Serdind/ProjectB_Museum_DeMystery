@@ -4,7 +4,14 @@ public class MaxReservation : View
     public static void Show()
     {
         museum.WriteLine("You already made a reservation for today.");
-        museum.WriteLine("Press any key to continue...\n");
+        museum.WriteLine("Press anything to continue...\n");
+        museum.ReadKey();
+    }
+
+    public static void GuideShow()
+    {
+        museum.WriteLine("Visitor already made a reservation for today.");
+        museum.WriteLine("Press anything to continue...\n");
         museum.ReadKey();
     }
 }

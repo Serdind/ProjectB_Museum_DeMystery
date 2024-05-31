@@ -1,52 +1,8 @@
 public class ProgramController
 {
-    private static IMuseum museum = Program.Museum;
     public static void Start()
     {
         Visitor visitor = new Visitor(0, null);
-        bool showIntro = true;
-
-        string language;
-        do
-        {
-            if (showIntro)
-            {
-                MainMenu.Intro();
-                showIntro = false;
-            }
-
-            language = MainMenu.Language();
-
-            if (!IsValidLanguage(language))
-            {
-                museum.WriteLine("Invalid language selection. Please choose again.");
-            }
-
-        } while (!IsValidLanguage(language));
-
-        language = language.ToLower();
-
-        string choice;
-        bool showLoginPrompt = true;
-
-        do
-        {
-            if (showLoginPrompt)
-            {
-                choice = LoginMenu.Login();
-                showLoginPrompt = false;
-            }
-            else
-            {
-                choice = LoginMenu.Login();
-            }
-
-            if (choice.ToLower() != "l" && choice.ToLower() != "login")
-            {
-                museum.WriteLine("Invalid choice. Please try again.");
-            }
-
-        } while (choice.ToLower() != "l" && choice.ToLower() != "login");
 
         string qr = QRVisitor.ScanQr();
         bool accountCreated = visitor.AccCreated(qr);
@@ -65,6 +21,38 @@ public class ProgramController
         if (loginStatus == "Visitor")
         {
             bool visitorRunning = true;
+            bool helpShown = false;
+
+            if (!helpShown)
+            {
+                bool helpSucces = false;
+
+                while (!helpSucces)
+                {
+                    string help = ReservationMenu.Help();
+
+                    if (help.ToLower() == "b" || help.ToLower() == "back")
+                    {
+                        visitorRunning = false;
+                    }
+                    else if (help.ToLower() == "y" || help.ToLower() == "yes")
+                    {
+                        MainMenu.Intro();
+                        helpShown = true;
+                        helpSucces = true;
+                    }
+                    else if (help.ToLower() == "n" || help.ToLower() == "no")
+                    {
+                        ReservationMenu.HelpActive();
+                        helpSucces = true;
+                    }
+                    else
+                    {
+                        WrongInput.Show();
+                    }
+                }
+            }
+
             while (visitorRunning)
             {
                 string option = ReservationMenu.Menu(visitor.QR, visitor);
@@ -82,9 +70,29 @@ public class ProgramController
                 {
                     visitor.CancelReservation(visitor);
                 }
-                else if (option.ToLower() == "l" || option.ToLower() == "log out")
+                else if (option.ToLower() == "h" || option.ToLower() == "help")
                 {
-                    visitorRunning = false;
+                    MainMenu.Intro();
+                }
+                else if (option.ToLower() == "f" || option.ToLower() == "finish")
+                {
+                    if (!visitor.ReservationMade(qr))
+                    {
+                        string finish = ReservationMenu.Finish();
+
+                        if (finish.ToLower() == "y" || finish.ToLower() == "yes")
+                        {
+                            visitorRunning = false;
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
+                    else
+                    {
+                        visitorRunning = false;
+                    }
                 }
                 else
                 {
@@ -95,34 +103,11 @@ public class ProgramController
         else if (loginStatus == "Admin")
         {
             PersonController personController = new PersonController();
-            personController.AdminMenu(language);
+            personController.AdminMenu();
         }
         else if (loginStatus == "Guide")
         {
-            bool guideRunning = true;
-
-            while (guideRunning)
-            {
-                string option = GuideOptions.ViewTours();
-
-                if (option.ToLower() == "m" || option.ToLower() == "my tours")
-                {
-                    Tour.guide.ViewTours("Casper");
-                }
-                else if (option.ToLower() == "l" || option.ToLower() == "log out")
-                {
-                    guideRunning = false;
-                }
-                else
-                {
-                    WrongInput.Show();
-                }
-            }
+            Tour.guide.ViewTours("Casper");
         }
-    }
-
-    private static bool IsValidLanguage(string language)
-    {
-        return language.ToLower() == "e" || language.ToLower() == "english";
     }
 }

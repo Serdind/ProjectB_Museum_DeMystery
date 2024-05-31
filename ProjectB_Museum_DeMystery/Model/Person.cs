@@ -76,7 +76,7 @@ public class Person
             }
             else
             {
-                museum.WriteLine("Code is not valid.");
+                CodeNotValid.Show();
                 return false;
             }
         }

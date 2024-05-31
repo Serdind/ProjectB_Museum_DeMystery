@@ -86,7 +86,7 @@ public class TestablePersonController
 
                     if (tourAdded)
                     {
-                        testableTour.AddTour(new GuidedTour(name, date, language, "TestGuide"));
+                        testableTour.AddTour(new GuidedTour(date, language, "TestGuide"));
                     
                         testableTour.SaveToursToFile(filePath, tours);
 
@@ -108,7 +108,6 @@ public class TestablePersonController
                             var table = new Table().LeftAligned();
 
                             table.AddColumn("ID");
-                            table.AddColumn("Name");
                             table.AddColumn("Date");
                             table.AddColumn("Time");
                             table.AddColumn("Duration");
@@ -124,7 +123,6 @@ public class TestablePersonController
 
                             table.AddRow(
                                 tour.ID.ToString(),
-                                tour.Name,
                                 dateOnly,
                                 timeOnly,
                                 "40 minutes",
@@ -138,18 +136,8 @@ public class TestablePersonController
                             
                             Museum.WriteLine("What do you want to change? Name(N) Date(D) Time(T) Language(L) Guide(G) Status(S) Go back(B)");
                             string change = Museum.ReadLine();
-                            
-                            if (change.ToLower() == "n" || change.ToLower() == "name")
-                            {
-                                Museum.WriteLine("Name:");
-                                string name = Museum.ReadLine();
 
-                                tour.Name = name;
-                                Museum.WriteLine($"Name set to {name}");
-                                testableTour.SaveToursToFile(filePath, tours);
-                                
-                            }
-                            else if (change.ToLower() == "d" || change.ToLower() == "date")
+                            if (change.ToLower() == "d" || change.ToLower() == "date")
                             {
                                 bool validDateSelected = false;
                                 DateTime selectedDate = Museum.MinValue;

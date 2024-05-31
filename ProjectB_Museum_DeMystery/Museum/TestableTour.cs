@@ -52,15 +52,15 @@ public class TestableTour
         {
             if (currentDate.Date >= today && currentDate.Date <= endDate.Date)
             {
-                AddTour(new GuidedTour("Museum tour", new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, 11, 30, 0), "English", guide.Name));
-                AddTour(new GuidedTour("Museum tour", new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, 13, 00, 0), "Dutch", guide.Name));
-                AddTour(new GuidedTour("Museum tour", new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, 13, 30, 0), "English", guide.Name));
-                AddTour(new GuidedTour("Museum tour", new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, 14, 00, 0), "Dutch", guide.Name));
-                AddTour(new GuidedTour("Museum tour", new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, 14, 30, 0), "English", guide.Name));
-                AddTour(new GuidedTour("Museum tour", new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, 15, 00, 0), "Dutch", guide.Name));
-                AddTour(new GuidedTour("Museum tour", new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, 16, 00, 0), "English", guide.Name));
-                AddTour(new GuidedTour("Museum tour", new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, 16, 30, 0), "Dutch", guide.Name));
-                AddTour(new GuidedTour("Museum tour", new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, 17, 00, 0), "English", guide.Name));
+                AddTour(new GuidedTour(new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, 11, 30, 0), "English", guide.Name));
+                AddTour(new GuidedTour(new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, 13, 00, 0), "Dutch", guide.Name));
+                AddTour(new GuidedTour(new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, 13, 30, 0), "English", guide.Name));
+                AddTour(new GuidedTour(new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, 14, 00, 0), "Dutch", guide.Name));
+                AddTour(new GuidedTour(new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, 14, 30, 0), "English", guide.Name));
+                AddTour(new GuidedTour(new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, 15, 00, 0), "Dutch", guide.Name));
+                AddTour(new GuidedTour(new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, 16, 00, 0), "English", guide.Name));
+                AddTour(new GuidedTour(new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, 16, 30, 0), "Dutch", guide.Name));
+                AddTour(new GuidedTour(new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, 17, 00, 0), "English", guide.Name));
             }
             currentDate = currentDate.AddDays(1);
         }
@@ -110,7 +110,6 @@ public class TestableTour
             var existingTour = updatedTours.FirstOrDefault(t => t.ID == tour.ID);
             if (existingTour != null)
             {
-                existingTour.Name = tour.Name;
                 existingTour.Date = tour.Date;
                 existingTour.Language = tour.Language;
                 existingTour.Status = tour.Status;
@@ -145,7 +144,6 @@ public class TestableTour
 
                 var table = new Table().Border(TableBorder.Rounded);
                 table.AddColumn("ID");
-                table.AddColumn("Name");
                 table.AddColumn("Date");
                 table.AddColumn("Time");
                 table.AddColumn("Duration");
@@ -163,7 +161,6 @@ public class TestableTour
 
                     table.AddRow(
                         tour.ID.ToString(),
-                        tour.Name,
                         dateOnly,
                         timeOnly,
                         "40 minutes",

@@ -5,6 +5,7 @@ public class TourId : View
     {
         while (true)
         {
+            AdminOptions.BackOption();
             museum.WriteLine("Enter tour ID:\n");
             string input = museum.ReadLine();
 
@@ -19,7 +20,7 @@ public class TourId : View
             else
             {
                 museum.WriteLine("Invalid input. Please enter a valid numeric tour ID.");
-                museum.WriteLine("Press any key to continue...\n");
+                museum.WriteLine("Press anything to continue...\n");
                 museum.ReadKey();
             }
         }

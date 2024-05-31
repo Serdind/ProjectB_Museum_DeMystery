@@ -4,7 +4,7 @@ public class TourNotAvailable : View
     public static void Show()
     {
         museum.WriteLine("Tour is not available.");
-        museum.WriteLine("Press any key to continue...\n");
+        museum.WriteLine("Press anything to continue...\n");
         museum.ReadKey();
     }
 }

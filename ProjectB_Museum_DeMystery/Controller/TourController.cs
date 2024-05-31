@@ -1,15 +1,21 @@
 public class TourController
 {
-    public void ReservateTour(Visitor visitor)
+    public bool ReservateTour(Visitor visitor)
     {
-        bool toursAvailable = Tour.OverviewTours(false);
+        bool toursAvailable = Tour.OverviewTours();
         if (!toursAvailable)
         {
-            return;
+            return false;
         };
 
         int tourID = TourId.WhichTourId();
 
+        if (tourID == -1)
+        {
+            return false;
+        }
+
         visitor.Reservate(tourID, visitor);
+        return true;
     }
 }
