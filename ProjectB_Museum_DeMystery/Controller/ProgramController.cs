@@ -109,7 +109,8 @@ public class ProgramController
         }
         else if (loginStatus == "Guide")
         {
-            Tour.guide.ViewTours("Casper");
+            string name = GuideOptions.GuideName();
+            Tour.guide.ViewTours(name);
         }
     }
 }

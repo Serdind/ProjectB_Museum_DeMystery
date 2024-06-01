@@ -108,13 +108,13 @@ static class Tour
 
     public static bool OverviewTours(bool edit)
     {
-        DateTime currentDate = museum.Today;
+        DateTime currentDate = DateTime.Today;
         string filePath = Model<GuidedTour>.GetFileNameTours();
 
         if (edit)
         {
             bool validDateSelected = false;
-            DateTime selectedDate = museum.MinValue;
+            DateTime selectedDate = DateTime.MinValue;
 
             while (!validDateSelected)
             {
@@ -138,48 +138,42 @@ static class Tour
                 string json = museum.ReadAllText(filePath);
                 var tours = JsonConvert.DeserializeObject<List<GuidedTour>>(json);
 
-                bool tourFound = tours.Any(t => t.Date.Date == selectedDate.Date);
-
-                if (tourFound)
+                tours = tours.OrderBy(t => t.Date).ToList();
+                var table = new Table().Border(TableBorder.Rounded);
+                table.AddColumn("ID");
+                table.AddColumn("Date");
+                table.AddColumn("Time");
+                table.AddColumn("Duration");
+                table.AddColumn("Language");
+                table.AddColumn("Guide");
+                table.AddColumn("Remaining spots");
+                table.AddColumn("Status");
+                foreach (var tour in tours)
                 {
-                    tours = tours.OrderBy(t => t.Date).ToList();
-                    var table = new Table().Border(TableBorder.Rounded);
-                    table.AddColumn("ID");
-                    table.AddColumn("Date");
-                    table.AddColumn("Time");
-                    table.AddColumn("Duration");
-                    table.AddColumn("Language");
-                    table.AddColumn("Guide");
-                    table.AddColumn("Remaining spots");
-                    table.AddColumn("Status");
-                    foreach (var tour in tours)
+                    if (tour.Date == selectedDate)
                     {
-                        if (tour.Date.Date == selectedDate.Date)
-                        {
-                            string timeOnly = tour.Date.ToString("HH:mm");
-                            string dateOnly = tour.Date.ToShortDateString();
-                            int remainingSpots = tour.MaxParticipants - tour.ReservedVisitors.Count;
-                            string status = tour.Status ? "Active" : "Inactive";
-                            table.AddRow(
-                                tour.ID.ToString(),
-                                dateOnly,
-                                timeOnly,
-                                "40 minutes",
-                                tour.Language,
-                                guide.Name,
-                                remainingSpots.ToString(),
-                                status
-                            );
-                        }
+                        string timeOnly = tour.Date.ToString("HH:mm");
+                        string dateOnly = tour.Date.ToShortDateString();
+                        int remainingSpots = tour.MaxParticipants - tour.ReservedVisitors.Count;
+                        string status = tour.Status ? "Active" : "Inactive";
+                        table.AddRow(
+                            tour.ID.ToString(),
+                            dateOnly,
+                            timeOnly,
+                            "40 minutes",
+                            tour.Language,
+                            guide.Name,
+                            remainingSpots.ToString(),
+                            status
+                        );
                     }
-                    AnsiConsole.Render(table);
-                    return true;
+                    else
+                    {
+                        museum.WriteLine("Test");
+                    }
                 }
-                else
-                {
-                    TourInfo.NoTours();
-                    return false;
-                }
+                AnsiConsole.Render(table);
+                return true;
             }
             else
             {

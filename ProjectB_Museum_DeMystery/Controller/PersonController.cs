@@ -153,6 +153,7 @@ public class PersonController
                                         Tour.SaveToursToFile(filePath, tours);
 
                                         EditTour.LanguageSet(language);
+                                        break;
                                     }
                                 }
                                 else if (change.ToLower() == "g" || change.ToLower() == "guide")
@@ -170,10 +171,11 @@ public class PersonController
                                         {
                                             otherTour.NameGuide = guide;
                                         }
-
+                                        
                                         Tour.SaveToursToFile(filePath, tours);
 
                                         EditTour.GuideSet(guide);
+                                        break;
                                     }
                                 }
                                 else if (change.ToLower() == "s" || change.ToLower() == "status")
@@ -188,6 +190,7 @@ public class PersonController
                                     Tour.SaveToursToFile(filePath, tours);
 
                                     EditTour.StatusSet(newStatus);
+                                    break;
                                 }
                                 else if (change.ToLower() == "b" || change.ToLower() == "back")
                                 {

@@ -2,6 +2,10 @@ using Microsoft.VisualStudio.TestPlatform.TestHost;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.IO;
+using Spectre.Console;
+using Newtonsoft.Json;
+using System.Globalization;
+using System.Diagnostics;
 
 namespace SystemTests
 {
@@ -13,50 +17,47 @@ namespace SystemTests
         {
             // Arrange
             FakeMuseum museum = new FakeMuseum();
+            Program.Museum = museum;
 
-            string baseDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery\TestData";
+            DateTime currentDate = DateTime.Today;
+            DateTime selectedDate = DateTime.MinValue;
+            currentDate = new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, 23, 59, 0);
 
-            string guidesFilePath = Path.Combine(baseDirectory, subdirectory, "guidesTest.json");
-            string toursFilePath = Path.Combine(baseDirectory, subdirectory, "toursTest.json");
-            string uniqueCodesFilePath = Path.Combine(baseDirectory, subdirectory, "unique_codesTest.json");
+            string currentDateString = currentDate.ToString("yyyy-MM-ddTHH:mm:ss");
 
-            museum.Files[guidesFilePath] = @"
+            string filePath1 = Model<GuidedTour>.GetFileNameTours();
+
+            string toursJson = $@"
+            [
+                {{
+                    ""ID"": ""1"",
+                    ""Date"": ""{currentDateString}"",
+                    ""NameGuide"": ""TestGuide"",
+                    ""MaxParticipants"": 13,
+                    ""ReservedVisitors"": [],
+                    ""Language"": ""English"",
+                    ""Status"": true
+                }}
+            ]
+            ";
+
+            museum.Files[filePath1] = toursJson;
+
+            string filePath2 = Model<Guide>.GetFileNameGuides();
+
+            museum.Files[filePath2] = @"
             [
                 {
                     ""Id"": ""1"",
-                    ""Name"": ""TestGuide1"",
-                    ""QR"": ""7789423""
+                    ""Name"": ""TestGuide"",
+                    ""QR"": ""214678""
                 }
             ]
             ";
 
-           museum.Files[toursFilePath] = @"
-            [
-                {
-                    ""ID"": 1,
-                    ""Name"": ""Museum tour"",
-                    ""Date"": ""2024-05-11T11:30:00"",
-                    ""Language"": ""English"",
-                    ""NameGuide"": ""TestGuide1"",
-                    ""ReservedVisitors"": [],
-                    ""Status"": true,
-                    ""MaxParticipants"": 13
-                },
-                {
-                    ""ID"": 2,
-                    ""Name"": ""Another tour"",
-                    ""Date"": ""2024-05-11T15:00:00"",
-                    ""Language"": ""English"",
-                    ""NameGuide"": ""TestGuide1"",
-                    ""ReservedVisitors"": [],
-                    ""Status"": true,
-                    ""MaxParticipants"": 13
-                }
-                ]";
-            
+            string filePath3 = Model<UniqueCodes>.GetFileNameUniqueCodes();
 
-            museum.Files[uniqueCodesFilePath] = @"
+            museum.Files[filePath3] = @"
             [
                 ""139278"",
                 ""78643"",
@@ -64,13 +65,14 @@ namespace SystemTests
             ]
             ";
 
+            string filePath4 = Model<Visitor>.GetFileNameVisitors();
+
+            museum.Files[filePath4] = "[]";
+
             museum.LinesToRead = new List<string>
             {
-                "y", "y", "y", "y", "y", "y", "y", "y", // Intro screens
-                "e",  // Select language
-                "l",  // Login
-                "7789423",  // QR code input
-                "m", // My tours input
+                "214678",  // QR code input
+                "TestGuide", // Guide name input
                 "v", // View visitors input
                 "1", // Tour id input
                 "a", // Add visitor input
@@ -85,7 +87,14 @@ namespace SystemTests
 
             // Assert
             string writtenLines = museum.GetWrittenLinesAsString();
+            Debug.WriteLine(writtenLines);
             Assert.IsTrue(writtenLines.Contains("Succesfully added visitor to tour."));
+
+            var visitors = JsonConvert.DeserializeObject<List<Visitor>>(museum.Files[filePath4]);
+
+            Assert.AreEqual(1, visitors[0].Id);
+            Assert.AreEqual(1, visitors[0].TourId);
+            Assert.AreEqual("78643", visitors[0].QR);
         }
 
         [TestMethod]

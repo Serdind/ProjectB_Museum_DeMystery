@@ -40,6 +40,7 @@ public class FakeMuseum : IMuseum
     
     public string ReadLine()
     {
+        Debug.WriteLine($"ReadLine called: _linesRead = {_linesRead}, LinesToRead.Count = {LinesToRead.Count}");
         if (_linesRead < LinesToRead.Count)
         {
             string line = LinesToRead.ElementAt(_linesRead++);

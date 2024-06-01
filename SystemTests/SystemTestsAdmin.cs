@@ -2,6 +2,7 @@ using System.Text.Json.Serialization;
 using Spectre.Console;
 using Newtonsoft.Json;
 using System.Globalization;
+using System.Diagnostics;
 
 namespace SystemTests
 {
@@ -13,14 +14,35 @@ namespace SystemTests
         {
             // Arrange
             FakeMuseum museum = new FakeMuseum();
+            Program.Museum = museum;
 
-            string baseDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery\TestData";
+            DateTime currentDate = DateTime.Today;
+            DateTime selectedDate = DateTime.MinValue;
+            currentDate = new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, 23, 59, 0);
 
-            string adminsFilePath = Path.Combine(baseDirectory, subdirectory, "adminsTest.json");
-            string toursFilePath = Path.Combine(baseDirectory, subdirectory, "toursTest.json");
+            string currentDateString = currentDate.ToString("yyyy-MM-ddTHH:mm:ss");
 
-            museum.Files[adminsFilePath] = @"
+            string filePath1 = Model<GuidedTour>.GetFileNameTours();
+
+            string toursJson = $@"
+            [
+                {{
+                    ""ID"": ""1"",
+                    ""Date"": ""{currentDateString}"",
+                    ""NameGuide"": ""TestGuide"",
+                    ""MaxParticipants"": 13,
+                    ""ReservedVisitors"": [],
+                    ""Language"": ""English"",
+                    ""Status"": true
+                }}
+            ]
+            ";
+
+            museum.Files[filePath1] = toursJson;
+
+            string filePath2 = Model<DepartmentHead>.GetFileNameAdmins();
+
+            museum.Files[filePath2] = @"
             [
                 {
                     ""Id"": ""1"",
@@ -30,79 +52,49 @@ namespace SystemTests
             ]
             ";
 
-            museum.Files[toursFilePath] = @"
-            [
-                {
-                    ""ID"": ""1"",
-                    ""Name"": ""Tour 1"",
-                    ""Date"": ""2024-05-25T10:00:00"",
-                    ""MaxParticipants"": 13,
-                    ""ReservedVisitors"": [],
-                    ""NameGuide"": ""TestGuide"",
-                    ""Language"": ""English"",
-                    ""Status"": true
-                },
-                {
-                    ""ID"": ""2"",
-                    ""Name"": ""Tour 2"",
-                    ""Date"": ""2024-05-25T14:00:00"",
-                    ""MaxParticipants"": 13,
-                    ""ReservedVisitors"": [],
-                    ""NameGuide"": ""TestGuide"",
-                    ""Language"": ""English"",
-                    ""Status"": true
-                }
-            ]
-            ";
-
             museum.LinesToRead = new List<string>
             {
-                "y", "y", "y", "y", "y", "y", "y", "y", // Intro screens
-                "e",  // Select language
-                "l",  // Login
                 "897324",  // QR code input
-                "t", // Tours input
-                "l"
+                "t", // Overview tours input
+                currentDate.ToShortDateString(), // Date input
+                "l" // Log out input
+
             };
-
-            string json = museum.ReadAllText(toursFilePath);
-            var tours = JsonConvert.DeserializeObject<List<GuidedTour>>(json);
-            
-            var table = new Table().Border(TableBorder.Rounded);
-                table.AddColumn("ID");
-                table.AddColumn("Date");
-                table.AddColumn("Time");
-                table.AddColumn("Duration");
-                table.AddColumn("Language");
-                table.AddColumn("Guide");
-                table.AddColumn("Remaining spots");
-                table.AddColumn("Status");
-
-                foreach (var tour in tours)
-                {
-                    string timeOnly = tour.Date.ToString("HH:mm");
-                    string dateOnly = tour.Date.ToShortDateString();
-                    int remainingSpots = tour.MaxParticipants - tour.ReservedVisitors.Count;
-                    string status = tour.Status ? "Active" : "Inactive";
-
-                    table.AddRow(
-                        tour.ID.ToString(),
-                        dateOnly,
-                        timeOnly,
-                        "40 minutes",
-                        tour.Language,
-                        "TestGuide",
-                        remainingSpots.ToString(),
-                        status
-                    );
-                }
 
             // Act
             ProgramController.Start();
 
+            string json = museum.ReadAllText(filePath1);
+            var tours = JsonConvert.DeserializeObject<List<GuidedTour>>(json);
+
+            var expectedTable = new Table().Border(TableBorder.Rounded);
+            expectedTable.AddColumn("ID");
+            expectedTable.AddColumn("Date");
+            expectedTable.AddColumn("Time");
+            expectedTable.AddColumn("Duration");
+            expectedTable.AddColumn("Language");
+            expectedTable.AddColumn("Guide");
+            expectedTable.AddColumn("Remaining spots");
+            expectedTable.AddColumn("Status");
+
+            foreach (var tour in tours)
+            {
+                expectedTable.AddRow(
+                    tour.ID.ToString(),
+                    tour.Date.ToShortDateString(),
+                    tour.Date.ToString("HH:mm"),
+                    "40 minutes",
+                    tour.Language,
+                    "TestGuide",
+                    (tour.MaxParticipants - tour.ReservedVisitors.Count).ToString(),
+                    tour.Status ? "Active" : "Inactive"
+                );
+            }
+
             // Assert
             string writtenLines = museum.GetWrittenLinesAsString();
-            Assert.IsTrue(writtenLines.Contains(table.ToString()));
+            Debug.WriteLine(writtenLines);
+            Assert.IsTrue(writtenLines.Contains(expectedTable.ToString()));
         }
 
         [TestMethod]
@@ -110,14 +102,34 @@ namespace SystemTests
         {
             // Arrange
             FakeMuseum museum = new FakeMuseum();
+            Program.Museum = museum;
 
-            string baseDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery\TestData";
+            DateTime currentDate = DateTime.Today;
+            currentDate = new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, 23, 59, 0);
 
-            string adminsFilePath = Path.Combine(baseDirectory, subdirectory, "adminsTest.json");
-            string toursFilePath = Path.Combine(baseDirectory, subdirectory, "toursTest.json");
+            string currentDateString = currentDate.ToString("yyyy-MM-ddTHH:mm:ss");
 
-            museum.Files[adminsFilePath] = @"
+            string filePath1 = Model<GuidedTour>.GetFileNameTours();
+
+            string toursJson = $@"
+            [
+                {{
+                    ""ID"": ""1"",
+                    ""Date"": ""{currentDateString}"",
+                    ""NameGuide"": ""TestGuide"",
+                    ""MaxParticipants"": 13,
+                    ""ReservedVisitors"": [],
+                    ""Language"": ""English"",
+                    ""Status"": true
+                }}
+            ]
+            ";
+
+            museum.Files[filePath1] = toursJson;
+
+            string filePath2 = Model<DepartmentHead>.GetFileNameAdmins();
+
+            museum.Files[filePath2] = @"
             [
                 {
                     ""Id"": ""1"",
@@ -127,44 +139,13 @@ namespace SystemTests
             ]
             ";
 
-            museum.Files[toursFilePath] = @"
-            [
-                {
-                    ""ID"": ""1"",
-                    ""Name"": ""Tour 1"",
-                    ""Date"": ""2024-05-25T10:00:00"",
-                    ""MaxParticipants"": 13,
-                    ""ReservedVisitors"": [],
-                    ""NameGuide"": ""TestGuide"",
-                    ""Language"": ""English"",
-                    ""Status"": true
-                },
-                {
-                    ""ID"": ""2"",
-                    ""Name"": ""Tour 2"",
-                    ""Date"": ""2024-05-25T14:00:00"",
-                    ""MaxParticipants"": 13,
-                    ""ReservedVisitors"": [],
-                    ""NameGuide"": ""TestGuide"",
-                    ""Language"": ""English"",
-                    ""Status"": true
-                }
-            ]
-            ";
-
             museum.LinesToRead = new List<string>
             {
-                "y", "y", "y", "y", "y", "y", "y", "y", // Intro screens
-                "e",  // Select language
-                "l",  // Login
                 "897324",  // QR code input
                 "a", // Tours input
-                "TestName", // Name input
-                "25-5-2024 19:00", // Date input
+                "20:00", // Time input
                 "Dutch", // Language input
                 "l" // Log out input
-
-
             };
 
             // Act
@@ -172,7 +153,13 @@ namespace SystemTests
 
             // Assert
             string writtenLines = museum.GetWrittenLinesAsString();
+            Debug.WriteLine(writtenLines);
             Assert.IsTrue(writtenLines.Contains("Tour succesfully added."));
+
+            var tours = JsonConvert.DeserializeObject<List<GuidedTour>>(museum.Files[filePath1]);
+
+            Assert.AreEqual("20:00", tours[1].Date.ToString("HH:mm"));
+            Assert.AreEqual("Dutch", tours[1].Language);
         }
 
         [TestMethod]
@@ -180,14 +167,47 @@ namespace SystemTests
         {
             // Arrange
             FakeMuseum museum = new FakeMuseum();
+            Program.Museum = museum;
 
-            string baseDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery\TestData";
+            DateTime currentDate = DateTime.Today;
+            currentDate = new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, 23, 59, 0);
 
-            string adminsFilePath = Path.Combine(baseDirectory, subdirectory, "adminsTest.json");
-            string toursFilePath = Path.Combine(baseDirectory, subdirectory, "toursTest.json");
+            string pastTourDateString = currentDate.AddDays(-1).ToString("yyyy-MM-ddTHH:mm:ss");
+            string currentDateString = currentDate.ToString("yyyy-MM-ddTHH:mm:ss");
 
-            museum.Files[adminsFilePath] = @"
+            DateTime currentDateTime = DateTime.ParseExact(currentDateString, "yyyy-MM-ddTHH:mm:ss", CultureInfo.InvariantCulture);
+            
+
+            string filePath1 = Model<GuidedTour>.GetFileNameTours();
+
+            string toursJson = $@"
+            [
+                {{
+                    ""ID"": ""1"",
+                    ""Date"": ""{pastTourDateString}"",
+                    ""NameGuide"": ""TestGuide"",
+                    ""MaxParticipants"": 13,
+                    ""ReservedVisitors"": [],
+                    ""Language"": ""English"",
+                    ""Status"": true
+                }},
+                {{
+                    ""ID"": ""2"",
+                    ""Date"": ""{currentDateString}"",
+                    ""NameGuide"": ""TestGuide"",
+                    ""MaxParticipants"": 13,
+                    ""ReservedVisitors"": [],
+                    ""Language"": ""English"",
+                    ""Status"": true
+                }}
+            ]
+            ";
+
+            museum.Files[filePath1] = toursJson;
+
+            string filePath2 = Model<DepartmentHead>.GetFileNameAdmins();
+
+            museum.Files[filePath2] = @"
             [
                 {
                     ""Id"": ""1"",
@@ -197,44 +217,16 @@ namespace SystemTests
             ]
             ";
 
-            museum.Files[toursFilePath] = @"
-            [
-                {
-                    ""ID"": ""1"",
-                    ""Name"": ""Tour 1"",
-                    ""Date"": ""2024-05-25T10:00:00"",
-                    ""MaxParticipants"": 13,
-                    ""ReservedVisitors"": [],
-                    ""NameGuide"": ""TestGuide"",
-                    ""Language"": ""English"",
-                    ""Status"": true
-                },
-                {
-                    ""ID"": ""2"",
-                    ""Name"": ""Tour 2"",
-                    ""Date"": ""2024-05-25T14:00:00"",
-                    ""MaxParticipants"": 13,
-                    ""ReservedVisitors"": [],
-                    ""NameGuide"": ""TestGuide"",
-                    ""Language"": ""English"",
-                    ""Status"": true
-                }
-            ]
-            ";
-
             museum.LinesToRead = new List<string>
             {
-                "y", "y", "y", "y", "y", "y", "y", "y", // Intro screens
-                "e",  // Select language
-                "l",  // Login
                 "897324",  // QR code input
-                "e", // Edit tours input
-                "2", // Tour id input
-                "n", // Name change input
-                "TestName", // New name input
+                "e", // Tours input
+                currentDateTime.ToString("HH:mm"), // Date input
+                "l", // Language change option input
+                "Dutch", // Language input
+                "b", // Back input
+                "b", // Back input
                 "l" // Log out input
-
-
             };
 
             // Act
@@ -242,7 +234,13 @@ namespace SystemTests
 
             // Assert
             string writtenLines = museum.GetWrittenLinesAsString();
-            Assert.IsTrue(writtenLines.Contains("Name set to TestName"));
+            Debug.WriteLine(writtenLines);
+            Assert.IsTrue(writtenLines.Contains("Language set to Dutch"));
+
+            var tours = JsonConvert.DeserializeObject<List<GuidedTour>>(museum.Files[filePath1]);
+
+            Assert.AreEqual("Dutch", tours[0].Language);
+            Assert.AreEqual("Dutch", tours[1].Language);
         }
     }
 }

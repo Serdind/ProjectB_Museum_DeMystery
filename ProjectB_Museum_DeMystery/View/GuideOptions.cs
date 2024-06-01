@@ -89,4 +89,10 @@ public class GuideOptions : View
         museum.WriteLine("Press anything to continue...\n");
         museum.ReadKey();
     }
+
+    public static string GuideName()
+    {
+        museum.WriteLine("Insert the name of guide:");
+        return ReadLineString();
+    }
 }
