@@ -106,7 +106,13 @@
     "Date": "2024-06-01T11:30:00",
     "Language": "English",
     "NameGuide": "Casper",
-    "ReservedVisitors": [],
+    "ReservedVisitors": [
+      {
+        "Id": 5,
+        "TourId": 10,
+        "QR": "871743"
+      }
+    ],
     "Status": true,
     "MaxParticipants": 13
   },

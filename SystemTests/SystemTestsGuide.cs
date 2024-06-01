@@ -13,7 +13,6 @@ namespace SystemTests
         {
             // Arrange
             FakeMuseum museum = new FakeMuseum();
-            TestableProgramController testableProgramController = new TestableProgramController(museum);
 
             string baseDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery\TestData";
@@ -94,7 +93,6 @@ namespace SystemTests
         {
             // Arrange
             FakeMuseum museum = new FakeMuseum();
-            TestableProgramController testableProgramController = new TestableProgramController(museum);
 
             string baseDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery\TestData";
@@ -178,7 +176,7 @@ namespace SystemTests
             };
 
             // Act
-            testableProgramController.Start();
+            ProgramController.Start();
 
             // Assert
             string writtenLines = museum.GetWrittenLinesAsString();
@@ -190,7 +188,6 @@ namespace SystemTests
         {
             // Arrange
             FakeMuseum museum = new FakeMuseum();
-            TestableProgramController testableProgramController = new TestableProgramController(museum);
 
             string baseDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery\TestData";
@@ -272,7 +269,7 @@ namespace SystemTests
             };
 
             // Act
-            testableProgramController.Start();
+            ProgramController.Start();
 
             // Assert
             string writtenLines = museum.GetWrittenLinesAsString();
