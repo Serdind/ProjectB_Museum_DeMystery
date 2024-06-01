@@ -44,7 +44,7 @@ public class GuideOptions : View
 
     public static string ViewTours()
     {
-        museum.WriteLine("My tours(M)\nLog out(L)");
+        museum.WriteLine("My tour(M)\nLog out(L)");
         return ReadLineString();
     }
 

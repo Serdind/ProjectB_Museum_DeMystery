@@ -40,10 +40,17 @@ public class FakeMuseum : IMuseum
     
     public string ReadLine()
     {
-        string line = LinesToRead.ElementAt(_linesRead++);
-        if (IncludeLinesReadInLinesWritten)
-            WriteLine(line);
-        return line;
+        if (_linesRead < LinesToRead.Count)
+        {
+            string line = LinesToRead.ElementAt(_linesRead++);
+            if (IncludeLinesReadInLinesWritten)
+                WriteLine(line);
+            return line;
+        }
+        else
+        {
+            throw new ArgumentOutOfRangeException($"Index out of range: _linesRead = {_linesRead}, LinesToRead.Count = {LinesToRead.Count}");
+        }
     }
 
     public string ReadAllText(string path)
