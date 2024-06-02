@@ -78,6 +78,12 @@ public class Visitor : Person
 
     public bool ReservateByGuide(int tourID, Visitor visitor)
     {
+        if (ReservationMade(visitor.QR))
+        {
+            MaxReservation.GuideShow();
+            return false;
+        }
+        
         DateTime currentDate = museum.Now;
         string filePath = Model<GuidedTour>.GetFileNameTours();
 
@@ -126,13 +132,6 @@ public class Visitor : Person
                 return false;
             }
         }
-
-        if (ReservationMade(visitor.QR))
-        {
-            MaxReservation.GuideShow();
-            return false;
-        }
-
         return false;
     }
 

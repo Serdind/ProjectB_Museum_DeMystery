@@ -49,7 +49,18 @@
     "Date": "2024-06-02T15:00:00",
     "Language": "Dutch",
     "NameGuide": "Casper",
-    "ReservedVisitors": [],
+    "ReservedVisitors": [
+      {
+        "Id": 4,
+        "TourId": 6,
+        "QR": "535516"
+      },
+      {
+        "Id": 4,
+        "TourId": 6,
+        "QR": "535516"
+      }
+    ],
     "Status": true,
     "MaxParticipants": 13
   },

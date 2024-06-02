@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 public class GuideOptions : View
 {
     private static IMuseum museum = Program.Museum;
+
     public static string Options(int tourID)
     {
         string filePath = Model<Visitor>.GetFileNameVisitors();
@@ -15,13 +16,42 @@ public class GuideOptions : View
             
             visitors = visitors.Where(v => v.TourId == tourID).OrderBy(t => t.TourId).ToList();
 
-            if (visitors.Any())
+            string filePath1 = Model<GuidedTour>.GetFileNameTours();
+            string json1 = File.ReadAllText(filePath1);
+            var tours = JsonConvert.DeserializeObject<List<GuidedTour>>(json1);
+
+            var tour = tours.FirstOrDefault(v => v.ID == tourID);
+
+            if (tour != null)
             {
-                museum.WriteLine("Add visitor(A)\nRemove visitor(R)\nGo back(B)");
-            }
-            else
-            {
-                museum.WriteLine("Add visitor(A)\nGo back(B)");
+                bool isTourFull = tour.ReservedVisitors.Count >= tour.MaxParticipants;
+
+                if (visitors.Any())
+                {
+                    if (!isTourFull)
+                    {
+                        museum.WriteLine("Add visitor(A)\nRemove visitor(R)\nGo back(B)");
+                    }
+                    else
+                    {
+                        museum.WriteLine("Remove visitor(R)\nGo back(B)");
+                    }
+                }
+                else if (tour.ReservedVisitors.Count == 0)
+                {
+                    museum.WriteLine("Remove visitor(R)\nGo back(B)");
+                }
+                else
+                {
+                    if (!isTourFull)
+                    {
+                        museum.WriteLine("Add visitor(A)\nGo back(B)");
+                    }
+                    else
+                    {
+                        museum.WriteLine("Go back(B)");
+                    }
+                }
             }
         }
             
