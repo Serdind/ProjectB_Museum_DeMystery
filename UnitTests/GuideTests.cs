@@ -474,6 +474,74 @@ public class GuideTests
     }
 
     [TestMethod]
+    public void StartTourInactiveTest()
+    {
+        // Arrange
+        FakeMuseum museum = new FakeMuseum();
+        Program.Museum = museum;
+
+        DateTime currentDate = DateTime.Today.AddHours(23).AddMinutes(59);
+
+        string pastTourDateString = currentDate.AddDays(-1).ToString("yyyy-MM-ddTHH:mm:ss");
+        string currentDateString = currentDate.ToString("yyyy-MM-ddTHH:mm:ss");
+
+        DateTime currentDateTime = DateTime.ParseExact(currentDateString, "yyyy-MM-ddTHH:mm:ss", CultureInfo.InvariantCulture);
+        
+        string filePath1 = Model<GuidedTour>.GetFileNameTours();
+
+        string toursJson = $@"
+        [
+            {{
+                ""ID"": 1,
+                ""Date"": ""{pastTourDateString}"",
+                ""NameGuide"": ""TestGuide"",
+                ""MaxParticipants"": 13,
+                ""ReservedVisitors"": [],
+                ""Language"": ""English"",
+                ""Status"": true
+            }},
+            {{
+                ""ID"": 2,
+                ""Date"": ""{currentDateString}"",
+                ""NameGuide"": ""TestGuide"",
+                ""MaxParticipants"": 13,
+                ""ReservedVisitors"": [],
+                ""Language"": ""English"",
+                ""Status"": true
+            }}
+        ]
+        ";
+
+        museum.Files[filePath1] = toursJson;
+
+        string filePath2 = Model<Guide>.GetFileNameGuides();
+
+        museum.Files[filePath2] = @"
+        [
+            {
+                ""Id"": 1,
+                ""Name"": ""TestGuide"",
+                ""QR"": ""214678""
+            }
+        ]
+        ";
+
+        // Act
+        var guides = JsonConvert.DeserializeObject<List<Guide>>(museum.Files[filePath2]);
+        var guide = guides.FirstOrDefault(t => t.QR == "214678");
+
+        // Act
+        guide.StartTour(2);
+
+        // Assert
+        string writtenLines = museum.GetWrittenLinesAsString();
+        Debug.WriteLine(writtenLines);
+        var tours = JsonConvert.DeserializeObject<List<GuidedTour>>(museum.Files[filePath1]);
+        var tour = tours.FirstOrDefault(t => t.ID == 2);
+	    Assert.IsTrue(writtenLines.Contains("Status set to inactive"));
+    }
+
+    [TestMethod]
     public void StartTourTourNotFoundTest()
     {
         // Arrange

@@ -35,6 +35,7 @@ public class ProgramController
 
                     if (help.ToLower() == "b" || help.ToLower() == "back")
                     {
+                        helpSucces = true;
                         visitorRunning = false;
                     }
                     else if (help.ToLower() == "y" || help.ToLower() == "yes")

@@ -225,7 +225,7 @@ public class TourTests
     }
 
     [TestMethod]
-    public void RemoveToursFromDateTest()
+    public void OverviewToursNoToursTest()
     {
         // Arrange
         FakeMuseum museum = new FakeMuseum();
@@ -233,24 +233,19 @@ public class TourTests
 
         string filePath1 = Model<GuidedTour>.GetFileNameTours();
 
-        GuidedTour tour1 = new GuidedTour(new DateTime(2024, 5, 11, 11, 30, 0), "English", "TestGuide");
-        GuidedTour tour2 = new GuidedTour(new DateTime(2024, 5, 24, 11, 30, 0), "English", "TestGuide");
+        string toursJson = $@"
+        [
+            
+        ]
+        ";
 
-        var json = JsonConvert.SerializeObject(new List<GuidedTour> { tour1, tour2 });
+        museum.Files[filePath1] = toursJson;
 
-        museum.Files[filePath1] = json;
-
-        // Act
-        Tour.RemoveToursFromDate(new DateTime(2024, 5, 11));
+        //Act
+        Tour.OverviewTours(false);
 
         // Assert
-        Assert.IsTrue(museum.FileExists(filePath1));
-
-        var savedToursJson = museum.Files[filePath1];
-        var savedTours = JsonConvert.DeserializeObject<List<GuidedTour>>(savedToursJson);
-
-        Assert.IsFalse(savedTours.Any(t => t.Date.Date == new DateTime(2024, 5, 11).Date));
-        Assert.IsTrue(savedTours.Any(t => t.Date.Date == new DateTime(2024, 5, 24).Date));
+        Assert.IsTrue(museum.GetWrittenLinesAsString().Contains("No tours available for today."));
     }
 
     [TestMethod]

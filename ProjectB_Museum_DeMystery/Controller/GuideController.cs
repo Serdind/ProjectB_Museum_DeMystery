@@ -70,7 +70,6 @@ public class GuideController
                 else if (option.ToLower() == "b" || option.ToLower() == "go back")
                 {
                     keepRunning = false;
-                    OptionsGuide(tours, guide);
                 }
                 else
                 {
@@ -89,14 +88,13 @@ public class GuideController
         while (true)
         {
             int tourID;
-            bool tourFound = false;
 
             string option = ViewVisitors.Show();
 
             if (option.ToLower() == "v" || option.ToLower() == "view visitors")
             {
                 AdminOptions.BackOption();
-                while (!tourFound)
+                while (true)
                 {
                     ShowTableTours(guide);
                     tourID = TourId.WhichTourId();
@@ -111,20 +109,8 @@ public class GuideController
                         if (tour.ID == tourID)
                         {
                             ViewVisitorsTour(tourID, tour, guide, tours);
-                            tourFound = true;
-                            break;
                         }
                     }
-
-                    if (!tourFound)
-                    {
-                        TourNotFound.Show();
-                    }
-                }
-
-                if (tourFound)
-                {
-                    break;
                 }
             }
             else if (option.ToLower() == "s" || option.ToLower() == "start tour")

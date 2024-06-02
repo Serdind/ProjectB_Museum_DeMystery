@@ -180,17 +180,20 @@ public class PersonController
                                 }
                                 else if (change.ToLower() == "s" || change.ToLower() == "status")
                                 {
-                                    bool newStatus = !toursWithSameTime.First().Status;
-
-                                    foreach (var otherTour in toursWithSameTime)
+                                    while (true)
                                     {
-                                        otherTour.Status = newStatus;
+                                        bool newStatus = !toursWithSameTime.First().Status;
+
+                                        foreach (var otherTour in toursWithSameTime)
+                                        {
+                                            otherTour.Status = newStatus;
+                                        }
+
+                                        Tour.SaveToursToFile(filePath, tours);
+
+                                        EditTour.StatusSet(newStatus);
+                                        break;
                                     }
-
-                                    Tour.SaveToursToFile(filePath, tours);
-
-                                    EditTour.StatusSet(newStatus);
-                                    break;
                                 }
                                 else if (change.ToLower() == "b" || change.ToLower() == "back")
                                 {

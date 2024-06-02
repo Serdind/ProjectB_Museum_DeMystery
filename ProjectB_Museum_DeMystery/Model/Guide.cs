@@ -37,11 +37,6 @@ public class Guide : Person
                     GuideOptions.AddedVisitorToTour();
                     return true;
                 }
-                else
-                {
-                    MaxReservation.GuideShow();
-                    return false;
-                }
             }
             else
             {
@@ -154,6 +149,7 @@ public class Guide : Person
             if (tour != null && tour.Date.Date == currentDate.Date && tour.Date.TimeOfDay >= DateTime.Now.TimeOfDay && tour.Status)
             {
                 tour.Status = false;
+                EditTour.StatusSet(tour.Status);
                 Tour.SaveToursToFile(filePath, tours);
                 MessageTourReservation.ViewStart(tour);
             }

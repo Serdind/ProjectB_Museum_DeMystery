@@ -25,7 +25,6 @@ public static class Tour
 
             if (lastWriteTime < endDate)
             {
-                RemoveToursFromDate(lastWriteTime);
                 ToursDay(today, endDate);
             }
         }
@@ -285,22 +284,6 @@ public static class Tour
         else
         {
             return false;
-        }
-    }
-
-    public static void RemoveToursFromDate(DateTime date)
-    {
-        string filePath = Model<GuidedTour>.GetFileNameTours();
-        
-        if (museum.FileExists(filePath))
-        {
-            string json = museum.ReadAllText(filePath);
-            List<GuidedTour> tours = JsonConvert.DeserializeObject<List<GuidedTour>>(json);
-
-            tours.RemoveAll(tour => tour.Date.Date == date.Date);
-
-            string updatedJson = JsonConvert.SerializeObject(tours, Formatting.Indented);
-            museum.WriteAllText(filePath, updatedJson);
         }
     }
 

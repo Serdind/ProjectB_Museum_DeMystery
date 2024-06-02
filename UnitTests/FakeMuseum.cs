@@ -38,6 +38,11 @@ public class FakeMuseum : IMuseum
     }
 
     public Dictionary<string, string> Files = new();
+    
+    public void ClearFiles()
+    {
+        Files.Clear();
+    }
 
     public string ReadAllText(string path)
     {
