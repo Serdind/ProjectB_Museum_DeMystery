@@ -1,4 +1,8 @@
 using NUnit.Framework.Internal;
+using Spectre.Console;
+using Newtonsoft.Json;
+using System.Globalization;
+using System.Diagnostics;
 
 namespace UnitTests;
 
@@ -8,24 +12,13 @@ public class PersonTests
     [TestMethod]
     public void LoginTest()
     {
-        //Arrange
+        // Arrange
         FakeMuseum museum = new FakeMuseum();
-        string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery\TestData";
-        string fileName = "guidesTest.json";
-        string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-        string filePath = Path.Combine(userDirectory, subdirectory, fileName);
+        Program.Museum = museum;
 
-        string subdirectory1 = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery\TestData";
-        string fileName1 = "visitorsTest.json";
-        string userDirectory1 = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-        string filePath1 = Path.Combine(userDirectory1, subdirectory1, fileName1);
+        string filePath1 = Model<Guide>.GetFileNameGuides();
 
-        string subdirectory2 = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery\TestData";
-        string fileName2 = "adminsTest.json";
-        string userDirectory2 = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-        string filePath2 = Path.Combine(userDirectory2, subdirectory2, fileName2);
-        
-        museum.Files[filePath] = @"
+        museum.Files[filePath1] = @"
         [
             {
                 ""ID"": 1,
@@ -34,7 +27,9 @@ public class PersonTests
             }
         ]
         ";
-        museum.Files[filePath1] = @"
+        string filePath2 = Model<Visitor>.GetFileNameVisitors();
+
+        museum.Files[filePath2] = @"
         [
             {
                 ""Id"": 1,
@@ -43,7 +38,10 @@ public class PersonTests
             }
         ]
         ";
-        museum.Files[filePath2] = @"
+
+        string filePath3 = Model<DepartmentHead>.GetFileNameAdmins();
+
+        museum.Files[filePath3] = @"
         [
             {
                 ""ID"": 1,
@@ -52,12 +50,13 @@ public class PersonTests
             }
         ]
         ";
-        TestablePerson fakePerson = new TestablePerson(museum);
+
+        Person person = new Person(null);
 
         //Act
-        string roleGuide = fakePerson.Login("4892579");
-        string roleVisitor = fakePerson.Login("523523");
-        string roleAdmin = fakePerson.Login("6457823");
+        string roleGuide = person.Login("4892579");
+        string roleVisitor = person.Login("523523");
+        string roleAdmin = person.Login("6457823");
 
         //Assert
         Assert.AreEqual("Guide", roleGuide);
@@ -70,22 +69,11 @@ public class PersonTests
     {
         //Arrange
         FakeMuseum museum = new FakeMuseum();
-        string subdirectory = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery\TestData";
-        string fileName = "guidesTest.json";
-        string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-        string filePath = Path.Combine(userDirectory, subdirectory, fileName);
-
-        string subdirectory1 = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery\TestData";
-        string fileName1 = "adminsTest.json";
-        string userDirectory1 = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-        string filePath1 = Path.Combine(userDirectory1, subdirectory1, fileName1);
-
-        string subdirectory2 = @"ProjectB\ProjectB_Museum_DeMystery\ProjectB_Museum_DeMystery\TestData";
-        string fileName2 = "unique_codesTest.json";
-        string userDirectory2 = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-        string filePath2 = Path.Combine(userDirectory2, subdirectory2, fileName2);
+        Program.Museum = museum;
         
-        museum.Files[filePath] = @"
+        string filePath1 = Model<Guide>.GetFileNameGuides();
+
+        museum.Files[filePath1] = @"
         [
             {
                 ""ID"": 1,
@@ -94,7 +82,10 @@ public class PersonTests
             }
         ]
         ";
-        museum.Files[filePath1] = @"
+
+        string filePath2 = Model<DepartmentHead>.GetFileNameAdmins();
+
+        museum.Files[filePath2] = @"
         [
             {
                 ""ID"": 1,
@@ -103,31 +94,34 @@ public class PersonTests
             }
         ]
         ";
-        museum.Files[filePath2] = @"
+
+        string filePath3 = Model<UniqueCodes>.GetFileNameUniqueCodes();
+
+        museum.Files[filePath3] = @"
         [
             ""139278"",
             ""78643"",
             ""124678""
         ]
         ";
-        
-        TestablePerson fakePerson = new TestablePerson(museum);
 
+        Person person = new Person(null);
+        
         //Act
 
         //ValidCodes
-        bool result1 = fakePerson.AccCreated("139278");
-        bool result2 = fakePerson.AccCreated("78643");
-        bool result3 = fakePerson.AccCreated("124678");
+        bool result1 = person.AccCreated("139278");
+        bool result2 = person.AccCreated("78643");
+        bool result3 = person.AccCreated("124678");
 
         //InvalidCode
-        bool result4 = fakePerson.AccCreated("678142");
+        bool result4 = person.AccCreated("678142");
 
         //GuideCode
-        bool result5 = fakePerson.AccCreated("4892579");
+        bool result5 = person.AccCreated("4892579");
 
         //AdminCode
-        bool result6 = fakePerson.AccCreated("6457823");
+        bool result6 = person.AccCreated("6457823");
 
         //Assert
         Assert.IsTrue(result1);

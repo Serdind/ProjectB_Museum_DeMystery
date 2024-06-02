@@ -17,7 +17,7 @@ public class Guide : Person
         Name = name;
     }
 
-    public bool AddVisistorToTour(int tourID, string qr)
+    public bool AddVisitorToTour(int tourID, string qr)
     {
         string filePath = Model<GuidedTour>.GetFileNameTours();
 
@@ -114,6 +114,7 @@ public class Guide : Person
     {
         DateTime today = DateTime.Today;
         string filePath = Model<GuidedTour>.GetFileNameTours();
+        bool toursFound = false;
 
         if (museum.FileExists(filePath))
         {
@@ -121,10 +122,19 @@ public class Guide : Person
             List<GuidedTour> tours = JsonConvert.DeserializeObject<List<GuidedTour>>(jsonData);
 
             List<GuidedTour> guideTours = tours.FindAll(tour => tour.NameGuide == guideName && tour.Date.Date == today);
-            
-            GuideController guideController = new GuideController();
-            guideController.OptionsGuide(guideTours, Tour.guide);
-            return true;
+
+            if (guideTours.Any())
+            {
+                GuideController guideController = new GuideController();
+                guideController.OptionsGuide(guideTours, Tour.guide);
+                return true;
+            }
+            else
+            {
+                TourNotFound.Show();
+                return false;
+            }
+        
         }
         return false;
     }

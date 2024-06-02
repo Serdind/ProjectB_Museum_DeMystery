@@ -109,8 +109,11 @@ public class ProgramController
         }
         else if (loginStatus == "Guide")
         {
-            string name = GuideOptions.GuideName();
-            Tour.guide.ViewTours(name);
+            List<Guide> guides = Tour.LoadGuidesFromFile();
+
+            Guide guide = guides.FirstOrDefault(v => v.QR == qr);
+
+            Tour.guide.ViewTours(guide.Name);
         }
     }
 }

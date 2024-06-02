@@ -12,13 +12,10 @@ namespace SystemTests
         [TestMethod]
         public void AdminLoginAndOverviewToursTest()
         {
-            // Arrange
             FakeMuseum museum = new FakeMuseum();
             Program.Museum = museum;
 
-            DateTime currentDate = DateTime.Today;
-            DateTime selectedDate = DateTime.MinValue;
-            currentDate = new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, 23, 59, 0);
+            DateTime currentDate = DateTime.Today.AddHours(23).AddMinutes(59);
 
             string currentDateString = currentDate.ToString("yyyy-MM-ddTHH:mm:ss");
 

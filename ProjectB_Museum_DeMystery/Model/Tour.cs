@@ -1,8 +1,9 @@
 using Spectre.Console;
 using Newtonsoft.Json;
 using System.Globalization;
+using System.Diagnostics;
 
-static class Tour
+public static class Tour
 {
     public static readonly List<GuidedTour> guidedTour = new List<GuidedTour>();
     public static readonly List<DepartmentHead> admins = new List<DepartmentHead>();
@@ -21,8 +22,8 @@ static class Tour
         if (museum.FileExists(filePath))
         {
             DateTime lastWriteTime = museum.GetLastWriteTime(filePath).Date;
-            
-            if (lastWriteTime.Year < endDate.Year)
+
+            if (lastWriteTime < endDate)
             {
                 RemoveToursFromDate(lastWriteTime);
                 ToursDay(today, endDate);
@@ -62,7 +63,6 @@ static class Tour
         string filePath = Model<GuidedTour>.GetFileNameTours();
         SaveToursToFile(filePath, tours);
     }
-
 
     public static void AddTour(GuidedTour tour, List<GuidedTour> tours)
     {
@@ -166,10 +166,6 @@ static class Tour
                             remainingSpots.ToString(),
                             status
                         );
-                    }
-                    else
-                    {
-                        museum.WriteLine("Test");
                     }
                 }
                 AnsiConsole.Render(table);
@@ -292,7 +288,7 @@ static class Tour
         }
     }
 
-    private static void RemoveToursFromDate(DateTime date)
+    public static void RemoveToursFromDate(DateTime date)
     {
         string filePath = Model<GuidedTour>.GetFileNameTours();
         
@@ -434,7 +430,7 @@ static class Tour
         museum.WriteAllText(filePath, json);
     }
 
-    public static void OverviewVisitorsTour(int tourID)
+    public static bool OverviewVisitorsTour(int tourID)
     {
         string filePath = Model<Visitor>.GetFileNameVisitors();
         
@@ -460,15 +456,18 @@ static class Tour
                 }
 
                 AnsiConsole.Render(table);
+                return true;
             }
             else
             {
                 TourEmpty.NoVisitorsInTour();
+                return false;
             }
         }
         else
         {
             TourEmpty.Show();
+            return false;
         }
     }
 

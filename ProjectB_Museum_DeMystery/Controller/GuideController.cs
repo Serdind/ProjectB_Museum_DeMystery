@@ -34,7 +34,7 @@ public class GuideController
 
                         if (uniqueCodes.Contains(qr))
                         {
-                            guide.AddVisistorToTour(tourId, qr);
+                            guide.AddVisitorToTour(tourId, qr);
                         }
                         else
                         {
