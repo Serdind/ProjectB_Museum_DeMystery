@@ -10,11 +10,14 @@ public static class Tour
     public static readonly List<Guide> guides = new List<Guide>();
     public static List<Visitor> visitors = new List<Visitor>();
     public static Guide guide = new Guide("Casper", "4892579");
+    private static DateTime lastCheckDate = DateTime.MinValue;
 
     private static IMuseum museum = Program.Museum;
 
     public static void UpdateTours()
     {
+        ClearVisitorFileIfNewDay();
+
         DateTime today = DateTime.Today;
         DateTime endDate = today.AddDays(7);
         string filePath = Model<GuidedTour>.GetFileNameTours();
@@ -462,9 +465,20 @@ public static class Tour
         }
     }
 
+    private static void ClearVisitorFileIfNewDay()
+    {
+        DateTime today = DateTime.Today;
+        if (lastCheckDate.Date != today)
+        {
+            string visitorFilePath = Model<Visitor>.GetFileNameVisitors();
+            CreateEmptyJsonFile(visitorFilePath);
+
+            lastCheckDate = today;
+        }
+    }
+
     public static bool ToursExistForTime(DateTime time, List<GuidedTour> tours)
     {
-        // Check if tours already exist for the specified time
         foreach (GuidedTour tour in tours)
         {
             if (tour.Date.Hour == time.Hour && tour.Date.Minute == time.Minute)
