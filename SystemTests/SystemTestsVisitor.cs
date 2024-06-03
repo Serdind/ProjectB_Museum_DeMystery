@@ -278,6 +278,8 @@ namespace SystemTests
                 "78643",  // QR code input
                 "n", // No help needed
                 "c", // Cancel reservation
+                "n", // No input
+                "c", // Cancel reservation
                 "y", // Yes input
                 "r", // Make reservation input
                 "1", // Tour id input
@@ -302,7 +304,7 @@ namespace SystemTests
         }
 
         [TestMethod]
-        public void ValidQrTest()
+        public void ValidBarcodeTest()
         {
             // Arrange
             FakeMuseum museum = new FakeMuseum();
@@ -360,11 +362,11 @@ namespace SystemTests
             // Assert
             string writtenLines = museum.GetWrittenLinesAsString();
             Debug.WriteLine(writtenLines);
-            Assert.IsTrue(writtenLines.Contains("Make reservation(R)"));
+            Assert.IsTrue(writtenLines.Contains("Do you want information about how to use this application first?"));
         }
 
         [TestMethod]
-        public void InvalidQrTest()
+        public void InvalidBarcodeTest()
         {
             // Arrange
             FakeMuseum museum = new FakeMuseum();

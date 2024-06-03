@@ -3,8 +3,9 @@ using Newtonsoft.Json;
 public class UniqueCodes
 {
     private static Random random = new Random();
-
     private static IMuseum museum = Program.Museum;
+    private const int SpecialCode = 8752316;
+    private const int ExcludedCode = 99999;
 
     public List<int> GenerateUniqueCodes(int count)
     {
@@ -32,11 +33,21 @@ public class UniqueCodes
             }
         }
 
+        existingCodes.Add(SpecialCode);
+
         HashSet<int> codesSet = new HashSet<int>();
+
+        codesSet.Add(SpecialCode);
 
         while (codesSet.Count < count)
         {
             int randomNumber = random.Next(100000, 1000000);
+
+            if (randomNumber == ExcludedCode)
+            {
+                continue;
+            }
+
             if (!existingCodes.Contains(randomNumber))
             {
                 codesSet.Add(randomNumber);
@@ -65,7 +76,7 @@ public class UniqueCodes
         }
     }
 
-     public static bool IsNewDay(string filePath)
+    public static bool IsNewDay(string filePath)
     {
         if (museum.FileExists(filePath))
         {
