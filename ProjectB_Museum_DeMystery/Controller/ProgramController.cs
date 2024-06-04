@@ -6,24 +6,42 @@ public class ProgramController
 
         MainMenu.Welcome();
 
-        string qr = QRVisitor.ScanQr();
-        bool accountCreated = visitor.AccCreated(qr);
-        string loginStatus;
+        string qr;
+        bool accountCreated = false;
+        string loginStatus = "";
 
-        if (accountCreated)
+        while (true)
         {
-            loginStatus = "Visitor";
-            visitor.QR = qr;
-        }
-        else
-        {
-            loginStatus = visitor.Login(qr);
+            qr = QRVisitor.ScanQr();
+            accountCreated = visitor.AccCreated(qr);
+
+            if (qr.ToLower() == "b" || qr.ToLower() == "back")
+            {
+                break;
+            }
+
+            if (accountCreated)
+            {
+                loginStatus = "Visitor";
+                visitor.QR = qr;
+                break;
+            }
+            else
+            {
+                loginStatus = visitor.Login(qr);
+                if (loginStatus == "Visitor" || loginStatus == "Admin" || loginStatus == "Guide")
+                {
+                    break;
+                }
+            }
         }
 
         if (loginStatus == "Visitor")
         {
             bool visitorRunning = true;
             bool helpShown = false;
+
+            LoggedIn.VisitorLoginMessageEn(visitor);
 
             if (!helpShown)
             {
@@ -41,6 +59,7 @@ public class ProgramController
                     else if (help.ToLower() == "y" || help.ToLower() == "yes")
                     {
                         MainMenu.Intro();
+                        ReservationMenu.HelpActive();
                         helpShown = true;
                         helpSucces = true;
                     }
@@ -62,8 +81,15 @@ public class ProgramController
 
                 if (option.ToLower() == "r" || option.ToLower() == "make reservation")
                 {
-                    TourController tourController = new TourController();
-                    tourController.ReservateTour(visitor);
+                    if (!visitor.ReservationMade(visitor.QR))
+                    {
+                        TourController tourController = new TourController();
+                        tourController.ReservateTour(visitor);
+                    }
+                    else
+                    {
+                        MaxReservation.Show();
+                    }
                 }
                 else if (option.ToLower() == "m" || option.ToLower() == "my reservations")
                 {
@@ -89,6 +115,7 @@ public class ProgramController
                         }
                         else
                         {
+                            Console.Clear();
                             continue;
                         }
                     }

@@ -7,11 +7,11 @@ public class GuideController
     private static IMuseum museum = Program.Museum;
     public void ViewVisitorsTour(int tourId, GuidedTour tour, Guide guide, List<GuidedTour> tours)
     {
-        DateTime currentDate = museum.Today;
+        DateTime currentDate = DateTime.Today;
         string filePath = Model<UniqueCodes>.GetFileNameUniqueCodes();
         List<string> uniqueCodes = UniqueCodes.LoadUniqueCodesFromFile(filePath);
 
-        if (tour.ID == tourId && tour.Date.Date == currentDate.Date && tour.Date.TimeOfDay >= museum.Now.TimeOfDay && tour.Status)
+        if (tour.ID == tourId && tour.Date.Date == currentDate.Date && tour.Date.TimeOfDay >= DateTime.Now.TimeOfDay && tour.Status)
         {
             bool keepRunning = true;
 
@@ -79,7 +79,9 @@ public class GuideController
         }
         else
         {
+            Console.Clear();
             TourNotAvailable.Show();
+            Console.Clear();
         }
     }
 
@@ -93,9 +95,11 @@ public class GuideController
 
             if (option.ToLower() == "v" || option.ToLower() == "view visitors")
             {
+                Console.Clear();
                 AdminOptions.BackOption();
                 while (true)
                 {
+                    Console.Clear();
                     ShowTableTours(guide);
                     tourID = TourId.WhichTourId();
 

@@ -18,26 +18,30 @@ public static class Tour
     {
         ClearVisitorFileIfNewDay();
 
-        DateTime today = DateTime.Today;
-        DateTime endDate = today.AddDays(7);
         string filePath = Model<GuidedTour>.GetFileNameTours();
-            
+
         if (museum.FileExists(filePath))
         {
-            DateTime lastWriteTime = museum.GetLastWriteTime(filePath).Date;
-
-            if (lastWriteTime < endDate)
-            {
-                ToursDay(today, endDate);
-            }
+            List<GuidedTour> existingTours = LoadToursFromFile();
+            List<GuidedTour> mergedTours = MergeTours(existingTours);
+            SaveToursToFile(filePath, mergedTours);
         }
         else
         {
-            ToursDay(today, endDate);
+            DateTime today = DateTime.Today;
+            DateTime endDate = today.AddDays(1);
+            List<GuidedTour> newTours = ToursDay(today, endDate);
+
+            SaveToursToFile(filePath, newTours);
         }
     }
 
-    public static void ToursDay(DateTime startDate, DateTime endDate)
+    private static List<GuidedTour> MergeTours(List<GuidedTour> existingTours)
+    {
+        return existingTours;
+    }
+
+    public static List<GuidedTour> ToursDay(DateTime startDate, DateTime endDate)
     {
         DateTime currentDate = startDate.Date;
         List<GuidedTour> tours = new List<GuidedTour>();
@@ -62,8 +66,7 @@ public static class Tour
             currentDate = currentDate.AddDays(1);
         }
 
-        string filePath = Model<GuidedTour>.GetFileNameTours();
-        SaveToursToFile(filePath, tours);
+        return tours;
     }
 
     public static void AddTour(GuidedTour tour, List<GuidedTour> tours)
@@ -110,6 +113,7 @@ public static class Tour
 
     public static bool OverviewTours(bool edit)
     {
+        Console.Clear();
         DateTime currentDate = DateTime.Today;
         string filePath = Model<GuidedTour>.GetFileNameTours();
 
@@ -137,6 +141,7 @@ public static class Tour
 
             if (museum.FileExists(filePath))
             {
+                Console.Clear();
                 string json = museum.ReadAllText(filePath);
                 var tours = JsonConvert.DeserializeObject<List<GuidedTour>>(json);
 
@@ -152,7 +157,7 @@ public static class Tour
                 table.AddColumn("Status");
                 foreach (var tour in tours)
                 {
-                    if (tour.Date == selectedDate)
+                    if (tour.Date.Date == selectedDate.Date)
                     {
                         string timeOnly = tour.Date.ToString("HH:mm");
                         string dateOnly = tour.Date.ToShortDateString();
@@ -251,7 +256,6 @@ public static class Tour
             if (tomorrowTours.Any())
             {
                 var table = new Table().Border(TableBorder.Rounded);
-                table.AddColumn("ID");
                 table.AddColumn("Time");
                 table.AddColumn("Duration");
                 table.AddColumn("Language");
@@ -266,7 +270,6 @@ public static class Tour
                     string status = tour.Status ? "Active" : "Inactive";
 
                     table.AddRow(
-                        tour.ID.ToString(),
                         timeOnly,
                         "40 minutes",
                         tour.Language,

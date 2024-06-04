@@ -69,6 +69,11 @@ public class Person
         }
         else
         {
+            if (qr.ToLower() == "b" || qr.ToLower() == "back")
+            {
+                return false;
+            }
+
             if (uniqueCodes.Contains(qr))
             {
                 Visitor visitor = new Visitor(0, qr);

@@ -10,6 +10,7 @@ public class TourId : View
 
             if (input.ToLower() == "b" || input.ToLower() == "back")
             {
+                Console.Clear();
                 return -1;
             }
             else if (int.TryParse(input, out int tourID))
@@ -19,7 +20,7 @@ public class TourId : View
             else
             {
                 museum.WriteLine("Invalid input. Please enter a valid numeric tour ID.");
-                museum.WriteLine("Press anything to continue...\n");
+                museum.WriteLine("Press anything to continue...");
                 museum.ReadKey();
             }
         }

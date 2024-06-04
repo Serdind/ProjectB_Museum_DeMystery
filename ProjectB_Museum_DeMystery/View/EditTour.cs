@@ -3,57 +3,54 @@ public class EditTour : View
     private static IMuseum museum = Program.Museum;
     public static string EditOptions()
     {
+        Console.Clear();
         museum.WriteLine("What do you want to change? Time(T) Language(L) Guide(G) Status(S) Go back(B)");
         return ReadLineString();
     }
 
-    public static void NameSet(string name)
+    public static void TimeSet(TimeSpan time)
     {
-        museum.WriteLine($"Name set to {name}");
-        museum.WriteLine("Press anything to continue...\n");
+        Console.Clear();
+        museum.WriteLine($"Time set to {time:hh\\:mm}");
+        museum.WriteLine("Press anything to continue...");
         museum.ReadKey();
-    }
-
-    public static void DateSet(DateTime date)
-    {
-        museum.WriteLine($"Date set to {date}");
-        museum.WriteLine("Press anything to continue...\n");
-        museum.ReadKey();
-    }
-
-    public static void TimeSet(TimeSpan date)
-    {
-        museum.WriteLine($"Time set to {date}");
-        museum.WriteLine("Press anything to continue...\n");
-        museum.ReadKey();
+        museum.WriteLine("");
     }
 
     public static void LanguageSet(string language)
     {
+        Console.Clear();
         museum.WriteLine($"Language set to {language}");
-        museum.WriteLine("Press anything to continue...\n");
+        museum.WriteLine("Press anything to continue...");
         museum.ReadKey();
+        museum.WriteLine("");
     }
 
     public static void GuideSet(string guide)
     {
+        Console.Clear();
         museum.WriteLine($"Guide set to {guide}");
-        museum.WriteLine("Press anything to continue...\n");
+        museum.WriteLine("Press anything to continue...");
         museum.ReadKey();
+        museum.WriteLine("");
     }
     public static void StatusSet(bool status)
     {
         if (status == true)
         {
+            Console.Clear();
             museum.WriteLine($"Status set to active");
-            museum.WriteLine("Press anything to continue...\n");
+            museum.WriteLine("Press anything to continue...");
             museum.ReadKey();
+            Console.Clear();
         }
         else
         {
+            Console.Clear();
             museum.WriteLine($"Status set to inactive");
-            museum.WriteLine("Press anything to continue...\n");
+            museum.WriteLine("Press anything to continue...");
             museum.ReadKey();
+            Console.Clear();
         }
     }
 

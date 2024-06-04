@@ -71,7 +71,7 @@ namespace SystemTests
             string message = $"Reservation successful. You have reserved the following tour:\n" +
                             $"Date: {dateOnly}\n" +
                             $"Time: {timeOnly}\n" +
-                            $"Duration: 40 min\n" +
+                            $"Duration: 40 minutes\n" +
                             $"Language: English\n";
 
             string writtenLines = museum.GetWrittenLinesAsString();
@@ -141,7 +141,7 @@ namespace SystemTests
             string timeOnly = currentDate.ToString("HH:mm");
             string message = $"Date: {dateOnly}\n" +
                         $"Time: {timeOnly}\n" +
-                        $"Duration: 40 min\n" +
+                        $"Duration: 40 minutes\n" +
                         $"Language: English\n" +
                         $"Name of guide: TestGuide\n";
 
@@ -294,7 +294,7 @@ namespace SystemTests
             string timeOnly = currentDate.ToString("HH:mm");
             string message = $"Date: {dateOnly}\n" +
                         $"Time: {timeOnly}\n" +
-                        $"Duration: 40 min\n" +
+                        $"Duration: 40 minutes\n" +
                         $"Language: English\n" +
                         $"Name of guide: TestGuide\n";
 

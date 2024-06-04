@@ -65,7 +65,7 @@ public class VisitorTests
         string message = $"Reservation successful. You have reserved the following tour:\n" +
                     $"Date: {currentDate.ToShortDateString()}\n" +
                     $"Time: {currentDate.ToString("HH:mm")}\n" +
-                    $"Duration: 40 min\n" +
+                    $"Duration: 40 minutes\n" +
                     $"Language: English\n" +
                     $"Name of guide: TestGuide\n";
 
@@ -365,7 +365,7 @@ public class VisitorTests
         //Assert
         string message = $"Date: {currentDate.ToShortDateString()}\n" +
                         $"Time: {currentDate.ToString("HH:mm")}\n" +
-                        $"Duration: 40 min\n" +
+                        $"Duration: 40 minutes\n" +
                         $"Language: English\n" +
                         $"Name of guide: TestGuide\n";
 

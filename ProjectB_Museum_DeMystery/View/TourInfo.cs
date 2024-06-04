@@ -16,18 +16,21 @@ public class TourInfo : View
     public static void InvalidDate()
     {
         museum.WriteLine("Invalid date format. Please enter a valid date.");
-        museum.WriteLine("Press anything to continue...\n");
+        museum.WriteLine("Press anything to continue...");
         museum.ReadKey();
+        Console.Clear();
     }
 
     public static string Language()
     {
-        museum.WriteLine("\nWhich language?: ");
+        Console.Clear();
+        museum.WriteLine("Which language?: ");
         return ReadLineString();
     }
 
     public static string Time()
     {
+        Console.Clear();
         museum.WriteLine("Which time? Example: 16:00:");
         return ReadLineString();
     }
@@ -35,12 +38,14 @@ public class TourInfo : View
     public static void InvalidTime()
     {
         museum.WriteLine("Invalid time format. Please enter a valid time (Hour:Minutes).");
-        museum.WriteLine("Press anything to continue...\n");
+        museum.WriteLine("Press anything to continue...");
         museum.ReadKey();
+        Console.Clear();
     }
 
     public static string Guide()
     {
+        Console.Clear();
         museum.WriteLine("Which guide:");
         return ReadLineString();
     }
@@ -48,8 +53,9 @@ public class TourInfo : View
     public static void NoToursToday()
     {
         museum.WriteLine("No tours available for today.");
-        museum.WriteLine("Press anything to continue...\n");
+        museum.WriteLine("Press anything to continue...");
         museum.ReadKey();
+        Console.Clear();
     }
 
     public static string WhichDate()
@@ -61,14 +67,25 @@ public class TourInfo : View
     public static void NoTours()
     {
         museum.WriteLine("No tours available for that day.");
-        museum.WriteLine("Press anything to continue...\n");
+        museum.WriteLine("Press anything to continue...");
         museum.ReadKey();
+        Console.Clear();
+    }
+
+    public static void NoToursTime()
+    {
+        Console.Clear();
+        museum.WriteLine("No tours available for that time.");
+        museum.WriteLine("Press anything to continue...");
+        museum.ReadKey();
+        Console.Clear();
     }
 
     public static void ToursAlreadyExist()
     {
         museum.WriteLine("There already are tours for that time.");
-        museum.WriteLine("Press anything to continue...\n");
+        museum.WriteLine("Press anything to continue...");
         museum.ReadKey();
+        Console.Clear();
     }
 }
