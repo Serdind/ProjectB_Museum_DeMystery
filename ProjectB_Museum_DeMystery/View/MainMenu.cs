@@ -43,4 +43,13 @@ public class MainMenu : View
         museum.WriteLine("");
         Console.Clear();
     }
+
+    public static void Goodbye()
+    {
+        Console.Clear();
+        museum.WriteLine("Thank you for visiting The Depot!");
+        museum.WriteLine("Press anything to continue...");
+        museum.ReadKey();
+        Console.Clear();
+    }
 }

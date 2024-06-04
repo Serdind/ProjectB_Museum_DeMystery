@@ -111,6 +111,7 @@ public class ProgramController
 
                         if (finish.ToLower() == "y" || finish.ToLower() == "yes")
                         {
+                            MainMenu.Goodbye();
                             visitorRunning = false;
                         }
                         else
@@ -121,6 +122,7 @@ public class ProgramController
                     }
                     else
                     {
+                        MainMenu.Goodbye();
                         visitorRunning = false;
                     }
                 }
