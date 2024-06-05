@@ -73,7 +73,7 @@ public class PersonController
                             tourAdded = true;
 
                             DateTime startDate = museum.Today.AddDays(1);
-                            DateTime endDate = museum.Today.AddDays(7);
+                            DateTime endDate = museum.Today.AddDays(31);
 
                             for (DateTime currentDate = startDate; currentDate <= endDate; currentDate = currentDate.AddDays(1))
                             {
