@@ -251,13 +251,10 @@ public static class Tour
 
             tours = tours.OrderBy(t => t.Date).ToList();
             var table = new Table().Border(TableBorder.Rounded);
-            table.AddColumn("ID");
-            table.AddColumn("Date");
             table.AddColumn("Time");
             table.AddColumn("Duration");
             table.AddColumn("Language");
             table.AddColumn("Guide");
-            table.AddColumn("Remaining spots");
             table.AddColumn("Status");
 
             foreach (var tour in tours)
@@ -269,13 +266,10 @@ public static class Tour
                     int remainingSpots = tour.MaxParticipants - tour.ReservedVisitors.Count;
                     string status = tour.Status ? "Active" : "Inactive";
                     table.AddRow(
-                        tour.ID.ToString(),
-                        dateOnly,
                         timeOnly,
                         "40 minutes",
                         tour.Language,
                         guide.Name,
-                        remainingSpots.ToString(),
                         status
                     );
                 }
