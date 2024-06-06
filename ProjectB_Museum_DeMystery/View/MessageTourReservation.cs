@@ -41,6 +41,7 @@ public class MessageTourReservation
                         $"Language: {tour.Language}\n" +
                         $"Name of guide: {tour.NameGuide}\n";
 
+        Console.Clear();
         museum.WriteLine(message);
         museum.WriteLine("Press anything to continue...");
         museum.ReadKey();

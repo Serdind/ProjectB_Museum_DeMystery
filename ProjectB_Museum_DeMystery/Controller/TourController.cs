@@ -3,6 +3,7 @@ public class TourController
     private static IMuseum museum = Program.Museum;
     public bool ReservateTour(Visitor visitor)
     {
+        Console.Clear();
         AdminOptions.BackOption();
         int tourID;
 

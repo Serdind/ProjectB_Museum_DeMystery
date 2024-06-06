@@ -17,14 +17,16 @@ public class GuideController
 
             while (keepRunning)
             {
-                Tour.OverviewVisitorsTour(tourId);
+                Console.Clear();
                 string option = GuideOptions.Options(tourId);
 
                 if (option.ToLower() == "a" || option.ToLower() == "add visitor")
                 {
-                    AdminOptions.BackOption();
+                    Console.Clear();
                     while (true)
                     {
+                        AdminOptions.BackOption();
+                        Tour.OverviewVisitorsTour(tourId);
                         string qr = QRVisitor.WhichVisitorQr();
 
                         if (qr.ToLower() == "b" || qr.ToLower() == "back")
@@ -44,11 +46,12 @@ public class GuideController
                 }
                 else if (option.ToLower() == "r" || option.ToLower() == "remove visitor")
                 {
-                    bool codeValid = false;
+                    Console.Clear();
 
-                    while (!codeValid)
+                    while (true)
                     {
                         AdminOptions.BackOption();
+                        Tour.OverviewVisitorsTour(tourId);
                         string qr = QRVisitor.WhichVisitorQr();
 
                         if (qr.ToLower() == "b" || qr.ToLower() == "back")
@@ -59,7 +62,6 @@ public class GuideController
                         if (uniqueCodes.Contains(qr))
                         {
                             guide.RemoveVisitorFromTour(tourId, qr);
-                            codeValid = true;
                         }
                         else
                         {
@@ -95,11 +97,10 @@ public class GuideController
 
             if (option.ToLower() == "v" || option.ToLower() == "view visitors")
             {
-                Console.Clear();
-                AdminOptions.BackOption();
                 while (true)
                 {
                     Console.Clear();
+                    AdminOptions.BackOption();
                     ShowTableTours(guide);
                     tourID = TourId.WhichTourId();
 
@@ -119,15 +120,29 @@ public class GuideController
             }
             else if (option.ToLower() == "s" || option.ToLower() == "start tour")
             {
-                AdminOptions.BackOption();
-                tourID = TourId.WhichTourId();
-
-                if (tourID == -1)
+                while (true)
                 {
-                    continue;
-                }
+                    Console.Clear();
+                    AdminOptions.BackOption();
+                    ShowTableTours(guide);
+                    tourID = TourId.WhichTourId();
 
-                Tour.guide.StartTour(tourID);
+                    if (tourID == -1)
+                    {
+                        break;
+                    }
+
+                    var tour = tours.FirstOrDefault(t => t.ID == tourID);
+                    if (tour != null)
+                    {
+                        Tour.guide.StartTour(tourID);
+                    }
+                    else
+                    {
+                        TourNotFound.Show();
+                        continue;
+                    }
+                }
             }
             else if (option.ToLower() == "l" || option.ToLower() == "log out")
             {

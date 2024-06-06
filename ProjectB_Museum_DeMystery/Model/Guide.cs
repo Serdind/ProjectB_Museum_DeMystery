@@ -67,10 +67,12 @@ public class Guide : Person
                 {
                     tour.ReservedVisitors.Remove(visitorToRemove);
 
-                    Tour.SaveToursToFile(toursFilePath, tours);
+                    var updatedToursJson = JsonConvert.SerializeObject(tours);
+                    museum.WriteAllText(toursFilePath, updatedToursJson);
 
                     string visitorsJson = museum.ReadAllText(visitorsFilePath);
                     var visitors = JsonConvert.DeserializeObject<List<Visitor>>(visitorsJson);
+                    
                     var visitorInAllVisitors = visitors.FirstOrDefault(visitor => visitor.QR == qr);
 
                     if (visitorInAllVisitors != null)
@@ -149,7 +151,6 @@ public class Guide : Person
             if (tour != null && tour.Date.Date == currentDate.Date && tour.Date.TimeOfDay >= DateTime.Now.TimeOfDay && tour.Status)
             {
                 tour.Status = false;
-                EditTour.StatusSet(tour.Status);
                 Tour.SaveToursToFile(filePath, tours);
                 MessageTourReservation.ViewStart(tour);
             }
