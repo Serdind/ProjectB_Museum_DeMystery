@@ -123,26 +123,7 @@ public static class Tour
         if (edit)
         {
             Console.Clear();
-            bool validDateSelected = false;
-            DateTime selectedDate = DateTime.MinValue;
-
-            while (!validDateSelected)
-            {
-                AdminOptions.BackOption();
-                string dateString = TourInfo.WhichDate();
-                if (dateString.ToLower() == "b" || dateString.ToLower() == "back")
-                {
-                    return false;
-                }
-                if (DateTime.TryParseExact(dateString, "d-M-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out selectedDate))
-                {
-                    validDateSelected = true;
-                }
-                else
-                {
-                    TourInfo.InvalidDate();
-                }
-            }
+            string selection = AdminOptions.SelectTours();
 
             if (museum.FileExists(filePath))
             {
@@ -160,24 +141,33 @@ public static class Tour
                 table.AddColumn("Guide");
                 table.AddColumn("Remaining spots");
                 table.AddColumn("Status");
+
                 foreach (var tour in tours)
                 {
-                    if (tour.Date.Date == selectedDate.Date)
+                    if (selection.ToLower() == "t" || selection.ToLower() == "tours from today")
                     {
-                        string timeOnly = tour.Date.ToString("HH:mm");
-                        string dateOnly = tour.Date.ToShortDateString();
-                        int remainingSpots = tour.MaxParticipants - tour.ReservedVisitors.Count;
-                        string status = tour.Status ? "Active" : "Inactive";
-                        table.AddRow(
-                            tour.ID.ToString(),
-                            dateOnly,
-                            timeOnly,
-                            "40 minutes",
-                            tour.Language,
-                            guide.Name,
-                            remainingSpots.ToString(),
-                            status
-                        );
+                        if (tour.Date.Date == currentDate)
+                        {
+                            string timeOnly = tour.Date.ToString("HH:mm");
+                            string dateOnly = tour.Date.ToShortDateString();
+                            int remainingSpots = tour.MaxParticipants - tour.ReservedVisitors.Count;
+                            string status = tour.Status ? "Active" : "Inactive";
+                            table.AddRow(
+                                tour.ID.ToString(),
+                                dateOnly,
+                                timeOnly,
+                                "40 minutes",
+                                tour.Language,
+                                tour.NameGuide,
+                                remainingSpots.ToString(),
+                                status
+                            );
+                        }
+                    }
+                    else if (selection.ToLower() == "a" || selection.ToLower() == "tours from tomorrow")
+                    {
+                        OverviewToursTomorrow();
+                        return true;
                     }
                 }
                 AnsiConsole.Render(table);

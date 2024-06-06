@@ -57,7 +57,7 @@ public class TourInfo : View
 
     public static string WhichDate()
     {
-        museum.WriteLine("Which date of the tour you want to edit? Example: 01-6-2024:");
+        museum.WriteLine("Which date of the tour do you want to edit? Example: 01-6-2024:");
         return ReadLineString();
     }
 

@@ -52,4 +52,11 @@ public class AdminOptions : View
         museum.WriteLine("Are you sure you want to add this tour? (Yes or y) - (No or n)");
         return ReadLineString();
     }
+
+    public static string SelectTours()
+    {
+        Console.Clear();
+        museum.WriteLine("Tours from today(T)\nTours after today(A)");
+        return ReadLineString();
+    }
 }
