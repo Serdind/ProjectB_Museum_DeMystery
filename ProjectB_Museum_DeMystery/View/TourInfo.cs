@@ -9,7 +9,7 @@ public class TourInfo : View
 
     public static string Date()
     {
-        museum.WriteLine("\nWhich date? Example: 01-6-2024 16:00 ");
+        museum.WriteLine("\nWhich date do you want to set it to? Example: 01-6-2024 16:00 ");
         return ReadLineString();
     }
 
@@ -23,13 +23,13 @@ public class TourInfo : View
 
     public static string Language()
     {
-        museum.WriteLine("Which language?: ");
+        museum.WriteLine("Which language do you want to set it to?: ");
         return ReadLineString();
     }
 
     public static string Time()
     {
-        museum.WriteLine("Which time? Example: 16:00:");
+        museum.WriteLine("Which time do you want to set it to? Example: 16:00:");
         return ReadLineString();
     }
 
@@ -57,7 +57,7 @@ public class TourInfo : View
 
     public static string WhichDate()
     {
-        museum.WriteLine("Which date of the tour? Example: 01-6-2024:");
+        museum.WriteLine("Which date of the tour you want to edit? Example: 01-6-2024:");
         return ReadLineString();
     }
 
