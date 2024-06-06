@@ -13,7 +13,6 @@ public class PersonController
     public void AdminMenu()
     {
         string filePath = Model<GuidedTour>.GetFileNameTours();
-
         List<GuidedTour> tours = Tour.LoadToursFromFile();
         bool adminRunning = true;
 
@@ -23,77 +22,70 @@ public class PersonController
 
             if (option.ToLower() == "t" || option.ToLower() == "overview tours")
             {
-                Tour.OverviewTours(true);
-                AdminOptions.PressAnything();
+                if (Tour.OverviewTours(true))
+                {
+                    AdminOptions.PressAnything();
+                }
             }
             else if (option.ToLower() == "a" || option.ToLower() == "add tour")
             {
                 Console.Clear();
-                string language = "";
-                bool tourAdded = false;
-
                 AdminOptions.BackOption();
+                string timeString = TourInfo.Time();
 
-                while (true)
+                if (timeString.ToLower() == "b" || timeString.ToLower() == "back")
                 {
-                    string timeString = TourInfo.Time();
-
-                    if (timeString.ToLower() == "b" || timeString.ToLower() == "back")
-                    {
-                        break;
-                    }
-
-                    if (!DateTime.TryParseExact(timeString, "HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime time))
-                    {
-                        TourInfo.InvalidTime();
-                        continue;
-                    }
-
-                    if (Tour.ToursExistForTime(time, tours))
-                    {
-                        TourInfo.ToursAlreadyExist();
-                        continue;
-                    }
-
-                    while (true)
-                    {
-                        language = TourInfo.Language();
-
-                        if (language.ToLower() == "b" || language.ToLower() == "back")
-                        {
-                            break;
-                        }
-                        else if (string.IsNullOrEmpty(language))
-                        {
-                            AdminOptions.Empty();
-                            continue;
-                        }
-                        else
-                        {
-                            tourAdded = true;
-
-                            DateTime startDate = museum.Today.AddDays(1);
-                            DateTime endDate = museum.Today.AddDays(7);
-
-                            for (DateTime currentDate = startDate; currentDate <= endDate; currentDate = currentDate.AddDays(1))
-                            {
-                                GuidedTour newTour = new GuidedTour(new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, time.Hour, time.Minute, 0), language, Tour.guide.Name);
-                                Tour.AddTour(newTour, tours);
-                            }
-                            break;
-                        }
-                    }
-                    
-                    if (tourAdded)
-                    {
-                        break;
-                    }
+                    continue;
                 }
 
-                if (tourAdded)
+                if (!DateTime.TryParseExact(timeString, "HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime time))
                 {
-                    Tour.SaveToursToFile(filePath, tours);
-                    MessageTourReservation.TourAdded();
+                    TourInfo.InvalidTime();
+                    continue;
+                }
+
+                if (Tour.ToursExistForTime(time, tours))
+                {
+                    TourInfo.ToursAlreadyExist();
+                    continue;
+                }
+
+                string language = TourInfo.Language();
+
+                if (language.ToLower() == "b" || language.ToLower() == "back")
+                {
+                    continue;
+                }
+
+                if (string.IsNullOrEmpty(language))
+                {
+                    AdminOptions.Empty();
+                    continue;
+                }
+
+                string confirm = AdminOptions.Confirm();
+
+                if (confirm.ToLower() == "yes" || confirm.ToLower() == "y")
+                {
+                    DateTime startDate = museum.Today.AddDays(1);
+
+                    if (!Tour.ToursExistForTimeAndLanguage(new DateTime(startDate.Year, startDate.Month, startDate.Day, time.Hour, time.Minute, 0), language, tours))
+                    {
+                        GuidedTour newTour = new GuidedTour(new DateTime(startDate.Year, startDate.Month, startDate.Day, time.Hour, time.Minute, 0), language, Tour.guide.Name);
+                        Tour.AddTour(newTour, tours);
+                        Tour.SaveToursToFile(filePath, tours);
+                        MessageTourReservation.TourAdded();
+                        Tour.OverviewToursTomorrow();
+                        AdminOptions.PressAnything();
+                    }
+                }
+                else if (confirm.ToLower() == "no" || confirm.ToLower() == "n")
+                {
+                    continue;
+                }
+                else
+                {
+                    WrongInput.Show();
                 }
             }
             else if (option.ToLower() == "e" || option.ToLower() == "edit tour")
@@ -101,11 +93,10 @@ public class PersonController
                 string newTimeInput;
                 DateTime newTime;
 
-                Console.Clear();
-                AdminOptions.BackOption();
                 while (true)
                 {
                     Console.Clear();
+                    AdminOptions.BackOption();
                     Tour.OverviewToursEdit();
                     newTimeInput = EditTour.TimeEdit();
 
@@ -118,18 +109,26 @@ public class PersonController
                             while (true)
                             {
                                 DateTime currentDate = toursWithSameTime.First().Date.Date;
+                                DateTime selectedDate = DateTime.Today.AddDays(1);
+                                string currentSelectedTime = newTimeInput;
+                                string newTimeInput1 = newTimeInput;
+                                bool timeChanged = false;
+
+                                Console.Clear();
+                                Tour.SelectedTour(newTimeInput, selectedDate);
+
                                 string change = EditTour.EditOptions();
 
                                 if (change.ToLower() == "t" || change.ToLower() == "time")
                                 {
                                     Console.Clear();
-                                    string newTimeInput1;
                                     DateTime newTime1;
 
-                                    AdminOptions.BackOption();
                                     while (true)
                                     {
                                         Console.Clear();
+                                        AdminOptions.BackOption();
+                                        Tour.SelectedTour(newTimeInput, selectedDate);
                                         newTimeInput1 = EditTour.NewTime();
 
                                         if (DateTime.TryParseExact(newTimeInput1, "HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out newTime1))
@@ -144,6 +143,8 @@ public class PersonController
                                             Tour.SaveToursToFile(filePath, tours);
 
                                             EditTour.TimeSet(updatedTimeOfDay);
+                                            timeChanged = true;
+                                            newTimeInput = newTimeInput1;
                                             break;
                                         }
                                         else if (newTimeInput1.ToLower() == "b" || newTimeInput1.ToLower() == "back")
@@ -160,6 +161,9 @@ public class PersonController
                                 {
                                     while (true)
                                     {
+                                        Console.Clear();
+                                        AdminOptions.BackOption();
+                                        Tour.SelectedTour(newTimeInput, selectedDate);
                                         string language = TourInfo.Language();
 
                                         if (language.ToLower() == "b" || language.ToLower() == "back")
@@ -184,38 +188,12 @@ public class PersonController
                                         break;
                                     }
                                 }
-                                else if (change.ToLower() == "g" || change.ToLower() == "guide")
-                                {
-                                    while (true)
-                                    {
-                                        string guide = TourInfo.Guide();
-
-                                        if (guide.ToLower() == "b" || guide.ToLower() == "back")
-                                        {
-                                            break;
-                                        }
-
-                                        if (guide.ToLower() == string.Empty)
-                                        {
-                                            AdminOptions.Empty();
-                                            continue;
-                                        }
-
-                                        foreach (var otherTour in toursWithSameTime)
-                                        {
-                                            otherTour.NameGuide = guide;
-                                        }
-                                        
-                                        Tour.SaveToursToFile(filePath, tours);
-
-                                        EditTour.GuideSet(guide);
-                                        break;
-                                    }
-                                }
                                 else if (change.ToLower() == "s" || change.ToLower() == "status")
                                 {
                                     while (true)
                                     {
+                                        Console.Clear();
+                                        Tour.SelectedTour(newTimeInput, selectedDate);
                                         bool newStatus = !toursWithSameTime.First().Status;
 
                                         foreach (var otherTour in toursWithSameTime)

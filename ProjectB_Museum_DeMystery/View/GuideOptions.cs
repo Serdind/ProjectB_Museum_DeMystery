@@ -28,6 +28,7 @@ public class GuideOptions : View
 
                 if (visitors.Any())
                 {
+                    Tour.OverviewVisitorsTour(tourID);
                     if (!isTourFull)
                     {
                         museum.WriteLine("Add visitor(A)\nRemove visitor(R)\nGo back(B)");
@@ -37,20 +38,9 @@ public class GuideOptions : View
                         museum.WriteLine("Remove visitor(R)\nGo back(B)");
                     }
                 }
-                else if (tour.ReservedVisitors.Count == 0)
-                {
-                    museum.WriteLine("Remove visitor(R)\nGo back(B)");
-                }
                 else
                 {
-                    if (!isTourFull)
-                    {
-                        museum.WriteLine("Add visitor(A)\nGo back(B)");
-                    }
-                    else
-                    {
-                        museum.WriteLine("Go back(B)");
-                    }
+                    museum.WriteLine("Add visitor(A)\nGo back(B)");
                 }
             }
         }

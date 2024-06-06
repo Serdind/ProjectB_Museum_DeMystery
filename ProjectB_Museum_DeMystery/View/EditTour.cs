@@ -3,8 +3,7 @@ public class EditTour : View
     private static IMuseum museum = Program.Museum;
     public static string EditOptions()
     {
-        Console.Clear();
-        museum.WriteLine("What do you want to change? Time(T) Language(L) Guide(G) Status(S) Go back(B)");
+        museum.WriteLine("What do you want to change? Time(T) Language(L) Status(S) Go back(B)");
         return ReadLineString();
     }
 

@@ -23,14 +23,12 @@ public class TourInfo : View
 
     public static string Language()
     {
-        Console.Clear();
         museum.WriteLine("Which language?: ");
         return ReadLineString();
     }
 
     public static string Time()
     {
-        Console.Clear();
         museum.WriteLine("Which time? Example: 16:00:");
         return ReadLineString();
     }
@@ -45,7 +43,6 @@ public class TourInfo : View
 
     public static string Guide()
     {
-        Console.Clear();
         museum.WriteLine("Which guide:");
         return ReadLineString();
     }
@@ -60,7 +57,7 @@ public class TourInfo : View
 
     public static string WhichDate()
     {
-        museum.WriteLine("Which date? Example: 01-6-2024:");
+        museum.WriteLine("Which date of the tour? Example: 01-6-2024:");
         return ReadLineString();
     }
 
