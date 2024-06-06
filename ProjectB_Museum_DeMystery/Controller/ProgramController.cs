@@ -2,6 +2,11 @@ public class ProgramController
 {
     public static void Start()
     {
+        if (!Tour.OverviewTours(false))
+        {
+            Environment.Exit(1);
+        }
+
         Visitor visitor = new Visitor(0, null);
 
         MainMenu.Welcome();
