@@ -15,42 +15,62 @@ public static class Tour
     private static IMuseum museum = Program.Museum;
 
     public static void UpdateTours()
+{
+    ClearVisitorFileIfNewDay();
+
+    string filePath = Model<GuidedTour>.GetFileNameTours();
+
+    DateTime today = DateTime.Today;
+    DateTime tomorrow = today.AddDays(1);
+
+    if (museum.FileExists(filePath))
     {
-        ClearVisitorFileIfNewDay();
+        List<GuidedTour> existingTours = LoadToursFromFile();
 
-        string filePath = Model<GuidedTour>.GetFileNameTours();
+        existingTours = existingTours.Where(tour => tour.Date.Date == today || tour.Date.Date == tomorrow).ToList();
 
-        if (museum.FileExists(filePath))
+        List<GuidedTour> toursToday = existingTours.Where(tour => tour.Date.Date == today).ToList();
+
+        List<GuidedTour> toursTomorrow = toursToday.Select(tour =>
         {
-            List<GuidedTour> existingTours = LoadToursFromFile();
-            DateTime today = DateTime.Today;
-            DateTime tomorrow = today.AddDays(1);
+            return new GuidedTour(
+                new DateTime(tomorrow.Year, tomorrow.Month, tomorrow.Day, tour.Date.Hour, tour.Date.Minute, tour.Date.Second),
+                tour.Language,
+                tour.NameGuide
+            );
+        }).ToList();
 
-            for (int i = 0; i < existingTours.Count; i++)
-            {
-                GuidedTour tour = existingTours[i];
+        List<GuidedTour> updatedTours = toursToday.Concat(toursTomorrow).ToList();
 
-                if (i < 9)
-                {
-                    tour.Date = new DateTime(today.Year, today.Month, today.Day, tour.Date.Hour, tour.Date.Minute, tour.Date.Second);
-                }
-                else
-                {
-                    tour.Date = new DateTime(tomorrow.Year, tomorrow.Month, tomorrow.Day, tour.Date.Hour, tour.Date.Minute, tour.Date.Second);
-                }
-            }
-
-            SaveToursToFile(filePath, existingTours);
-        }
-        else
+        for (int i = 0; i < updatedTours.Count; i++)
         {
-            DateTime today = DateTime.Today;
-            List<GuidedTour> defaultToursToday = GenerateDefaultToursForDay(today);
-            List<GuidedTour> defaultToursTomorrow = GenerateDefaultToursForDay(today.AddDays(1));
-            List<GuidedTour> defaultTours = defaultToursToday.Concat(defaultToursTomorrow).ToList();
-            SaveToursToFile(filePath, defaultTours);
+            updatedTours[i].ID = i + 1;
         }
+
+        SaveToursToFile(filePath, updatedTours);
     }
+    else
+    {
+        List<GuidedTour> defaultToursToday = GenerateDefaultToursForDay(today).ToList();
+        List<GuidedTour> defaultToursTomorrow = defaultToursToday.Select(tour =>
+        {
+            return new GuidedTour(
+                new DateTime(tomorrow.Year, tomorrow.Month, tomorrow.Day, tour.Date.Hour, tour.Date.Minute, tour.Date.Second),
+                tour.Language,
+                tour.NameGuide
+            );
+        }).ToList();
+
+        List<GuidedTour> defaultTours = defaultToursToday.Concat(defaultToursTomorrow).ToList();
+
+        for (int i = 0; i < defaultTours.Count; i++)
+        {
+            defaultTours[i].ID = i + 1;
+        }
+
+        SaveToursToFile(filePath, defaultTours);
+    }
+}
 
     private static List<GuidedTour> GenerateDefaultToursForDay(DateTime date)
     {
