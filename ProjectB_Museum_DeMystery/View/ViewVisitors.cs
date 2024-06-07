@@ -1,8 +1,9 @@
 public class ViewVisitors : View
 {
-    private static IMuseum museum = Program.Museum;
+    
     public static string Show()
     {
+        IMuseum museum = Program.Museum;
         museum.WriteLine("View visitors(V)\nStart tour(S)\nLog out(L)");
         return ReadLineString();
     }

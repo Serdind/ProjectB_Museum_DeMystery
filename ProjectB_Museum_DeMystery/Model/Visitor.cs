@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 using Newtonsoft.Json;
 public class Visitor : Person
 {
-    private static IMuseum museum = Program.Museum;
+    
     private static int lastId = 1;
     [JsonPropertyName("Id")]
     public int Id;
@@ -17,6 +17,8 @@ public class Visitor : Person
 
     public bool Reservate(int tourID, Visitor visitor)
     {
+        IMuseum museum = Program.Museum;
+
         if (ReservationMade(visitor.QR))
         {
             MaxReservation.Show();
@@ -78,6 +80,8 @@ public class Visitor : Person
 
     public bool ReservateByGuide(int tourID, Visitor visitor)
     {
+        IMuseum museum = Program.Museum;
+        
         if (ReservationMade(visitor.QR))
         {
             MaxReservation.GuideShow();

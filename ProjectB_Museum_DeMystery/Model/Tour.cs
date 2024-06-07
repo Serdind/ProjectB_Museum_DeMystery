@@ -5,71 +5,68 @@ using System.Diagnostics;
 
 public static class Tour
 {
-    public static readonly List<GuidedTour> guidedTour = new List<GuidedTour>();
-    public static readonly List<DepartmentHead> admins = new List<DepartmentHead>();
-    public static readonly List<Guide> guides = new List<Guide>();
-    public static List<Visitor> visitors = new List<Visitor>();
     private static DateTime lastCheckDate = DateTime.MinValue;
 
-    private static IMuseum museum = Program.Museum;
+    
 
     public static void UpdateTours()
-{
-    ClearVisitorFileIfNewDay();
-
-    string filePath = Model<GuidedTour>.GetFileNameTours();
-
-    DateTime today = DateTime.Today;
-    DateTime tomorrow = today.AddDays(1);
-
-    if (museum.FileExists(filePath))
     {
-        List<GuidedTour> existingTours = LoadToursFromFile();
+        IMuseum museum = Program.Museum;
+        ClearVisitorFileIfNewDay();
 
-        existingTours = existingTours.Where(tour => tour.Date.Date == today || tour.Date.Date == tomorrow).ToList();
+        string filePath = Model<GuidedTour>.GetFileNameTours();
 
-        List<GuidedTour> toursToday = existingTours.Where(tour => tour.Date.Date == today).ToList();
+        DateTime today = DateTime.Today;
+        DateTime tomorrow = today.AddDays(1);
 
-        List<GuidedTour> toursTomorrow = toursToday.Select(tour =>
+        if (museum.FileExists(filePath))
         {
-            return new GuidedTour(
-                new DateTime(tomorrow.Year, tomorrow.Month, tomorrow.Day, tour.Date.Hour, tour.Date.Minute, tour.Date.Second),
-                tour.Language,
-                tour.NameGuide
-            );
-        }).ToList();
+            List<GuidedTour> existingTours = LoadToursFromFile();
 
-        List<GuidedTour> updatedTours = toursToday.Concat(toursTomorrow).ToList();
+            existingTours = existingTours.Where(tour => tour.Date.Date == today || tour.Date.Date == tomorrow).ToList();
 
-        for (int i = 0; i < updatedTours.Count; i++)
-        {
-            updatedTours[i].ID = i + 1;
+            List<GuidedTour> toursToday = existingTours.Where(tour => tour.Date.Date == today).ToList();
+
+            List<GuidedTour> toursTomorrow = toursToday.Select(tour =>
+            {
+                return new GuidedTour(
+                    new DateTime(tomorrow.Year, tomorrow.Month, tomorrow.Day, tour.Date.Hour, tour.Date.Minute, tour.Date.Second),
+                    tour.Language,
+                    tour.NameGuide
+                );
+            }).ToList();
+
+            List<GuidedTour> updatedTours = toursToday.Concat(toursTomorrow).ToList();
+
+            for (int i = 0; i < updatedTours.Count; i++)
+            {
+                updatedTours[i].ID = i + 1;
+            }
+
+            SaveToursToFile(filePath, updatedTours);
         }
-
-        SaveToursToFile(filePath, updatedTours);
-    }
-    else
-    {
-        List<GuidedTour> defaultToursToday = GenerateDefaultToursForDay(today).ToList();
-        List<GuidedTour> defaultToursTomorrow = defaultToursToday.Select(tour =>
+        else
         {
-            return new GuidedTour(
-                new DateTime(tomorrow.Year, tomorrow.Month, tomorrow.Day, tour.Date.Hour, tour.Date.Minute, tour.Date.Second),
-                tour.Language,
-                tour.NameGuide
-            );
-        }).ToList();
+            List<GuidedTour> defaultToursToday = GenerateDefaultToursForDay(today).ToList();
+            List<GuidedTour> defaultToursTomorrow = defaultToursToday.Select(tour =>
+            {
+                return new GuidedTour(
+                    new DateTime(tomorrow.Year, tomorrow.Month, tomorrow.Day, tour.Date.Hour, tour.Date.Minute, tour.Date.Second),
+                    tour.Language,
+                    tour.NameGuide
+                );
+            }).ToList();
 
-        List<GuidedTour> defaultTours = defaultToursToday.Concat(defaultToursTomorrow).ToList();
+            List<GuidedTour> defaultTours = defaultToursToday.Concat(defaultToursTomorrow).ToList();
 
-        for (int i = 0; i < defaultTours.Count; i++)
-        {
-            defaultTours[i].ID = i + 1;
+            for (int i = 0; i < defaultTours.Count; i++)
+            {
+                defaultTours[i].ID = i + 1;
+            }
+
+            SaveToursToFile(filePath, defaultTours);
         }
-
-        SaveToursToFile(filePath, defaultTours);
     }
-}
 
     private static List<GuidedTour> GenerateDefaultToursForDay(DateTime date)
     {
@@ -102,6 +99,7 @@ public static class Tour
 
     public static void SaveToursToFile(string filePath, List<GuidedTour> tours)
     {
+        IMuseum museum = Program.Museum;
         List<GuidedTour> existingTours;
         if (museum.FileExists(filePath))
         {
@@ -136,6 +134,7 @@ public static class Tour
 
     public static bool OverviewTours(bool edit)
     {
+        IMuseum museum = Program.Museum;
         DateTime currentDate = DateTime.Today;
         string filePath = Model<GuidedTour>.GetFileNameTours();
 
@@ -278,6 +277,7 @@ public static class Tour
 
     public static bool OverviewToursTomorrow()
     {
+        IMuseum museum = Program.Museum;
         DateTime currentDate = DateTime.Today;
         string filePath = Model<GuidedTour>.GetFileNameTours();
 
@@ -327,6 +327,7 @@ public static class Tour
 
     public static bool OverviewToursEdit()
     {
+        IMuseum museum = Program.Museum;
         DateTime tomorrowDate = museum.Today.AddDays(1);
         string filePath = Model<GuidedTour>.GetFileNameTours();
 
@@ -379,6 +380,7 @@ public static class Tour
 
     public static List<GuidedTour> LoadToursFromFile()
     {
+        IMuseum museum = Program.Museum;
         string filePath = Model<GuidedTour>.GetFileNameTours();
 
         if (museum.FileExists(filePath))
@@ -390,19 +392,20 @@ public static class Tour
         return new List<GuidedTour>();
     }
 
-    public static void AddAdminToJSON()
+    public static void AddAdminToJSON(List<DepartmentHead> admins)
     {
         string filePath = Model<DepartmentHead>.GetFileNameAdmins();
-        SaveAdminToFile(filePath);
+        SaveAdminToFile(filePath,admins);
     }
 
-    public static void AddAdmin(DepartmentHead departmentHead)
+    public static void AddAdmin(DepartmentHead departmentHead, List<DepartmentHead> admins)
     {
         admins.Add(departmentHead);
     }
 
-    public static void SaveAdminToFile(string filePath)
+    public static void SaveAdminToFile(string filePath, List<DepartmentHead> admins)
     {
+        IMuseum museum = Program.Museum;
         string json = JsonConvert.SerializeObject(admins, Formatting.Indented);
 
         museum.WriteAllText(filePath, json);
@@ -410,6 +413,7 @@ public static class Tour
 
     public static List<DepartmentHead> LoadAdminsFromFile()
     {
+        IMuseum museum = Program.Museum;
         string filePath = Model<DepartmentHead>.GetFileNameAdmins();
 
         if (museum.FileExists(filePath))
@@ -423,19 +427,20 @@ public static class Tour
         }
     }
 
-    public static void AddGuideToJSON()
+    public static void AddGuideToJSON(List<Guide> guides)
     {
         string filePath = Model<Guide>.GetFileNameGuides();
-        SaveGuideToFile(filePath);
+        SaveGuideToFile(filePath, guides);
     }
 
-    public static void AddGuide(Guide guide)
+    public static void AddGuide(Guide guide, List<Guide> guides)
     {
         guides.Add(guide);
     }
 
-    public static void SaveGuideToFile(string filePath)
+    public static void SaveGuideToFile(string filePath, List<Guide> guides)
     {
+        IMuseum museum = Program.Museum;
         string json = JsonConvert.SerializeObject(guides, Formatting.Indented);
 
         museum.WriteAllText(filePath, json);
@@ -443,6 +448,7 @@ public static class Tour
 
     public static List<Guide> LoadGuidesFromFile()
     {
+        IMuseum museum = Program.Museum;
         string filePath = Model<Guide>.GetFileNameGuides();
 
         if (museum.FileExists(filePath))
@@ -473,6 +479,7 @@ public static class Tour
 
     public static List<Visitor> LoadVisitorsFromFile()
     {
+        IMuseum museum = Program.Museum;
         string filePath = Model<Visitor>.GetFileNameVisitors();
 
         if (museum.FileExists(filePath))
@@ -486,13 +493,14 @@ public static class Tour
         }
     }
 
-    public static void AddVisitor(Visitor visitor)
+    public static void AddVisitor(Visitor visitor, List<Visitor> visitors)
     {
         visitors.Add(visitor);
     }
 
     public static void SaveVisitorToFile(List<Visitor> visitors)
     {
+        IMuseum museum = Program.Museum;
         string filePath = Model<Visitor>.GetFileNameVisitors();
 
         string json = JsonConvert.SerializeObject(visitors, Formatting.Indented);
@@ -501,6 +509,7 @@ public static class Tour
 
     public static bool OverviewVisitorsTour(int tourID)
     {
+        IMuseum museum = Program.Museum;
         string filePath = Model<Visitor>.GetFileNameVisitors();
         
         if (museum.FileExists(filePath))
@@ -542,6 +551,7 @@ public static class Tour
 
     public static void CreateEmptyJsonFile(string filePath)
     {
+        IMuseum museum = Program.Museum;
         if (!museum.FileExists(filePath))
         {
             museum.WriteAllText(filePath, "[]");
@@ -574,6 +584,7 @@ public static class Tour
 
     public static void SelectedTour(string time, DateTime selectedDate)
     {
+        IMuseum museum = Program.Museum;
         string filePath = Model<GuidedTour>.GetFileNameTours();
 
         if (museum.FileExists(filePath))

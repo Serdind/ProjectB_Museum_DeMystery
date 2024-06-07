@@ -3,9 +3,10 @@ using Newtonsoft.Json;
 
 public class VisitorController
 {
-    private static IMuseum museum = Program.Museum;
+    
     public void ReservationCancel(List<GuidedTour> tours, List<Visitor> visitors, Visitor visitor)
     {
+        IMuseum museum = Program.Museum;
         string filePath = Model<GuidedTour>.GetFileNameTours();
 
         string filePath1 = Model<Visitor>.GetFileNameVisitors();

@@ -5,7 +5,7 @@ using System.Globalization;
 
 public class Person
 {
-    private static IMuseum museum = Program.Museum;
+    
     
     [JsonPropertyName("QR")]
     public string QR;

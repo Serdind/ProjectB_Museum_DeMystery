@@ -3,12 +3,13 @@ using Newtonsoft.Json;
 public class UniqueCodes
 {
     private static Random random = new Random();
-    private static IMuseum museum = Program.Museum;
+    
     private const int SpecialCode = 8752316;
     private const int ExcludedCode = 99999;
 
     public List<int> GenerateUniqueCodes(int count)
     {
+        IMuseum museum = Program.Museum;
         string adminsFilePath = Model<DepartmentHead>.GetFileNameAdmins();
         string guidesFilePath = Model<Guide>.GetFileNameGuides();
 
@@ -59,12 +60,14 @@ public class UniqueCodes
 
     public static void SaveCodesToJson(List<int> codes, string fileName)
     {
+        IMuseum museum = Program.Museum;
         string json = JsonConvert.SerializeObject(codes, Formatting.Indented);
         museum.WriteAllText(fileName, json);
     }
 
     public static List<string> LoadUniqueCodesFromFile(string fileName)
     {
+        IMuseum museum = Program.Museum;
         if (museum.FileExists(fileName))
         {
             string json = museum.ReadAllText(fileName);
@@ -78,6 +81,7 @@ public class UniqueCodes
 
     public static bool IsNewDay(string filePath)
     {
+        IMuseum museum = Program.Museum;
         if (museum.FileExists(filePath))
         {
             DateTime lastModified = museum.GetLastWriteTime(filePath);

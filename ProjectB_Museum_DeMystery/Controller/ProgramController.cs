@@ -2,11 +2,6 @@ public class ProgramController
 {
     public static void Start()
     {
-        if (!Tour.OverviewTours(false))
-        {
-            Environment.Exit(1);
-        }
-
         Visitor visitor = new Visitor(0, null);
 
         MainMenu.Welcome();
@@ -43,6 +38,11 @@ public class ProgramController
 
         if (loginStatus == "Visitor")
         {
+            if (!Tour.OverviewTours(false))
+            {
+                Environment.Exit(1);
+            }
+            
             bool visitorRunning = true;
             bool helpShown = false;
 

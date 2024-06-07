@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 public class GuideController
 {
-    private static IMuseum museum = Program.Museum;
+    
     public void ViewVisitorsTour(int tourId, GuidedTour tour, Guide guide, List<GuidedTour> tours)
     {
         DateTime currentDate = DateTime.Today;
@@ -157,6 +157,7 @@ public class GuideController
 
     public void ShowTableTours(Guide guide)
     {
+        IMuseum museum = Program.Museum;
         DateTime today = DateTime.Today;
         string filePath = Model<GuidedTour>.GetFileNameTours();
 

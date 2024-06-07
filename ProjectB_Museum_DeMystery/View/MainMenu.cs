@@ -1,9 +1,9 @@
 public class MainMenu : View
 {
-    private static IMuseum museum = Program.Museum;
+    
     public static void Welcome()
     {
-        
+        IMuseum museum = Program.Museum;
         museum.WriteLine("Welcome to The Depot!");
         museum.WriteLine("Press anything to continue...");
         museum.ReadKey();
@@ -12,7 +12,7 @@ public class MainMenu : View
 
     public static void Intro()
     {
-        
+        IMuseum museum = Program.Museum;
         museum.WriteLine("Here are some tips to help you with the application.");
         museum.WriteLine("Press anything to continue...");
         museum.ReadKey();
@@ -46,7 +46,7 @@ public class MainMenu : View
 
     public static void Goodbye()
     {
-        
+        IMuseum museum = Program.Museum;
         museum.WriteLine("Thank you for visiting The Depot!");
         museum.WriteLine("Press anything to continue...");
         museum.ReadKey();

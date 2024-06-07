@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 public class Guide : Person
 {
-    private static IMuseum museum = Program.Museum;
+    
     private static int lastId = 0;
     [JsonPropertyName("Id")]
     public int Id;
@@ -19,6 +19,7 @@ public class Guide : Person
 
     public bool AddVisitorToTour(int tourID, string qr)
     {
+        IMuseum museum = Program.Museum;
         string filePath = Model<GuidedTour>.GetFileNameTours();
 
         if (museum.FileExists(filePath))
@@ -49,6 +50,7 @@ public class Guide : Person
 
     public bool RemoveVisitorFromTour(int tourID, string qr)
     {
+        IMuseum museum = Program.Museum;
         string toursFilePath = Model<GuidedTour>.GetFileNameTours();
         string visitorsFilePath = Model<Visitor>.GetFileNameVisitors();
 
@@ -109,6 +111,7 @@ public class Guide : Person
 
     public bool ViewTours(string guideName, Guide guide)
     {
+        IMuseum museum = Program.Museum;
         DateTime today = DateTime.Today;
         string filePath = Model<GuidedTour>.GetFileNameTours();
         bool toursFound = false;
@@ -138,6 +141,7 @@ public class Guide : Person
 
     public void StartTour(int tourID)
     {
+        IMuseum museum = Program.Museum;
         DateTime currentDate = DateTime.Now;
         string filePath = Model<GuidedTour>.GetFileNameTours();
 

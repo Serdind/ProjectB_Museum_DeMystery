@@ -1,8 +1,9 @@
 public class TourId : View
 {
-    private static IMuseum museum = Program.Museum;
+    
     public static int WhichTourId()
     {
+        IMuseum museum = Program.Museum;
         while (true)
         {
             museum.WriteLine("Enter tour ID:");

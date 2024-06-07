@@ -3,23 +3,25 @@
     public static IMuseum Museum = new RealMuseum();
     public static void Main()
     {
-        Tour.AddAdmin(new DepartmentHead("Frans", "6457823"));
-        Tour.AddAdminToJSON();
+        var admins = new List<DepartmentHead>();
+        Tour.AddAdmin(new DepartmentHead("Frans", "6457823"), admins);
+        Tour.AddAdminToJSON(admins);
 
-        Tour.AddAdmin(new DepartmentHead("Hans", "3489223"));
-        Tour.AddAdminToJSON();
+        Tour.AddAdmin(new DepartmentHead("Hans", "3489223"), admins);
+        Tour.AddAdminToJSON(admins);
 
-        Tour.AddAdmin(new DepartmentHead("John", "4612379"));
-        Tour.AddAdminToJSON();
+        Tour.AddAdmin(new DepartmentHead("John", "4612379"), admins);
+        Tour.AddAdminToJSON(admins);
 
-        Tour.AddGuide(new Guide("Casper", "4892579"));
-        Tour.AddGuideToJSON();
+        var guides = new List<Guide>();
+        Tour.AddGuide(new Guide("Casper", "4892579"), guides);
+        Tour.AddGuideToJSON(guides);
 
-        Tour.AddGuide(new Guide("Bas", "9412821"));
-        Tour.AddGuideToJSON();
+        Tour.AddGuide(new Guide("Bas", "9412821"), guides);
+        Tour.AddGuideToJSON(guides);
 
-        Tour.AddGuide(new Guide("Rick", "421627"));
-        Tour.AddGuideToJSON();
+        Tour.AddGuide(new Guide("Rick", "421627"), guides);
+        Tour.AddGuideToJSON(guides);
 
         string filePath = Model<UniqueCodes>.GetFileNameUniqueCodes();
 

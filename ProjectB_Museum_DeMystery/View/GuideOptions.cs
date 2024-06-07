@@ -3,21 +3,22 @@ using Newtonsoft.Json;
 
 public class GuideOptions : View
 {
-    private static IMuseum museum = Program.Museum;
+    
 
     public static string Options(int tourID)
     {
+        IMuseum museum = Program.Museum;
         string filePath = Model<Visitor>.GetFileNameVisitors();
         
-        if (File.Exists(filePath))
+        if (museum.FileExists(filePath))
         {
-            string json = File.ReadAllText(filePath);
+            string json = museum.ReadAllText(filePath);
             var visitors = JsonConvert.DeserializeObject<List<Visitor>>(json);
             
             visitors = visitors.Where(v => v.TourId == tourID).OrderBy(t => t.TourId).ToList();
 
             string filePath1 = Model<GuidedTour>.GetFileNameTours();
-            string json1 = File.ReadAllText(filePath1);
+            string json1 = museum.ReadAllText(filePath1);
             var tours = JsonConvert.DeserializeObject<List<GuidedTour>>(json1);
 
             var tour = tours.FirstOrDefault(v => v.ID == tourID);
@@ -50,6 +51,7 @@ public class GuideOptions : View
 
     public static void StartTour(GuidedTour tour)
     {
+        IMuseum museum = Program.Museum;
         string message = $"The tour has been started:" +
                         $"Date: {tour.Date.ToShortDateString()}\n" +
                         $"Time: {tour.Date.ToString("HH:mm")}\n" +
@@ -65,12 +67,14 @@ public class GuideOptions : View
 
     public static string ViewTours()
     {
+        IMuseum museum = Program.Museum;
         museum.WriteLine("My tour(M)\nLog out(L)");
         return ReadLineString();
     }
 
     public static void AddedVisitorToTour()
     {
+        IMuseum museum = Program.Museum;
         museum.WriteLine("Succesfully added visitor to tour.");
         museum.WriteLine("Press anything to continue...");
         museum.ReadKey();
@@ -79,6 +83,7 @@ public class GuideOptions : View
 
     public static void RemovedVisitorFromTour()
     {
+        IMuseum museum = Program.Museum;
         museum.WriteLine("Succesfully removed visitor from tour.");
         museum.WriteLine("Press anything to continue...");
         museum.ReadKey();
@@ -87,6 +92,7 @@ public class GuideOptions : View
 
     public static void VisitorNotFound()
     {
+        IMuseum museum = Program.Museum;
         museum.WriteLine("Visitor not found in the visitors list.");
         museum.WriteLine("Press anything to continue...");
         museum.ReadKey();
@@ -95,6 +101,7 @@ public class GuideOptions : View
 
     public static void VisitorNotFoundInTour()
     {
+        IMuseum museum = Program.Museum;
         museum.WriteLine("Visitor not found in the tour's list of reserved visitors.");
         museum.WriteLine("Press anything to continue...");
         museum.ReadKey();
@@ -103,6 +110,7 @@ public class GuideOptions : View
 
     public static void TourNotFoundOrActive()
     {
+        IMuseum museum = Program.Museum;
         museum.WriteLine("Tour not found or not active.");
         museum.WriteLine("Press anything to continue...");
         museum.ReadKey();
@@ -111,6 +119,7 @@ public class GuideOptions : View
 
     public static void TourVisitorFileNotFound()
     {
+        IMuseum museum = Program.Museum;
         museum.WriteLine("Tour not found or not active.");
         museum.WriteLine("Press anything to continue...");
         museum.ReadKey();
@@ -119,6 +128,7 @@ public class GuideOptions : View
 
     public static string GuideName()
     {
+        IMuseum museum = Program.Museum;
         museum.WriteLine("Insert the name of guide:");
         return ReadLineString();
     }

@@ -8,10 +8,11 @@ using System.Linq;
 
 public class PersonController
 {
-    private static IMuseum museum = Program.Museum;
+    
 
     public void AdminMenu()
     {
+        IMuseum museum = Program.Museum;
         string filePath = Model<GuidedTour>.GetFileNameTours();
         List<GuidedTour> tours = Tour.LoadToursFromFile();
         bool adminRunning = true;
@@ -29,63 +30,77 @@ public class PersonController
             }
             else if (option.ToLower() == "a" || option.ToLower() == "add tour")
             {
-                
                 AdminOptions.BackOption();
-                string timeString = TourInfo.Time();
-
-                if (timeString.ToLower() == "b" || timeString.ToLower() == "back")
+                while (true)
                 {
-                    continue;
-                }
+                    string timeString = TourInfo.Time();
 
-                if (!DateTime.TryParseExact(timeString, "HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime time))
-                {
-                    TourInfo.InvalidTime();
-                    continue;
-                }
-
-                if (Tour.ToursExistForTime(time, tours))
-                {
-                    TourInfo.ToursAlreadyExist();
-                    continue;
-                }
-
-                string language = TourInfo.Language();
-
-                if (language.ToLower() == "b" || language.ToLower() == "back")
-                {
-                    continue;
-                }
-
-                if (string.IsNullOrEmpty(language))
-                {
-                    AdminOptions.Empty();
-                    continue;
-                }
-
-                string confirm = AdminOptions.Confirm();
-
-                if (confirm.ToLower() == "yes" || confirm.ToLower() == "y")
-                {
-                    DateTime startDate = museum.Today.AddDays(1);
-
-                    if (!Tour.ToursExistForTimeAndLanguage(new DateTime(startDate.Year, startDate.Month, startDate.Day, time.Hour, time.Minute, 0), language, tours))
+                    if (timeString.ToLower() == "b" || timeString.ToLower() == "back")
                     {
-                        GuidedTour newTour = new GuidedTour(new DateTime(startDate.Year, startDate.Month, startDate.Day, time.Hour, time.Minute, 0), language, "Casper");
-                        Tour.AddTour(newTour, tours);
-                        Tour.SaveToursToFile(filePath, tours);
-                        MessageTourReservation.TourAdded();
-                        Tour.OverviewToursTomorrow();
-                        AdminOptions.PressAnything();
+                        break;
                     }
-                }
-                else if (confirm.ToLower() == "no" || confirm.ToLower() == "n")
-                {
-                    continue;
-                }
-                else
-                {
-                    WrongInput.Show();
+
+                    if (!DateTime.TryParseExact(timeString, "HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime time))
+                    {
+                        TourInfo.InvalidTime();
+                        continue;
+                    }
+
+                    if (Tour.ToursExistForTime(time, tours))
+                    {
+                        TourInfo.ToursAlreadyExist();
+                        continue;
+                    }
+
+                    string language = string.Empty;
+                    while (string.IsNullOrEmpty(language))
+                    {
+                        language = TourInfo.Language();
+
+                        if (language.ToLower() == "b" || language.ToLower() == "back")
+                        {
+                            break;
+                        }
+
+                        if (string.IsNullOrEmpty(language))
+                        {
+                            AdminOptions.Empty();
+                        }
+                    }
+
+                    if (string.IsNullOrEmpty(language))
+                    {
+                        continue;
+                    }
+
+                    string confirm = AdminOptions.Confirm();
+
+                    if (confirm.ToLower() == "yes" || confirm.ToLower() == "y")
+                    {
+                        DateTime startDate = museum.Today.AddDays(1);
+
+                        if (!Tour.ToursExistForTimeAndLanguage(new DateTime(startDate.Year, startDate.Month, startDate.Day, time.Hour, time.Minute, 0), language, tours))
+                        {
+                            GuidedTour newTour = new GuidedTour(new DateTime(startDate.Year, startDate.Month, startDate.Day, time.Hour, time.Minute, 0), language, "Casper");
+                            Tour.AddTour(newTour, tours);
+                            Tour.SaveToursToFile(filePath, tours);
+                            MessageTourReservation.TourAdded();
+                            Tour.OverviewToursTomorrow();
+                            AdminOptions.PressAnything();
+                        }
+                        else
+                        {
+                            TourInfo.ToursAlreadyExist();
+                        }
+                    }
+                    else if (confirm.ToLower() == "no" || confirm.ToLower() == "n")
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        WrongInput.Show();
+                    }
                 }
             }
             else if (option.ToLower() == "e" || option.ToLower() == "edit tour")
@@ -95,7 +110,6 @@ public class PersonController
 
                 while (true)
                 {
-                    
                     AdminOptions.BackOption();
                     Tour.OverviewToursEdit();
                     newTimeInput = EditTour.TimeEdit();

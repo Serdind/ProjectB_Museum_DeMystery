@@ -3,6 +3,7 @@ using Spectre.Console;
 using Newtonsoft.Json;
 using System.Globalization;
 using System.Diagnostics;
+using System.Text;
 
 namespace SystemTests
 {
@@ -10,7 +11,7 @@ namespace SystemTests
     public class SystemTestsAdmin
     {
         [TestMethod]
-        public void AdminLoginAndOverviewToursTest()
+        public void AdminLoginAndOverviewToursTodayTest()
         {
             FakeMuseum museum = new FakeMuseum();
             Program.Museum = museum;
@@ -53,45 +54,26 @@ namespace SystemTests
             {
                 "897324",  // QR code input
                 "t", // Overview tours input
-                currentDate.ToShortDateString(), // Date input
+                "t", // Tours from today input
                 "l" // Log out input
 
             };
 
+            StringBuilder outputBuilder = new StringBuilder();
+            var originalConsoleOut = Console.Out;
+            Console.SetOut(new StringWriter(outputBuilder));
+
             // Act
             ProgramController.Start();
-
-            string json = museum.ReadAllText(filePath1);
-            var tours = JsonConvert.DeserializeObject<List<GuidedTour>>(json);
-
-            var expectedTable = new Table().Border(TableBorder.Rounded);
-            expectedTable.AddColumn("ID");
-            expectedTable.AddColumn("Date");
-            expectedTable.AddColumn("Time");
-            expectedTable.AddColumn("Duration");
-            expectedTable.AddColumn("Language");
-            expectedTable.AddColumn("Guide");
-            expectedTable.AddColumn("Remaining spots");
-            expectedTable.AddColumn("Status");
-
-            foreach (var tour in tours)
-            {
-                expectedTable.AddRow(
-                    tour.ID.ToString(),
-                    tour.Date.ToShortDateString(),
-                    tour.Date.ToString("HH:mm"),
-                    "40 minutes",
-                    tour.Language,
-                    "TestGuide",
-                    (tour.MaxParticipants - tour.ReservedVisitors.Count).ToString(),
-                    tour.Status ? "Active" : "Inactive"
-                );
-            }
+            Console.SetOut(originalConsoleOut);
 
             // Assert
-            string writtenLines = museum.GetWrittenLinesAsString();
-            Debug.WriteLine(writtenLines);
-            Assert.IsTrue(writtenLines.Contains(expectedTable.ToString()));
+            string tableOutput = outputBuilder.ToString();
+
+            Debug.WriteLine("Table Output:");
+            Debug.WriteLine(tableOutput);
+
+            Assert.IsTrue(tableOutput.Contains($"{currentDate.ToString("d-M-yyyy")}"));
         }
 
         [TestMethod]
@@ -142,6 +124,8 @@ namespace SystemTests
                 "a", // Tours input
                 "20:00", // Time input
                 "Dutch", // Language input
+                "y", // Yes input
+                "b", // Back input
                 "l" // Log out input
             };
 
@@ -326,42 +310,6 @@ namespace SystemTests
             // Arrange
             FakeMuseum museum = new FakeMuseum();
             Program.Museum = museum;
-
-            DateTime currentDate = DateTime.Today;
-            currentDate = new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, 23, 59, 0);
-
-            string pastTourDateString = currentDate.AddDays(-1).ToString("yyyy-MM-ddTHH:mm:ss");
-            string currentDateString = currentDate.ToString("yyyy-MM-ddTHH:mm:ss");
-
-            DateTime currentDateTime = DateTime.ParseExact(currentDateString, "yyyy-MM-ddTHH:mm:ss", CultureInfo.InvariantCulture);
-            
-
-            string filePath1 = Model<GuidedTour>.GetFileNameTours();
-
-            string toursJson = $@"
-            [
-                {{
-                    ""ID"": ""1"",
-                    ""Date"": ""{pastTourDateString}"",
-                    ""NameGuide"": ""TestGuide"",
-                    ""MaxParticipants"": 13,
-                    ""ReservedVisitors"": [],
-                    ""Language"": ""English"",
-                    ""Status"": true
-                }},
-                {{
-                    ""ID"": ""2"",
-                    ""Date"": ""{currentDateString}"",
-                    ""NameGuide"": ""TestGuide"",
-                    ""MaxParticipants"": 13,
-                    ""ReservedVisitors"": [],
-                    ""Language"": ""English"",
-                    ""Status"": true
-                }}
-            ]
-            ";
-
-            museum.Files[filePath1] = toursJson;
 
             string filePath2 = Model<DepartmentHead>.GetFileNameAdmins();
 

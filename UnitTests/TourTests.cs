@@ -2,6 +2,7 @@ using NUnit.Framework.Internal;
 using Newtonsoft.Json;
 using Spectre.Console;
 using System.Diagnostics;
+using System.Text;
 
 namespace UnitTests;
 
@@ -78,7 +79,7 @@ public class TourTests
     
 
     [TestMethod]
-    public void OverviewToursTest()
+    public void OverviewToursTodayTest()
     {
         // Arrange
         FakeMuseum museum = new FakeMuseum();
@@ -107,13 +108,29 @@ public class TourTests
 
         museum.Files[filePath1] = toursJson;
 
-        museum.LinesToRead = new List<string> { $"{currentDate.ToShortDateString()}" };
+        museum.LinesToRead = new List<string>
+        {
+            "t",
+            "l"
+        };
 
-        //Act
+        StringBuilder outputBuilder = new StringBuilder();
+        var originalConsoleOut = Console.Out;
+        Console.SetOut(new StringWriter(outputBuilder));
+
+        // Act
         bool result = Tour.OverviewTours(true);
+        Console.SetOut(originalConsoleOut);
 
         // Assert
         Assert.IsTrue(result);
+
+        string tableOutput = outputBuilder.ToString();
+
+        Debug.WriteLine("Table Output:");
+        Debug.WriteLine(tableOutput);
+
+        Assert.IsTrue(tableOutput.Contains($"{currentDate.ToString("d-M-yyyy")}"));
     }
 
     [TestMethod]
@@ -173,10 +190,15 @@ public class TourTests
         FakeMuseum museum = new FakeMuseum();
         Program.Museum = museum;
 
+        var adminsList = new List<DepartmentHead>();
+        DepartmentHead departmentHead = new DepartmentHead("TestAdmin", "2983432");
+
+        Tour.AddAdmin(departmentHead, adminsList);
+
         string filePath1 = Model<DepartmentHead>.GetFileNameAdmins();
 
         // Act
-        Tour.AddAdminToJSON();
+        Tour.AddAdminToJSON(adminsList);
 
         // Assert
         Assert.IsTrue(museum.FileExists(filePath1));
@@ -185,21 +207,22 @@ public class TourTests
         var admins = JsonConvert.DeserializeObject<List<DepartmentHead>>(json);
 
         Assert.IsNotNull(admins);
-        Assert.IsTrue(admins.Any(t => t.Name == "Frans"));
-        Assert.IsTrue(admins.Any(t => t.QR == "6457823"));
+        Assert.IsTrue(admins.Any(t => t.Name == "TestAdmin"));
+        Assert.IsTrue(admins.Any(t => t.QR == "2983432"));
     }
 
     [TestMethod]
     public void AddAdminTest()
     {
         // Arrange
+        var adminsList = new List<DepartmentHead>();
         DepartmentHead departmentHead = new DepartmentHead("TestAdmin", "2983432");
 
         // Act
-        Tour.AddAdmin(departmentHead);
+        Tour.AddAdmin(departmentHead, adminsList);
 
         // Assert
-        Assert.IsTrue(Tour.admins.Contains(departmentHead));
+        Assert.IsTrue(adminsList.Contains(departmentHead));
     }
 
     [TestMethod]
@@ -208,17 +231,18 @@ public class TourTests
         // Arrange
         FakeMuseum museum = new FakeMuseum();
         Program.Museum = museum;
+        
+        var adminsList = new List<DepartmentHead>();
+        DepartmentHead departmentHead1 = new DepartmentHead("TestAdmin1", "2983432");
+        DepartmentHead departmentHead2 = new DepartmentHead("TestAdmin2", "468712");
+        
+        Tour.AddAdmin(departmentHead1, adminsList);
+        Tour.AddAdmin(departmentHead2, adminsList);
 
         string filePath1 = Model<DepartmentHead>.GetFileNameAdmins();
-        
-        var admin1 = new DepartmentHead("TestAdmin1", "794832");
-        var admin2 = new DepartmentHead("TestAdmin2", "1234567");
-        
-        Tour.AddAdmin(admin1);
-        Tour.AddAdmin(admin2);
 
         // Act
-        Tour.SaveAdminToFile(filePath1);
+        Tour.SaveAdminToFile(filePath1, adminsList);
 
         // Assert
         Assert.IsTrue(museum.FileExists(filePath1));
@@ -229,8 +253,8 @@ public class TourTests
         Assert.IsNotNull(savedAdmins);
         Assert.AreEqual(2, savedAdmins.Count);
 
-        Assert.IsTrue(savedAdmins.Any(a => a.Name == "TestAdmin1" && a.QR == "794832"));
-        Assert.IsTrue(savedAdmins.Any(a => a.Name == "TestAdmin2" && a.QR == "1234567"));
+        Assert.IsTrue(savedAdmins.Any(a => a.Name == "TestAdmin1" && a.QR == "2983432"));
+        Assert.IsTrue(savedAdmins.Any(a => a.Name == "TestAdmin2" && a.QR == "468712"));
     }
 
     [TestMethod]
@@ -267,33 +291,39 @@ public class TourTests
         FakeMuseum museum = new FakeMuseum();
         Program.Museum = museum;
 
+        var guidesList = new List<Guide>();
+        Guide guide = new Guide("TestAdmin", "2983432");
+
+        Tour.AddGuide(guide, guidesList);
+
         string filePath1 = Model<Guide>.GetFileNameGuides();
 
         // Act
-        Tour.AddGuideToJSON();
+        Tour.AddGuideToJSON(guidesList);
 
         // Assert
         Assert.IsTrue(museum.FileExists(filePath1));
 
         var json = museum.ReadAllText(filePath1);
-        var guides = JsonConvert.DeserializeObject<List<DepartmentHead>>(json);
+        var guides = JsonConvert.DeserializeObject<List<Guide>>(json);
 
         Assert.IsNotNull(guides);
-        Assert.IsTrue(guides.Any(t => t.Name == "Casper"));
-        Assert.IsTrue(guides.Any(t => t.QR == "4892579"));
+        Assert.IsTrue(guides.Any(t => t.Name == "TestAdmin"));
+        Assert.IsTrue(guides.Any(t => t.QR == "2983432"));
     }
 
     [TestMethod]
     public void AddGuideTest()
     {
         // Arrange
+        var guidesList = new List<Guide>();
         Guide guide = new Guide("TestGuide", "21764821");
 
         // Act
-        Tour.AddGuide(guide);
+        Tour.AddGuide(guide, guidesList);
 
         // Assert
-        Assert.IsTrue(Tour.guides.Contains(guide));
+        Assert.IsTrue(guidesList.Contains(guide));
     }
 
     [TestMethod]
@@ -303,16 +333,18 @@ public class TourTests
         FakeMuseum museum = new FakeMuseum();
         Program.Museum = museum;
 
-        string filePath1 = Model<Guide>.GetFileNameGuides();
+        var guidesList = new List<Guide>();
         
         var guide1 = new Guide("TestGuide1", "794832");
         var guide2 = new Guide("TestGuide2", "1234567");
         
-        Tour.AddGuide(guide1);
-        Tour.AddGuide(guide2);
+        Tour.AddGuide(guide1, guidesList);
+        Tour.AddGuide(guide2, guidesList);
+
+        string filePath1 = Model<Guide>.GetFileNameGuides();
 
         // Act
-        Tour.SaveGuideToFile(filePath1);
+        Tour.SaveGuideToFile(filePath1, guidesList);
 
         // Assert
         Assert.IsTrue(museum.FileExists(filePath1));
@@ -415,13 +447,14 @@ public class TourTests
     public void AddVisitorTest()
     {
         // Arrange
+        var visitorsList = new List<Visitor>();
         Visitor visitor = new Visitor(1, "21764821");
 
         // Act
-        Tour.AddVisitor(visitor);
+        Tour.AddVisitor(visitor, visitorsList);
 
         // Assert
-        Assert.IsTrue(Tour.visitors.Contains(visitor));
+        Assert.IsTrue(visitorsList.Contains(visitor));
     }
 
     [TestMethod]
@@ -431,17 +464,17 @@ public class TourTests
         FakeMuseum museum = new FakeMuseum();
         Program.Museum = museum;
 
-        string filePath1 = Model<Visitor>.GetFileNameVisitors();
-        
+        var visitorsList = new List<Visitor>();
         var visitor1 = new Visitor(1, "794832");
         var visitor2 = new Visitor(1, "1234567");
-        var visitors = new List<Visitor>() { visitor1, visitor2 };
         
-        Tour.AddVisitor(visitor1);
-        Tour.AddVisitor(visitor2);
+        Tour.AddVisitor(visitor1, visitorsList);
+        Tour.AddVisitor(visitor2, visitorsList);
+
+        string filePath1 = Model<Visitor>.GetFileNameVisitors();
 
         // Act
-        Tour.SaveVisitorToFile(visitors);
+        Tour.SaveVisitorToFile(visitorsList);
 
         // Assert
         Assert.IsTrue(museum.FileExists(filePath1));

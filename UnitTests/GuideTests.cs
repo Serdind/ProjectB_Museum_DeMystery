@@ -538,7 +538,7 @@ public class GuideTests
         Debug.WriteLine(writtenLines);
         var tours = JsonConvert.DeserializeObject<List<GuidedTour>>(museum.Files[filePath1]);
         var tour = tours.FirstOrDefault(t => t.ID == 2);
-	    Assert.IsTrue(writtenLines.Contains("Status set to inactive"));
+	    Assert.IsTrue(tour.Status == false);
     }
 
     [TestMethod]

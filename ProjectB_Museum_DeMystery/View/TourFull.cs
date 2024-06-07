@@ -1,8 +1,9 @@
 public class TourFull : View
 {
-    private static IMuseum museum = Program.Museum;
+    
     public static void Show()
     {
+        IMuseum museum = Program.Museum;
         museum.WriteLine("Tour is full.");
         museum.WriteLine("Press anything to continue...");
         museum.ReadKey();

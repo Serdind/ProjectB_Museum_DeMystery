@@ -1,9 +1,8 @@
 public class MessageTourReservation
 {
-    private static IMuseum museum = Program.Museum;
     public static void ShowMessage(GuidedTour tour)
     {
-        
+        IMuseum museum = Program.Museum;
         string message = $"Reservation successful. You have reserved the following tour:\n" +
                         $"Date: {tour.Date.ToShortDateString()}\n" +
                         $"Time: {tour.Date.ToString("HH:mm")}\n" +
@@ -19,6 +18,7 @@ public class MessageTourReservation
 
     public static void ViewReservation(GuidedTour tour)
     {
+        IMuseum museum = Program.Museum;
         string message = $"Date: {tour.Date.ToShortDateString()}\n" +
                         $"Time: {tour.Date.ToString("HH:mm")}\n" +
                         $"Duration: 40 minutes\n" +
@@ -35,6 +35,7 @@ public class MessageTourReservation
 
     public static void ViewStart(GuidedTour tour)
     {
+        IMuseum museum = Program.Museum;
         string message = $"Tour has been started:\n" +
                         $"Date: {tour.Date.ToShortDateString()}\n" +
                         $"Duration: {tour.Date.ToString("HH:mm")}\n" +
@@ -50,6 +51,7 @@ public class MessageTourReservation
 
     public static void TourAdded()
     {
+        IMuseum museum = Program.Museum;
         museum.WriteLine("Tour succesfully added.");
         museum.WriteLine("Press anything to continue...");
         museum.ReadKey();
