@@ -35,62 +35,7 @@ public class PersonController
 
                 if (timeString.ToLower() == "b" || timeString.ToLower() == "back")
                 {
-<<<<<<< HEAD
-                    string timeString = TourInfo.Time();
-
-                    if (timeString.ToLower() == "b" || timeString.ToLower() == "back")
-                    {
-                        break;
-                    }
-
-                    if (!DateTime.TryParseExact(timeString, "HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime time))
-                    {
-                        TourInfo.InvalidTime();
-                        continue;
-                    }
-
-                    if (Tour.ToursExistForTime(time, tours))
-                    {
-                        TourInfo.ToursAlreadyExist();
-                        continue;
-                    }
-
-                    while (true)
-                    {
-                        language = TourInfo.Language();
-
-                        if (language.ToLower() == "b" || language.ToLower() == "back")
-                        {
-                            break;
-                        }
-                        else if (string.IsNullOrEmpty(language))
-                        {
-                            AdminOptions.Empty();
-                            continue;
-                        }
-                        else
-                        {
-                            tourAdded = true;
-
-                            DateTime startDate = museum.Today.AddDays(1);
-                            DateTime endDate = museum.Today.AddDays(7);
-
-                            for (DateTime currentDate = startDate; currentDate <= endDate; currentDate = currentDate.AddDays(1))
-                            {
-                                GuidedTour newTour = new GuidedTour(new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, time.Hour, time.Minute, 0), language, Tour.guide.Name);
-                                Tour.AddTour(newTour, tours);
-                            }
-                            break;
-                        }
-                    }
-                    
-                    if (tourAdded)
-                    {
-                        break;
-                    }
-=======
                     continue;
->>>>>>> 13e5c783e292fefd1058d25a26fb062b6a5079b3
                 }
 
                 if (!DateTime.TryParseExact(timeString, "HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime time))
@@ -126,7 +71,7 @@ public class PersonController
 
                     if (!Tour.ToursExistForTimeAndLanguage(new DateTime(startDate.Year, startDate.Month, startDate.Day, time.Hour, time.Minute, 0), language, tours))
                     {
-                        GuidedTour newTour = new GuidedTour(new DateTime(startDate.Year, startDate.Month, startDate.Day, time.Hour, time.Minute, 0), language, Tour.guide.Name);
+                        GuidedTour newTour = new GuidedTour(new DateTime(startDate.Year, startDate.Month, startDate.Day, time.Hour, time.Minute, 0), language, "Casper");
                         Tour.AddTour(newTour, tours);
                         Tour.SaveToursToFile(filePath, tours);
                         MessageTourReservation.TourAdded();
