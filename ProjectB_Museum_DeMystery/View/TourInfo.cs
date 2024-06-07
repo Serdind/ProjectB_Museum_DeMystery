@@ -18,7 +18,7 @@ public class TourInfo : View
         museum.WriteLine("Invalid date format. Please enter a valid date.");
         museum.WriteLine("Press anything to continue...");
         museum.ReadKey();
-        Console.Clear();
+        
     }
 
     public static string Language()
@@ -38,7 +38,7 @@ public class TourInfo : View
         museum.WriteLine("Invalid time format. Please enter a valid time (Hour:Minutes).");
         museum.WriteLine("Press anything to continue...");
         museum.ReadKey();
-        Console.Clear();
+        
     }
 
     public static string Guide()
@@ -52,7 +52,7 @@ public class TourInfo : View
         museum.WriteLine("No tours available for today.");
         museum.WriteLine("Press anything to continue...");
         museum.ReadKey();
-        Console.Clear();
+        
     }
 
     public static string WhichDate()
@@ -66,16 +66,16 @@ public class TourInfo : View
         museum.WriteLine("No tours available for that day.");
         museum.WriteLine("Press anything to continue...");
         museum.ReadKey();
-        Console.Clear();
+        
     }
 
     public static void NoToursTime()
     {
-        Console.Clear();
+        
         museum.WriteLine("No tours available for that time.");
         museum.WriteLine("Press anything to continue...");
         museum.ReadKey();
-        Console.Clear();
+        
     }
 
     public static void ToursAlreadyExist()
@@ -83,6 +83,6 @@ public class TourInfo : View
         museum.WriteLine("There already are tours for that time.");
         museum.WriteLine("Press anything to continue...");
         museum.ReadKey();
-        Console.Clear();
+        
     }
 }

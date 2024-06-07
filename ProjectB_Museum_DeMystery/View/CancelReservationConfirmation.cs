@@ -9,19 +9,19 @@ public class CancelReservationConfirmation : View
 
     public static void ReservationCancelled()
     {
-        Console.Clear();
+        
         museum.WriteLine("Reservation cancelled successfully.");
         museum.WriteLine("Press anything to continue...");
         museum.ReadKey();
-        Console.Clear();
+        
     }
 
     public static void ReservationCancelDenied()
     {
-        Console.Clear();
+        
         museum.WriteLine("Reservation cancellation cancelled.");
         museum.WriteLine("Press anything to continue...");
         museum.ReadKey();
-        Console.Clear();
+        
     }
 }

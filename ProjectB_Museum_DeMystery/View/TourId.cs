@@ -10,7 +10,7 @@ public class TourId : View
 
             if (input.ToLower() == "b" || input.ToLower() == "back")
             {
-                Console.Clear();
+                
                 return -1;
             }
             else if (int.TryParse(input, out int tourID))

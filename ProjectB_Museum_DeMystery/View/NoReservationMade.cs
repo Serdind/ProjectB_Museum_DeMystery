@@ -6,6 +6,6 @@ public class NoReservationMade
         museum.WriteLine("No reservation made.");
         museum.WriteLine("Press anything to continue...");
         museum.ReadKey();
-        Console.Clear();
+        
     }
 }

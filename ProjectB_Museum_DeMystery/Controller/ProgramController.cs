@@ -121,7 +121,7 @@ public class ProgramController
                         }
                         else
                         {
-                            Console.Clear();
+                            
                             continue;
                         }
                     }

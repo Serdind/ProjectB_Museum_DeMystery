@@ -401,7 +401,7 @@ public class GuideTests
         var guide = guides.FirstOrDefault(t => t.QR == "214678");
 
         //Act
-        bool result = guide.ViewTours(guide.Name);
+        bool result = guide.ViewTours(guide.Name, guide);
 
         // Assert
         Assert.IsTrue(result);

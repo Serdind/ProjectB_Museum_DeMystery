@@ -6,6 +6,6 @@ public class TourFull : View
         museum.WriteLine("Tour is full.");
         museum.WriteLine("Press anything to continue...");
         museum.ReadKey();
-        Console.Clear();
+        
     }
 }

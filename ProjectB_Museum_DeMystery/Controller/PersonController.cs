@@ -29,7 +29,7 @@ public class PersonController
             }
             else if (option.ToLower() == "a" || option.ToLower() == "add tour")
             {
-                Console.Clear();
+                
                 AdminOptions.BackOption();
                 string timeString = TourInfo.Time();
 
@@ -95,7 +95,7 @@ public class PersonController
 
                 while (true)
                 {
-                    Console.Clear();
+                    
                     AdminOptions.BackOption();
                     Tour.OverviewToursEdit();
                     newTimeInput = EditTour.TimeEdit();
@@ -114,19 +114,19 @@ public class PersonController
                                 string newTimeInput1 = newTimeInput;
                                 bool timeChanged = false;
 
-                                Console.Clear();
+                                
                                 Tour.SelectedTour(newTimeInput, selectedDate);
 
                                 string change = EditTour.EditOptions();
 
                                 if (change.ToLower() == "t" || change.ToLower() == "time")
                                 {
-                                    Console.Clear();
+                                    
                                     DateTime newTime1;
 
                                     while (true)
                                     {
-                                        Console.Clear();
+                                        
                                         AdminOptions.BackOption();
                                         Tour.SelectedTour(newTimeInput, selectedDate);
                                         newTimeInput1 = EditTour.NewTime();
@@ -161,7 +161,7 @@ public class PersonController
                                 {
                                     while (true)
                                     {
-                                        Console.Clear();
+                                        
                                         AdminOptions.BackOption();
                                         Tour.SelectedTour(newTimeInput, selectedDate);
                                         string language = TourInfo.Language();
@@ -192,7 +192,7 @@ public class PersonController
                                 {
                                     while (true)
                                     {
-                                        Console.Clear();
+                                        
                                         Tour.SelectedTour(newTimeInput, selectedDate);
                                         bool newStatus = !toursWithSameTime.First().Status;
 

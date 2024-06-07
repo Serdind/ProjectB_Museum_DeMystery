@@ -98,7 +98,7 @@ public class GuideOptions : View
         museum.WriteLine("Visitor not found in the tour's list of reserved visitors.");
         museum.WriteLine("Press anything to continue...");
         museum.ReadKey();
-        Console.Clear();
+        
     }
 
     public static void TourNotFoundOrActive()
@@ -106,7 +106,7 @@ public class GuideOptions : View
         museum.WriteLine("Tour not found or not active.");
         museum.WriteLine("Press anything to continue...");
         museum.ReadKey();
-        Console.Clear();
+        
     }
 
     public static void TourVisitorFileNotFound()
@@ -114,7 +114,7 @@ public class GuideOptions : View
         museum.WriteLine("Tour not found or not active.");
         museum.WriteLine("Press anything to continue...");
         museum.ReadKey();
-        Console.Clear();
+        
     }
 
     public static string GuideName()

@@ -17,12 +17,12 @@ public class GuideController
 
             while (keepRunning)
             {
-                Console.Clear();
+                
                 string option = GuideOptions.Options(tourId);
 
                 if (option.ToLower() == "a" || option.ToLower() == "add visitor")
                 {
-                    Console.Clear();
+                    
                     while (true)
                     {
                         AdminOptions.BackOption();
@@ -46,7 +46,7 @@ public class GuideController
                 }
                 else if (option.ToLower() == "r" || option.ToLower() == "remove visitor")
                 {
-                    Console.Clear();
+                    
 
                     while (true)
                     {
@@ -81,9 +81,9 @@ public class GuideController
         }
         else
         {
-            Console.Clear();
+            
             TourNotAvailable.Show();
-            Console.Clear();
+            
         }
     }
 
@@ -99,7 +99,7 @@ public class GuideController
             {
                 while (true)
                 {
-                    Console.Clear();
+                    
                     AdminOptions.BackOption();
                     ShowTableTours(guide);
                     tourID = TourId.WhichTourId();
@@ -122,7 +122,7 @@ public class GuideController
             {
                 while (true)
                 {
-                    Console.Clear();
+                    
                     AdminOptions.BackOption();
                     ShowTableTours(guide);
                     tourID = TourId.WhichTourId();

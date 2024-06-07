@@ -9,7 +9,7 @@ public class EditTour : View
 
     public static void TimeSet(TimeSpan time)
     {
-        Console.Clear();
+        
         museum.WriteLine($"Time set to {time:hh\\:mm}");
         museum.WriteLine("Press anything to continue...");
         museum.ReadKey();
@@ -18,7 +18,7 @@ public class EditTour : View
 
     public static void LanguageSet(string language)
     {
-        Console.Clear();
+        
         museum.WriteLine($"Language set to {language}");
         museum.WriteLine("Press anything to continue...");
         museum.ReadKey();
@@ -27,7 +27,7 @@ public class EditTour : View
 
     public static void GuideSet(string guide)
     {
-        Console.Clear();
+        
         museum.WriteLine($"Guide set to {guide}");
         museum.WriteLine("Press anything to continue...");
         museum.ReadKey();
@@ -37,19 +37,19 @@ public class EditTour : View
     {
         if (status == true)
         {
-            Console.Clear();
+            
             museum.WriteLine($"Status set to active");
             museum.WriteLine("Press anything to continue...");
             museum.ReadKey();
-            Console.Clear();
+            
         }
         else
         {
-            Console.Clear();
+            
             museum.WriteLine($"Status set to inactive");
             museum.WriteLine("Press anything to continue...");
             museum.ReadKey();
-            Console.Clear();
+            
         }
     }
 

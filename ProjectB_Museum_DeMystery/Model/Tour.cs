@@ -141,7 +141,7 @@ public static class Tour
 
         if (edit)
         {
-            Console.Clear();
+            
             string selection;
 
             while (true)
@@ -164,7 +164,7 @@ public static class Tour
             {
                 if (museum.FileExists(filePath))
                 {
-                    Console.Clear();
+                    
                     string json = museum.ReadAllText(filePath);
                     var tours = JsonConvert.DeserializeObject<List<GuidedTour>>(json);
 
@@ -285,7 +285,7 @@ public static class Tour
 
         if (museum.FileExists(filePath))
         {
-            Console.Clear();
+            
             string json = museum.ReadAllText(filePath);
             var tours = JsonConvert.DeserializeObject<List<GuidedTour>>(json);
 

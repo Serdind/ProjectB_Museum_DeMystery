@@ -6,6 +6,6 @@ public class CodeNotValid : View
         museum.WriteLine("Code is not valid.");
         museum.WriteLine("Press anything to continue...");
         museum.ReadKey();
-        Console.Clear();
+        
     }
 }

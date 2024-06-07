@@ -6,6 +6,6 @@ public class WrongInput
         museum.WriteLine("Wrong input. Try again.");
         museum.WriteLine("Press anything to continue...");
         museum.ReadKey();
-        Console.Clear();
+        
     }
 }

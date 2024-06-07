@@ -3,16 +3,16 @@ public class MainMenu : View
     private static IMuseum museum = Program.Museum;
     public static void Welcome()
     {
-        Console.Clear();
+        
         museum.WriteLine("Welcome to The Depot!");
         museum.WriteLine("Press anything to continue...");
         museum.ReadKey();
-        Console.Clear();
+        
     }
 
     public static void Intro()
     {
-        Console.Clear();
+        
         museum.WriteLine("Here are some tips to help you with the application.");
         museum.WriteLine("Press anything to continue...");
         museum.ReadKey();
@@ -41,15 +41,15 @@ public class MainMenu : View
         museum.WriteLine("Press anything to continue...");
         museum.ReadKey();
         museum.WriteLine("");
-        Console.Clear();
+        
     }
 
     public static void Goodbye()
     {
-        Console.Clear();
+        
         museum.WriteLine("Thank you for visiting The Depot!");
         museum.WriteLine("Press anything to continue...");
         museum.ReadKey();
-        Console.Clear();
+        
     }
 }
