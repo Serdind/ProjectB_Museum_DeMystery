@@ -56,7 +56,7 @@ public class AdminOptions : View
     public static string SelectTours()
     {
         Console.Clear();
-        museum.WriteLine("Tours from today(T)\nTours after today(A)");
+        museum.WriteLine("Tours from today(T)\nTours after today(A)\nBack(B)");
         return ReadLineString();
     }
 }

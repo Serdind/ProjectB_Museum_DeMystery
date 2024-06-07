@@ -148,7 +148,7 @@ public class ProgramController
 
             Guide guide = guides.FirstOrDefault(v => v.QR == qr);
 
-            Tour.guide.ViewTours(guide.Name);
+            guide.ViewTours(guide.Name, guide);
         }
     }
 }

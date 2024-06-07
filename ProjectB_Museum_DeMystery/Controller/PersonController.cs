@@ -71,7 +71,7 @@ public class PersonController
 
                     if (!Tour.ToursExistForTimeAndLanguage(new DateTime(startDate.Year, startDate.Month, startDate.Day, time.Hour, time.Minute, 0), language, tours))
                     {
-                        GuidedTour newTour = new GuidedTour(new DateTime(startDate.Year, startDate.Month, startDate.Day, time.Hour, time.Minute, 0), language, Tour.guide.Name);
+                        GuidedTour newTour = new GuidedTour(new DateTime(startDate.Year, startDate.Month, startDate.Day, time.Hour, time.Minute, 0), language, "Casper");
                         Tour.AddTour(newTour, tours);
                         Tour.SaveToursToFile(filePath, tours);
                         MessageTourReservation.TourAdded();

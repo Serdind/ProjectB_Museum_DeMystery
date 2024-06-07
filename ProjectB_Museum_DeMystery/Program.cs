@@ -3,6 +3,24 @@
     public static IMuseum Museum = new RealMuseum();
     public static void Main()
     {
+        Tour.AddAdmin(new DepartmentHead("Frans", "6457823"));
+        Tour.AddAdminToJSON();
+
+        Tour.AddAdmin(new DepartmentHead("Hans", "3489223"));
+        Tour.AddAdminToJSON();
+
+        Tour.AddAdmin(new DepartmentHead("John", "4612379"));
+        Tour.AddAdminToJSON();
+
+        Tour.AddGuide(new Guide("Casper", "4892579"));
+        Tour.AddGuideToJSON();
+
+        Tour.AddGuide(new Guide("Bas", "9412821"));
+        Tour.AddGuideToJSON();
+
+        Tour.AddGuide(new Guide("Rick", "421627"));
+        Tour.AddGuideToJSON();
+
         string filePath = Model<UniqueCodes>.GetFileNameUniqueCodes();
 
         string filePath1 = Model<Visitor>.GetFileNameVisitors();

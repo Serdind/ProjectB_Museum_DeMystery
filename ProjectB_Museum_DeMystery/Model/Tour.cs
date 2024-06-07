@@ -9,7 +9,6 @@ public static class Tour
     public static readonly List<DepartmentHead> admins = new List<DepartmentHead>();
     public static readonly List<Guide> guides = new List<Guide>();
     public static List<Visitor> visitors = new List<Visitor>();
-    public static Guide guide = new Guide("Casper", "4892579");
     private static DateTime lastCheckDate = DateTime.MinValue;
 
     private static IMuseum museum = Program.Museum;
@@ -76,15 +75,15 @@ public static class Tour
     {
         return new List<GuidedTour>
         {
-            new GuidedTour(new DateTime(date.Year, date.Month, date.Day, 11, 30, 0), "English", guide.Name),
-            new GuidedTour(new DateTime(date.Year, date.Month, date.Day, 13, 00, 0), "Dutch", guide.Name),
-            new GuidedTour(new DateTime(date.Year, date.Month, date.Day, 13, 30, 0), "English", guide.Name),
-            new GuidedTour(new DateTime(date.Year, date.Month, date.Day, 14, 00, 0), "Dutch", guide.Name),
-            new GuidedTour(new DateTime(date.Year, date.Month, date.Day, 14, 30, 0), "English", guide.Name),
-            new GuidedTour(new DateTime(date.Year, date.Month, date.Day, 15, 00, 0), "Dutch", guide.Name),
-            new GuidedTour(new DateTime(date.Year, date.Month, date.Day, 16, 00, 0), "English", guide.Name),
-            new GuidedTour(new DateTime(date.Year, date.Month, date.Day, 16, 30, 0), "Dutch", guide.Name),
-            new GuidedTour(new DateTime(date.Year, date.Month, date.Day, 17, 00, 0), "English", guide.Name)
+            new GuidedTour(new DateTime(date.Year, date.Month, date.Day, 10, 40, 0), "English", "Casper"),
+            new GuidedTour(new DateTime(date.Year, date.Month, date.Day, 11, 20, 0), "Dutch", "Bas"),
+            new GuidedTour(new DateTime(date.Year, date.Month, date.Day, 12, 00, 0), "English", "Rick"),
+            new GuidedTour(new DateTime(date.Year, date.Month, date.Day, 13, 40, 0), "Dutch", "Casper"),
+            new GuidedTour(new DateTime(date.Year, date.Month, date.Day, 14, 00, 0), "English", "Bas"),
+            new GuidedTour(new DateTime(date.Year, date.Month, date.Day, 15, 40, 0), "Dutch", "Rick"),
+            new GuidedTour(new DateTime(date.Year, date.Month, date.Day, 16, 20, 0), "English", "Casper"),
+            new GuidedTour(new DateTime(date.Year, date.Month, date.Day, 16, 00, 0), "Dutch", "Bas"),
+            new GuidedTour(new DateTime(date.Year, date.Month, date.Day, 17, 00, 0), "English", "Rick")
         };
     }
 
@@ -143,28 +142,44 @@ public static class Tour
         if (edit)
         {
             Console.Clear();
-            string selection = AdminOptions.SelectTours();
+            string selection;
 
-            if (museum.FileExists(filePath))
+            while (true)
             {
-                Console.Clear();
-                string json = museum.ReadAllText(filePath);
-                var tours = JsonConvert.DeserializeObject<List<GuidedTour>>(json);
+                selection = AdminOptions.SelectTours();
 
-                tours = tours.OrderBy(t => t.Date).ToList();
-                var table = new Table().Border(TableBorder.Rounded);
-                table.AddColumn("ID");
-                table.AddColumn("Date");
-                table.AddColumn("Time");
-                table.AddColumn("Duration");
-                table.AddColumn("Language");
-                table.AddColumn("Guide");
-                table.AddColumn("Remaining spots");
-                table.AddColumn("Status");
-
-                foreach (var tour in tours)
+                if (selection.ToLower() == "t" || selection.ToLower() == "tours from today" ||
+                    selection.ToLower() == "a" || selection.ToLower() == "tours from tomorrow" ||
+                    selection.ToLower() == "b" || selection.ToLower() == "back")
                 {
-                    if (selection.ToLower() == "t" || selection.ToLower() == "tours from today")
+                    break;
+                }
+                else
+                {
+                    WrongInput.Show();
+                }
+            }
+
+            if (selection.ToLower() == "t" || selection.ToLower() == "tours from today")
+            {
+                if (museum.FileExists(filePath))
+                {
+                    Console.Clear();
+                    string json = museum.ReadAllText(filePath);
+                    var tours = JsonConvert.DeserializeObject<List<GuidedTour>>(json);
+
+                    tours = tours.OrderBy(t => t.Date).ToList();
+                    var table = new Table().Border(TableBorder.Rounded);
+                    table.AddColumn("ID");
+                    table.AddColumn("Date");
+                    table.AddColumn("Time");
+                    table.AddColumn("Duration");
+                    table.AddColumn("Language");
+                    table.AddColumn("Guide");
+                    table.AddColumn("Remaining spots");
+                    table.AddColumn("Status");
+
+                    foreach (var tour in tours)
                     {
                         if (tour.Date.Date == currentDate)
                         {
@@ -184,20 +199,25 @@ public static class Tour
                             );
                         }
                     }
-                    else if (selection.ToLower() == "a" || selection.ToLower() == "tours from tomorrow")
-                    {
-                        OverviewToursTomorrow();
-                        return true;
-                    }
+                    AnsiConsole.Render(table);
+                    return true;
                 }
-                AnsiConsole.Render(table);
+                else
+                {
+                    TourEmpty.Show();
+                    return false;
+                }
+            }
+            else if (selection.ToLower() == "a" || selection.ToLower() == "tours from tomorrow")
+            {
+                OverviewToursTomorrow();
                 return true;
             }
-            else
+            else if (selection.ToLower() == "b" || selection.ToLower() == "back")
             {
-                TourEmpty.Show();
                 return false;
             }
+            return false;
         }
         else
         {
@@ -231,7 +251,7 @@ public static class Tour
                             timeOnly,
                             "40 minutes",
                             tour.Language,
-                            guide.Name,
+                            tour.NameGuide,
                             remainingSpots.ToString(),
                             status
                         );
@@ -289,7 +309,7 @@ public static class Tour
                         timeOnly,
                         "40 minutes",
                         tour.Language,
-                        guide.Name,
+                        tour.NameGuide,
                         status
                     );
                 }
@@ -337,7 +357,7 @@ public static class Tour
                         timeOnly,
                         "40 minutes",
                         tour.Language,
-                        guide.Name,
+                        tour.NameGuide,
                         status
                     );
                 }
@@ -372,8 +392,6 @@ public static class Tour
 
     public static void AddAdminToJSON()
     {
-        AddAdmin(new DepartmentHead("Frans", "6457823"));
-
         string filePath = Model<DepartmentHead>.GetFileNameAdmins();
         SaveAdminToFile(filePath);
     }
@@ -407,8 +425,6 @@ public static class Tour
 
     public static void AddGuideToJSON()
     {
-        AddGuide(new Guide("Casper", "4892579"));
-
         string filePath = Model<Guide>.GetFileNameGuides();
         SaveGuideToFile(filePath);
     }
