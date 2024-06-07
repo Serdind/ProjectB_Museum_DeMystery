@@ -27,10 +27,6 @@
 
         Tour.UpdateTours();
 
-        Tour.AddAdminToJSON();
-
-        Tour.AddGuideToJSON();
-
         Tour.CreateEmptyJsonFile(filePath1);
 
         UniqueCodes uniqueCodes = new UniqueCodes();
