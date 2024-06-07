@@ -107,7 +107,7 @@ public class Guide : Person
         }
     }
 
-    public bool ViewTours(string guideName)
+    public bool ViewTours(string guideName, Guide guide)
     {
         DateTime today = DateTime.Today;
         string filePath = Model<GuidedTour>.GetFileNameTours();
@@ -123,7 +123,7 @@ public class Guide : Person
             if (guideTours.Any())
             {
                 GuideController guideController = new GuideController();
-                guideController.OptionsGuide(guideTours, Tour.guide);
+                guideController.OptionsGuide(guideTours, guide);
                 return true;
             }
             else

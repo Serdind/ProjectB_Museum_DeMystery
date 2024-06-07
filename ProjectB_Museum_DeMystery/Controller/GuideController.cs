@@ -135,7 +135,7 @@ public class GuideController
                     var tour = tours.FirstOrDefault(t => t.ID == tourID);
                     if (tour != null)
                     {
-                        Tour.guide.StartTour(tourID);
+                        guide.StartTour(tourID);
                     }
                     else
                     {
