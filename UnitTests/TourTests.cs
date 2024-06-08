@@ -114,23 +114,17 @@ public class TourTests
             "l"
         };
 
-        StringBuilder outputBuilder = new StringBuilder();
-        var originalConsoleOut = Console.Out;
-        Console.SetOut(new StringWriter(outputBuilder));
-
         // Act
         bool result = Tour.OverviewTours(true);
-        Console.SetOut(originalConsoleOut);
 
         // Assert
         Assert.IsTrue(result);
 
-        string tableOutput = outputBuilder.ToString();
+        string renderedOutput = museum.GetRenderedOutput();
+        Debug.WriteLine("Rendered Output:");
+        Debug.WriteLine(renderedOutput);
 
-        Debug.WriteLine("Table Output:");
-        Debug.WriteLine(tableOutput);
-
-        Assert.IsTrue(tableOutput.Contains($"{currentDate.ToString("d-M-yyyy")}"));
+        Assert.IsTrue(renderedOutput.Contains($"{currentDate.ToString("d-M-yyyy")}"));
     }
 
     [TestMethod]
