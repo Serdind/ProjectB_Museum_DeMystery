@@ -310,30 +310,6 @@ namespace SystemTests
             FakeMuseum museum = new FakeMuseum();
             Program.Museum = museum;
 
-            DateTime currentDate = DateTime.Today;
-            currentDate = new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, 23, 59, 0);
-
-            string currentDateString = currentDate.ToString("yyyy-MM-ddTHH:mm:ss");
-
-            string filePath1 = Model<GuidedTour>.GetFileNameTours();
-
-            string toursJson = $@"
-            [
-                {{
-                    ""ID"": ""1"",
-                    ""Name"": ""Tour 1"",
-                    ""Date"": ""{currentDateString}"",
-                    ""NameGuide"": ""TestGuide"",
-                    ""MaxParticipants"": 13,
-                    ""ReservedVisitors"": [],
-                    ""Language"": ""English"",
-                    ""Status"": true
-                }}
-            ]
-            ";
-
-            museum.Files[filePath1] = toursJson;
-
             string filePath2 = Model<UniqueCodes>.GetFileNameUniqueCodes();
 
             museum.Files[filePath2] = @"
@@ -372,30 +348,6 @@ namespace SystemTests
             FakeMuseum museum = new FakeMuseum();
             Program.Museum = museum;
 
-            DateTime currentDate = DateTime.Today;
-            currentDate = new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, 23, 59, 0);
-
-            string currentDateString = currentDate.ToString("yyyy-MM-ddTHH:mm:ss");
-
-            string filePath1 = Model<GuidedTour>.GetFileNameTours();
-
-            string toursJson = $@"
-            [
-                {{
-                    ""ID"": ""1"",
-                    ""Name"": ""Tour 1"",
-                    ""Date"": ""{currentDateString}"",
-                    ""NameGuide"": ""TestGuide"",
-                    ""MaxParticipants"": 13,
-                    ""ReservedVisitors"": [],
-                    ""Language"": ""English"",
-                    ""Status"": true
-                }}
-            ]
-            ";
-
-            museum.Files[filePath1] = toursJson;
-
             string filePath2 = Model<UniqueCodes>.GetFileNameUniqueCodes();
 
             museum.Files[filePath2] = @"
@@ -412,7 +364,8 @@ namespace SystemTests
 
             museum.LinesToRead = new List<string>
             {
-                "235325"  // QR code input
+                "235325",  // QR code input
+                "b" // Back input
             };
 
             // Act

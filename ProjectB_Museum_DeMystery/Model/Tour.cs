@@ -198,7 +198,7 @@ public static class Tour
                             );
                         }
                     }
-                    AnsiConsole.Render(table);
+                    museum.Render(table);
                     return true;
                 }
                 else
@@ -258,7 +258,7 @@ public static class Tour
                 }
                 if (anyToursToday)
                 {
-                    AnsiConsole.Render(table);
+                    museum.Render(table);
                     return true;
                 }
                 else
@@ -315,7 +315,7 @@ public static class Tour
                 }
             }
 
-            AnsiConsole.Render(table);
+            museum.Render(table);
             return true;
         }
         else
@@ -363,7 +363,7 @@ public static class Tour
                     );
                 }
 
-                AnsiConsole.Render(table);
+                museum.Render(table);
                 return true;
             }
             else
@@ -533,7 +533,7 @@ public static class Tour
                     );
                 }
 
-                AnsiConsole.Render(table);
+                museum.Render(table);
                 return true;
             }
             else
@@ -618,7 +618,7 @@ public static class Tour
                 }
             }
 
-            AnsiConsole.Render(table);
+            museum.Render(table);
         }
     }
 }

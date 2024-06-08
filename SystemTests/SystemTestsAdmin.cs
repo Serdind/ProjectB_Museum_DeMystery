@@ -59,21 +59,15 @@ namespace SystemTests
 
             };
 
-            StringBuilder outputBuilder = new StringBuilder();
-            var originalConsoleOut = Console.Out;
-            Console.SetOut(new StringWriter(outputBuilder));
-
             // Act
             ProgramController.Start();
-            Console.SetOut(originalConsoleOut);
-
+            
             // Assert
-            string tableOutput = outputBuilder.ToString();
+            string renderedOutput = museum.GetRenderedOutput();
+            Debug.WriteLine("Rendered Output:");
+            Debug.WriteLine(renderedOutput);
 
-            Debug.WriteLine("Table Output:");
-            Debug.WriteLine(tableOutput);
-
-            Assert.IsTrue(tableOutput.Contains($"{currentDate.ToString("d-M-yyyy")}"));
+            Assert.IsTrue(renderedOutput.Contains($"{currentDate.ToString("d-M-yyyy")}"));
         }
 
         [TestMethod]
@@ -153,8 +147,8 @@ namespace SystemTests
             DateTime currentDate = DateTime.Today;
             currentDate = new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, 23, 59, 0);
 
-            string pastTourDateString = currentDate.AddDays(-1).ToString("yyyy-MM-ddTHH:mm:ss");
             string currentDateString = currentDate.ToString("yyyy-MM-ddTHH:mm:ss");
+            string futureTourDateString = currentDate.AddDays(+1).ToString("yyyy-MM-ddTHH:mm:ss");
 
             DateTime currentDateTime = DateTime.ParseExact(currentDateString, "yyyy-MM-ddTHH:mm:ss", CultureInfo.InvariantCulture);
             
@@ -165,7 +159,7 @@ namespace SystemTests
             [
                 {{
                     ""ID"": ""1"",
-                    ""Date"": ""{pastTourDateString}"",
+                    ""Date"": ""{currentDateString}"",
                     ""NameGuide"": ""TestGuide"",
                     ""MaxParticipants"": 13,
                     ""ReservedVisitors"": [],
@@ -174,7 +168,7 @@ namespace SystemTests
                 }},
                 {{
                     ""ID"": ""2"",
-                    ""Date"": ""{currentDateString}"",
+                    ""Date"": ""{futureTourDateString}"",
                     ""NameGuide"": ""TestGuide"",
                     ""MaxParticipants"": 13,
                     ""ReservedVisitors"": [],
@@ -233,8 +227,8 @@ namespace SystemTests
             DateTime currentDate = DateTime.Today;
             currentDate = new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, 23, 59, 0);
 
-            string pastTourDateString = currentDate.AddDays(-1).ToString("yyyy-MM-ddTHH:mm:ss");
             string currentDateString = currentDate.ToString("yyyy-MM-ddTHH:mm:ss");
+            string futureTourDateString = currentDate.AddDays(+1).ToString("yyyy-MM-ddTHH:mm:ss");
 
             DateTime currentDateTime = DateTime.ParseExact(currentDateString, "yyyy-MM-ddTHH:mm:ss", CultureInfo.InvariantCulture);
             
@@ -245,7 +239,7 @@ namespace SystemTests
             [
                 {{
                     ""ID"": ""1"",
-                    ""Date"": ""{pastTourDateString}"",
+                    ""Date"": ""{currentDateString}"",
                     ""NameGuide"": ""TestGuide"",
                     ""MaxParticipants"": 13,
                     ""ReservedVisitors"": [],
@@ -254,7 +248,7 @@ namespace SystemTests
                 }},
                 {{
                     ""ID"": ""2"",
-                    ""Date"": ""{currentDateString}"",
+                    ""Date"": ""{futureTourDateString}"",
                     ""NameGuide"": ""TestGuide"",
                     ""MaxParticipants"": 13,
                     ""ReservedVisitors"": [],
@@ -293,7 +287,7 @@ namespace SystemTests
             // Act
             ProgramController.Start();
 
-            // Assert
+            // Assert            
             string writtenLines = museum.GetWrittenLinesAsString();
             Debug.WriteLine(writtenLines);
             Assert.IsTrue(writtenLines.Contains("Language set to Dutch"));

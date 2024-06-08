@@ -67,4 +67,9 @@ public class RealMuseum : IMuseum
     {
         return Console.ReadKey();
     }
+
+    public void Render(Table table)
+    {
+        AnsiConsole.Render(table);
+    }
 }

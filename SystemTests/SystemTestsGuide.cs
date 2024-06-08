@@ -77,6 +77,7 @@ namespace SystemTests
                 "78643", // Visitor qr input
                 "b", // Back input
                 "b", // Back input
+                "b", // Back input
                 "l" // Log out input
             };
 
@@ -170,6 +171,7 @@ namespace SystemTests
                 "78643", // Visitor qr input
                 "b", // Back input
                 "b", // Back input
+                "b", // Back input
                 "l" // Log out input
             };
 
@@ -257,6 +259,7 @@ namespace SystemTests
                 "214678",  // QR code input
                 "s", // View visitors input
                 "1", // Tour id input
+                "b", // Back input
                 "l" // Log out input
             };
 

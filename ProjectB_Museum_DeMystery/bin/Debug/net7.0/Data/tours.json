@@ -1,87 +1,6 @@
 [
   {
     "ID": 1,
-    "Date": "2024-06-07T10:40:00",
-    "Language": "English",
-    "NameGuide": "Casper",
-    "ReservedVisitors": [],
-    "Status": true,
-    "MaxParticipants": 13
-  },
-  {
-    "ID": 2,
-    "Date": "2024-06-07T11:20:00",
-    "Language": "Dutch",
-    "NameGuide": "Bas",
-    "ReservedVisitors": [],
-    "Status": true,
-    "MaxParticipants": 13
-  },
-  {
-    "ID": 3,
-    "Date": "2024-06-07T12:00:00",
-    "Language": "English",
-    "NameGuide": "Rick",
-    "ReservedVisitors": [],
-    "Status": true,
-    "MaxParticipants": 13
-  },
-  {
-    "ID": 4,
-    "Date": "2024-06-07T13:40:00",
-    "Language": "Dutch",
-    "NameGuide": "Casper",
-    "ReservedVisitors": [],
-    "Status": true,
-    "MaxParticipants": 13
-  },
-  {
-    "ID": 5,
-    "Date": "2024-06-07T14:00:00",
-    "Language": "English",
-    "NameGuide": "Bas",
-    "ReservedVisitors": [],
-    "Status": true,
-    "MaxParticipants": 13
-  },
-  {
-    "ID": 6,
-    "Date": "2024-06-07T15:40:00",
-    "Language": "Dutch",
-    "NameGuide": "Rick",
-    "ReservedVisitors": [],
-    "Status": true,
-    "MaxParticipants": 13
-  },
-  {
-    "ID": 7,
-    "Date": "2024-06-07T16:20:00",
-    "Language": "English",
-    "NameGuide": "Casper",
-    "ReservedVisitors": [],
-    "Status": true,
-    "MaxParticipants": 13
-  },
-  {
-    "ID": 8,
-    "Date": "2024-06-07T16:00:00",
-    "Language": "Dutch",
-    "NameGuide": "Bas",
-    "ReservedVisitors": [],
-    "Status": true,
-    "MaxParticipants": 13
-  },
-  {
-    "ID": 9,
-    "Date": "2024-06-07T17:00:00",
-    "Language": "English",
-    "NameGuide": "Rick",
-    "ReservedVisitors": [],
-    "Status": true,
-    "MaxParticipants": 13
-  },
-  {
-    "ID": 10,
     "Date": "2024-06-08T10:40:00",
     "Language": "English",
     "NameGuide": "Casper",
@@ -90,7 +9,7 @@
     "MaxParticipants": 13
   },
   {
-    "ID": 11,
+    "ID": 2,
     "Date": "2024-06-08T11:20:00",
     "Language": "Dutch",
     "NameGuide": "Bas",
@@ -99,7 +18,7 @@
     "MaxParticipants": 13
   },
   {
-    "ID": 12,
+    "ID": 3,
     "Date": "2024-06-08T12:00:00",
     "Language": "English",
     "NameGuide": "Rick",
@@ -108,7 +27,7 @@
     "MaxParticipants": 13
   },
   {
-    "ID": 13,
+    "ID": 4,
     "Date": "2024-06-08T13:40:00",
     "Language": "Dutch",
     "NameGuide": "Casper",
@@ -117,7 +36,7 @@
     "MaxParticipants": 13
   },
   {
-    "ID": 14,
+    "ID": 5,
     "Date": "2024-06-08T14:00:00",
     "Language": "English",
     "NameGuide": "Bas",
@@ -126,7 +45,7 @@
     "MaxParticipants": 13
   },
   {
-    "ID": 15,
+    "ID": 6,
     "Date": "2024-06-08T15:40:00",
     "Language": "Dutch",
     "NameGuide": "Rick",
@@ -135,16 +54,22 @@
     "MaxParticipants": 13
   },
   {
-    "ID": 16,
+    "ID": 7,
     "Date": "2024-06-08T16:20:00",
     "Language": "English",
     "NameGuide": "Casper",
-    "ReservedVisitors": [],
-    "Status": true,
+    "ReservedVisitors": [
+      {
+        "Id": 1,
+        "TourId": 7,
+        "QR": "616469"
+      }
+    ],
+    "Status": false,
     "MaxParticipants": 13
   },
   {
-    "ID": 17,
+    "ID": 8,
     "Date": "2024-06-08T16:00:00",
     "Language": "Dutch",
     "NameGuide": "Bas",
@@ -153,7 +78,7 @@
     "MaxParticipants": 13
   },
   {
-    "ID": 18,
+    "ID": 9,
     "Date": "2024-06-08T17:00:00",
     "Language": "English",
     "NameGuide": "Rick",
@@ -162,7 +87,7 @@
     "MaxParticipants": 13
   },
   {
-    "ID": 19,
+    "ID": 10,
     "Date": "2024-06-08T16:05:00",
     "Language": "dutch",
     "NameGuide": "Casper",
@@ -171,9 +96,90 @@
     "MaxParticipants": 13
   },
   {
-    "ID": 20,
+    "ID": 11,
     "Date": "2024-06-08T16:06:00",
     "Language": "rtehw",
+    "NameGuide": "Bas",
+    "ReservedVisitors": [],
+    "Status": true,
+    "MaxParticipants": 13
+  },
+  {
+    "ID": 12,
+    "Date": "2024-06-08T16:07:00",
+    "Language": "d",
+    "NameGuide": "Rick",
+    "ReservedVisitors": [],
+    "Status": true,
+    "MaxParticipants": 13
+  },
+  {
+    "ID": 13,
+    "Date": "2024-06-09T10:40:00",
+    "Language": "English",
+    "NameGuide": "Casper",
+    "ReservedVisitors": [],
+    "Status": true,
+    "MaxParticipants": 13
+  },
+  {
+    "ID": 14,
+    "Date": "2024-06-09T11:20:00",
+    "Language": "Dutch",
+    "NameGuide": "Bas",
+    "ReservedVisitors": [],
+    "Status": true,
+    "MaxParticipants": 13
+  },
+  {
+    "ID": 15,
+    "Date": "2024-06-09T12:00:00",
+    "Language": "English",
+    "NameGuide": "Rick",
+    "ReservedVisitors": [],
+    "Status": true,
+    "MaxParticipants": 13
+  },
+  {
+    "ID": 16,
+    "Date": "2024-06-09T13:40:00",
+    "Language": "Dutch",
+    "NameGuide": "Casper",
+    "ReservedVisitors": [],
+    "Status": true,
+    "MaxParticipants": 13
+  },
+  {
+    "ID": 17,
+    "Date": "2024-06-09T14:00:00",
+    "Language": "English",
+    "NameGuide": "Bas",
+    "ReservedVisitors": [],
+    "Status": true,
+    "MaxParticipants": 13
+  },
+  {
+    "ID": 18,
+    "Date": "2024-06-09T15:40:00",
+    "Language": "Dutch",
+    "NameGuide": "Rick",
+    "ReservedVisitors": [],
+    "Status": true,
+    "MaxParticipants": 13
+  },
+  {
+    "ID": 19,
+    "Date": "2024-06-09T16:20:00",
+    "Language": "English",
+    "NameGuide": "Casper",
+    "ReservedVisitors": [],
+    "Status": true,
+    "MaxParticipants": 13
+  },
+  {
+    "ID": 20,
+    "Date": "2024-06-09T16:00:00",
+    "Language": "Dutch",
     "NameGuide": "Casper",
     "ReservedVisitors": [],
     "Status": true,
@@ -181,7 +187,34 @@
   },
   {
     "ID": 21,
-    "Date": "2024-06-08T16:07:00",
+    "Date": "2024-06-09T17:00:00",
+    "Language": "English",
+    "NameGuide": "Casper",
+    "ReservedVisitors": [],
+    "Status": true,
+    "MaxParticipants": 13
+  },
+  {
+    "ID": 22,
+    "Date": "2024-06-09T16:05:00",
+    "Language": "dutch",
+    "NameGuide": "Casper",
+    "ReservedVisitors": [],
+    "Status": true,
+    "MaxParticipants": 13
+  },
+  {
+    "ID": 23,
+    "Date": "2024-06-09T16:06:00",
+    "Language": "rtehw",
+    "NameGuide": "Casper",
+    "ReservedVisitors": [],
+    "Status": true,
+    "MaxParticipants": 13
+  },
+  {
+    "ID": 24,
+    "Date": "2024-06-09T16:07:00",
     "Language": "d",
     "NameGuide": "Casper",
     "ReservedVisitors": [],

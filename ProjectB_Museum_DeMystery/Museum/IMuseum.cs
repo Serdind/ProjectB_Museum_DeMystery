@@ -26,4 +26,6 @@ public interface IMuseum
     DateTime MinValue { get; }
 
     ConsoleKeyInfo ReadKey();
+
+    void Render(Table table);
 }
