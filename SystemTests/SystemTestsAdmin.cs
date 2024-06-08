@@ -71,6 +71,66 @@ namespace SystemTests
         }
 
         [TestMethod]
+        public void AdminLoginAndOverviewToursFutureTest()
+        {
+            FakeMuseum museum = new FakeMuseum();
+            Program.Museum = museum;
+
+            DateTime dateTomorrow = DateTime.Today.AddDays(1).AddHours(23).AddMinutes(59);
+
+            string dateTomorrowString = dateTomorrow.ToString("yyyy-MM-ddTHH:mm:ss");
+
+            string filePath1 = Model<GuidedTour>.GetFileNameTours();
+
+            string toursJson = $@"
+            [
+                {{
+                    ""ID"": ""1"",
+                    ""Date"": ""{dateTomorrowString}"",
+                    ""NameGuide"": ""TestGuide"",
+                    ""MaxParticipants"": 13,
+                    ""ReservedVisitors"": [],
+                    ""Language"": ""English"",
+                    ""Status"": true
+                }}
+            ]
+            ";
+
+            museum.Files[filePath1] = toursJson;
+
+            string filePath2 = Model<DepartmentHead>.GetFileNameAdmins();
+
+            museum.Files[filePath2] = @"
+            [
+                {
+                    ""Id"": ""1"",
+                    ""Name"": ""TestAdmin"",
+                    ""QR"": ""897324""
+                }
+            ]
+            ";
+
+            museum.LinesToRead = new List<string>
+            {
+                "897324",  // QR code input
+                "t", // Overview tours input
+                "a", // Tours from today input
+                "l" // Log out input
+
+            };
+
+            // Act
+            ProgramController.Start();
+            
+            // Assert
+            string renderedOutput = museum.GetRenderedOutput();
+            Debug.WriteLine("Rendered Output:");
+            Debug.WriteLine(renderedOutput);
+
+            Assert.IsTrue(renderedOutput.Contains($"{dateTomorrow.ToString("d-M-yyyy")}"));
+        }
+
+        [TestMethod]
         public void AdminLoginAndAddTourTest()
         {
             // Arrange

@@ -291,6 +291,7 @@ public static class Tour
 
             tours = tours.OrderBy(t => t.Date).ToList();
             var table = new Table().Border(TableBorder.Rounded);
+            table.AddColumn("Date");
             table.AddColumn("Time");
             table.AddColumn("Duration");
             table.AddColumn("Language");
@@ -306,6 +307,7 @@ public static class Tour
                     int remainingSpots = tour.MaxParticipants - tour.ReservedVisitors.Count;
                     string status = tour.Status ? "Active" : "Inactive";
                     table.AddRow(
+                        dateOnly,
                         timeOnly,
                         "40 minutes",
                         tour.Language,
