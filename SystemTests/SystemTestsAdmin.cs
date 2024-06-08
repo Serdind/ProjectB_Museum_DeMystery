@@ -114,7 +114,7 @@ namespace SystemTests
             {
                 "897324",  // QR code input
                 "t", // Overview tours input
-                "a", // Tours from today input
+                "a", // Tours after today input
                 "l" // Log out input
 
             };

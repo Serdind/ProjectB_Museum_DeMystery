@@ -2,10 +2,12 @@ using System.Text.Json.Serialization;
 using Spectre.Console;
 using Newtonsoft.Json;
 using System.Globalization;
+using System.Text;
 
 public class FakeMuseum : IMuseum
 {
     private DateTime? _now = DateTime.Now;
+    private StringBuilder _renderedOutput = new StringBuilder();
 
     private DateTime? _today = DateTime.Now;
 
@@ -82,5 +84,22 @@ public class FakeMuseum : IMuseum
     public ConsoleKeyInfo ReadKey()
     {
         return new ConsoleKeyInfo('\r', ConsoleKey.Enter, false, false, false);
+    }
+
+    public void Render(Table table)
+    {
+        var originalConsoleOut = Console.Out;
+        var writer = new StringWriter();
+        Console.SetOut(writer);
+
+        AnsiConsole.Render(table);
+
+        Console.SetOut(originalConsoleOut);
+        _renderedOutput.Append(writer.ToString());
+    }
+
+    public string GetRenderedOutput()
+    {
+        return _renderedOutput.ToString();
     }
 }
