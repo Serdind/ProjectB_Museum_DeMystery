@@ -30,7 +30,7 @@ public class VisitorTests
         museum.Files[filePath2] = @"
         [
             ""139278"",
-            ""78643"",
+            ""8752316"",
             ""124678""
         ]
         ";
@@ -41,7 +41,7 @@ public class VisitorTests
 
         museum.LinesToRead = new List<string>
         {
-            "78643",  // QR code input
+            "8752316",  // QR code input
             "b" // Back input
         };
 
@@ -66,7 +66,7 @@ public class VisitorTests
         museum.Files[filePath2] = @"
         [
             ""139278"",
-            ""78643"",
+            ""8752316"",
             ""124678""
         ]
         ";

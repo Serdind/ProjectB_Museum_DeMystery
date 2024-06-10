@@ -55,7 +55,7 @@ public class GuideTests
             {
                 ""Id"": ""1"",
                 ""Name"": ""TestGuide"",
-                ""QR"": ""214678""
+                ""QR"": ""4892579""
             }
         ]
         ";
@@ -65,7 +65,7 @@ public class GuideTests
         museum.Files[filePath3] = @"
         [
             ""139278"",
-            ""78643"",
+            ""8752316"",
             ""124678""
         ]
         ";
@@ -75,10 +75,10 @@ public class GuideTests
         museum.Files[filePath4] = "[]";
 
         var guides = JsonConvert.DeserializeObject<List<Guide>>(museum.Files[filePath2]);
-        var guide = guides.FirstOrDefault(t => t.QR == "214678");
+        var guide = guides.FirstOrDefault(t => t.QR == "4892579");
 
         //Act
-        bool result = guide.AddVisitorToTour(1, "78643");
+        bool result = guide.AddVisitorToTour(1, "8752316");
 
         //Assert
         string writtenLines = museum.GetWrittenLinesAsString();
@@ -124,7 +124,7 @@ public class GuideTests
             {
                 ""Id"": ""1"",
                 ""Name"": ""TestGuide"",
-                ""QR"": ""214678""
+                ""QR"": ""4892579""
             }
         ]
         ";
@@ -134,7 +134,7 @@ public class GuideTests
         museum.Files[filePath3] = @"
         [
             ""139278"",
-            ""78643"",
+            ""8752316"",
             ""124678""
         ]
         ";
@@ -144,10 +144,10 @@ public class GuideTests
         museum.Files[filePath4] = "[]";
 
         var guides = JsonConvert.DeserializeObject<List<Guide>>(museum.Files[filePath2]);
-        var guide = guides.FirstOrDefault(t => t.QR == "214678");
+        var guide = guides.FirstOrDefault(t => t.QR == "4892579");
 
         //Act
-        bool result = guide.AddVisitorToTour(2, "78643");
+        bool result = guide.AddVisitorToTour(2, "8752316");
 
         //Assert
         string writtenLines = museum.GetWrittenLinesAsString();
@@ -180,7 +180,7 @@ public class GuideTests
                 ""ReservedVisitors"": [{
                         ""Id"": ""1"",
                         ""TourId"": ""1"",
-                        ""QR"": ""78643""
+                        ""QR"": ""8752316""
                     }],
                 ""Language"": ""English"",
                 ""Status"": true
@@ -196,7 +196,7 @@ public class GuideTests
             {
                 ""Id"": ""1"",
                 ""Name"": ""TestGuide"",
-                ""QR"": ""214678""
+                ""QR"": ""4892579""
             }
         ]
         ";
@@ -206,7 +206,7 @@ public class GuideTests
         museum.Files[filePath3] = @"
         [
             ""139278"",
-            ""78643"",
+            ""8752316"",
             ""124678""
         ]
         ";
@@ -218,15 +218,15 @@ public class GuideTests
             {
                 ""Id"": ""1"",
                 ""TourId"": ""1"",
-                ""QR"": ""78643""
+                ""QR"": ""8752316""
             }
         ]";
 
         var guides = JsonConvert.DeserializeObject<List<Guide>>(museum.Files[filePath2]);
-        var guide = guides.FirstOrDefault(t => t.QR == "214678");
+        var guide = guides.FirstOrDefault(t => t.QR == "4892579");
 
         //Act
-        bool result = guide.RemoveVisitorFromTour(1, "78643");
+        bool result = guide.RemoveVisitorFromTour(1, "8752316");
 
         //Assert
         string writtenLines = museum.GetWrittenLinesAsString();
@@ -259,7 +259,7 @@ public class GuideTests
                 ""ReservedVisitors"": [{
                         ""Id"": ""1"",
                         ""TourId"": ""1"",
-                        ""QR"": ""78643""
+                        ""QR"": ""8752316""
                     }],
                 ""Language"": ""English"",
                 ""Status"": true
@@ -275,7 +275,7 @@ public class GuideTests
             {
                 ""Id"": ""1"",
                 ""Name"": ""TestGuide"",
-                ""QR"": ""214678""
+                ""QR"": ""4892579""
             }
         ]
         ";
@@ -285,7 +285,7 @@ public class GuideTests
         museum.Files[filePath3] = @"
         [
             ""139278"",
-            ""78643"",
+            ""8752316"",
             ""124678""
         ]
         ";
@@ -297,12 +297,12 @@ public class GuideTests
             {
                 ""Id"": ""1"",
                 ""TourId"": ""1"",
-                ""QR"": ""78643""
+                ""QR"": ""8752316""
             }
         ]";
 
         var guides = JsonConvert.DeserializeObject<List<Guide>>(museum.Files[filePath2]);
-        var guide = guides.FirstOrDefault(t => t.QR == "214678");
+        var guide = guides.FirstOrDefault(t => t.QR == "4892579");
 
         //Act
         bool result = guide.RemoveVisitorFromTour(1, "321745");
@@ -364,7 +364,7 @@ public class GuideTests
             {
                 ""Id"": ""1"",
                 ""Name"": ""TestGuide"",
-                ""QR"": ""214678""
+                ""QR"": ""4892579""
             }
         ]
         ";
@@ -374,7 +374,7 @@ public class GuideTests
         museum.Files[filePath3] = @"
         [
             ""139278"",
-            ""78643"",
+            ""8752316"",
             ""124678""
         ]
         ";
@@ -386,7 +386,7 @@ public class GuideTests
             {
                 ""Id"": ""1"",
                 ""TourId"": ""1"",
-                ""QR"": ""78643""
+                ""QR"": ""8752316""
             }
         ]";
 
@@ -397,7 +397,7 @@ public class GuideTests
         };
 
         var guides = JsonConvert.DeserializeObject<List<Guide>>(museum.Files[filePath2]);
-        var guide = guides.FirstOrDefault(t => t.QR == "214678");
+        var guide = guides.FirstOrDefault(t => t.QR == "4892579");
 
         //Act
         bool result = guide.ViewTours(guide.Name, guide);
@@ -454,14 +454,14 @@ public class GuideTests
             {
                 ""Id"": 1,
                 ""Name"": ""TestGuide"",
-                ""QR"": ""214678""
+                ""QR"": ""4892579""
             }
         ]
         ";
 
         // Act
         var guides = JsonConvert.DeserializeObject<List<Guide>>(museum.Files[filePath2]);
-        var guide = guides.FirstOrDefault(t => t.QR == "214678");
+        var guide = guides.FirstOrDefault(t => t.QR == "4892579");
 
         // Act
         guide.StartTour(2);
@@ -520,14 +520,14 @@ public class GuideTests
             {
                 ""Id"": 1,
                 ""Name"": ""TestGuide"",
-                ""QR"": ""214678""
+                ""QR"": ""4892579""
             }
         ]
         ";
 
         // Act
         var guides = JsonConvert.DeserializeObject<List<Guide>>(museum.Files[filePath2]);
-        var guide = guides.FirstOrDefault(t => t.QR == "214678");
+        var guide = guides.FirstOrDefault(t => t.QR == "4892579");
 
         // Act
         guide.StartTour(2);
@@ -588,14 +588,14 @@ public class GuideTests
             {
                 ""Id"": 1,
                 ""Name"": ""TestGuide"",
-                ""QR"": ""214678""
+                ""QR"": ""4892579""
             }
         ]
         ";
 
         // Act
         var guides = JsonConvert.DeserializeObject<List<Guide>>(museum.Files[filePath2]);
-        var guide = guides.FirstOrDefault(t => t.QR == "214678");
+        var guide = guides.FirstOrDefault(t => t.QR == "4892579");
 
         // Act
         guide.StartTour(4);

@@ -44,14 +44,14 @@ namespace SystemTests
                 {
                     ""Id"": ""1"",
                     ""Name"": ""TestAdmin"",
-                    ""QR"": ""897324""
+                    ""QR"": ""6457823""
                 }
             ]
             ";
 
             museum.LinesToRead = new List<string>
             {
-                "897324",  // QR code input
+                "6457823",  // QR code input
                 "t", // Overview tours input
                 "t", // Tours from today input
                 "l" // Log out input
@@ -103,14 +103,14 @@ namespace SystemTests
                 {
                     ""Id"": ""1"",
                     ""Name"": ""TestAdmin"",
-                    ""QR"": ""897324""
+                    ""QR"": ""6457823""
                 }
             ]
             ";
 
             museum.LinesToRead = new List<string>
             {
-                "897324",  // QR code input
+                "6457823",  // QR code input
                 "t", // Overview tours input
                 "a", // Tours after today input
                 "l" // Log out input
@@ -164,14 +164,14 @@ namespace SystemTests
                 {
                     ""Id"": ""1"",
                     ""Name"": ""TestAdmin"",
-                    ""QR"": ""897324""
+                    ""QR"": ""6457823""
                 }
             ]
             ";
 
             museum.LinesToRead = new List<string>
             {
-                "897324",  // QR code input
+                "6457823",  // QR code input
                 "a", // Tours input
                 "20:00", // Time input
                 "Dutch", // Language input
@@ -244,14 +244,14 @@ namespace SystemTests
                 {
                     ""Id"": ""1"",
                     ""Name"": ""TestAdmin"",
-                    ""QR"": ""897324""
+                    ""QR"": ""6457823""
                 }
             ]
             ";
 
             museum.LinesToRead = new List<string>
             {
-                "897324",  // QR code input
+                "6457823",  // QR code input
                 "e", // Tours input
                 currentDateTime.ToString("HH:mm"), // Date input
                 "s", // Status changed to inactive input
@@ -324,14 +324,14 @@ namespace SystemTests
                 {
                     ""Id"": ""1"",
                     ""Name"": ""TestAdmin"",
-                    ""QR"": ""897324""
+                    ""QR"": ""6457823""
                 }
             ]
             ";
 
             museum.LinesToRead = new List<string>
             {
-                "897324",  // QR code input
+                "6457823",  // QR code input
                 "e", // Tours input
                 currentDateTime.ToString("HH:mm"), // Date input
                 "l", // Language change input
@@ -369,14 +369,14 @@ namespace SystemTests
                 {
                     ""Id"": ""1"",
                     ""Name"": ""TestAdmin"",
-                    ""QR"": ""897324""
+                    ""QR"": ""6457823""
                 }
             ]
             ";
 
             museum.LinesToRead = new List<string>
             {
-                "897324",  // QR code input
+                "6457823",  // QR code input
                 "l" // Log out input
             };
 
@@ -425,7 +425,7 @@ namespace SystemTests
                 {
                     ""Id"": ""1"",
                     ""Name"": ""TestAdmin"",
-                    ""QR"": ""897324""
+                    ""QR"": ""6457823""
                 }
             ]
             ";
@@ -436,7 +436,7 @@ namespace SystemTests
 
             museum.LinesToRead = new List<string>
             {
-                "897324",  // QR code input
+                "6457823",  // QR code input
                 "a", // View visitors input
                 "b", // Back input
                 "l" // Log out input

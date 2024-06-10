@@ -48,7 +48,7 @@ namespace SystemTests
                 {
                     ""Id"": ""1"",
                     ""Name"": ""TestGuide"",
-                    ""QR"": ""214678""
+                    ""QR"": ""4892579""
                 }
             ]
             ";
@@ -57,9 +57,7 @@ namespace SystemTests
 
             museum.Files[filePath3] = @"
             [
-                ""139278"",
-                ""78643"",
-                ""124678""
+                ""8752316""
             ]
             ";
 
@@ -69,11 +67,11 @@ namespace SystemTests
 
             museum.LinesToRead = new List<string>
             {
-                "214678",  // QR code input
+                "4892579",  // QR code input
                 "v", // View visitors input
                 "1", // Tour id input
                 "a", // Add visitor input
-                "78643", // Visitor qr input
+                "8752316", // Visitor qr input
                 "b", // Back input
                 "b", // Back input
                 "b", // Back input
@@ -92,7 +90,7 @@ namespace SystemTests
 
             Assert.AreEqual(1, visitors[0].Id);
             Assert.AreEqual(1, visitors[0].TourId);
-            Assert.AreEqual("78643", visitors[0].QR);
+            Assert.AreEqual("8752316", visitors[0].QR);
         }
         
         [TestMethod]
@@ -119,7 +117,7 @@ namespace SystemTests
                     ""ReservedVisitors"": [{
                             ""Id"": ""1"",
                             ""TourId"": ""1"",
-                            ""QR"": ""78643""
+                            ""QR"": ""8752316""
                         }],
                     ""Language"": ""English"",
                     ""Status"": true
@@ -135,7 +133,7 @@ namespace SystemTests
                 {
                     ""Id"": ""1"",
                     ""Name"": ""TestGuide"",
-                    ""QR"": ""214678""
+                    ""QR"": ""4892579""
                 }
             ]
             ";
@@ -144,9 +142,7 @@ namespace SystemTests
 
             museum.Files[filePath3] = @"
             [
-                ""139278"",
-                ""78643"",
-                ""124678""
+                ""8752316""
             ]
             ";
 
@@ -157,17 +153,17 @@ namespace SystemTests
                 {
                     ""Id"": ""1"",
                     ""TourId"": ""1"",
-                    ""QR"": ""78643""
+                    ""QR"": ""8752316""
                 }
             ]";
 
             museum.LinesToRead = new List<string>
             {
-                "214678",  // QR code input
+                "4892579",  // QR code input
                 "v", // View visitors input
                 "1", // Tour id input
                 "r", // Remove visitor input
-                "78643", // Visitor qr input
+                "8752316", // Visitor qr input
                 "b", // Back input
                 "b", // Back input
                 "b", // Back input
@@ -211,7 +207,7 @@ namespace SystemTests
                     ""ReservedVisitors"": [{
                             ""Id"": ""1"",
                             ""TourId"": ""1"",
-                            ""QR"": ""78643""
+                            ""QR"": ""8752316""
                         }],
                     ""Language"": ""English"",
                     ""Status"": true
@@ -227,7 +223,7 @@ namespace SystemTests
                 {
                     ""Id"": ""1"",
                     ""Name"": ""TestGuide"",
-                    ""QR"": ""214678""
+                    ""QR"": ""4892579""
                 }
             ]
             ";
@@ -236,9 +232,7 @@ namespace SystemTests
 
             museum.Files[filePath3] = @"
             [
-                ""139278"",
-                ""78643"",
-                ""124678""
+                ""8752316""
             ]
             ";
 
@@ -249,13 +243,13 @@ namespace SystemTests
                 {
                     ""Id"": ""1"",
                     ""TourId"": ""1"",
-                    ""QR"": ""78643""
+                    ""QR"": ""8752316""
                 }
             ]";
 
             museum.LinesToRead = new List<string>
             {
-                "214678",  // QR code input
+                "4892579",  // QR code input
                 "s", // View visitors input
                 "1", // Tour id input
                 "b", // Back input
@@ -313,7 +307,7 @@ namespace SystemTests
                 {
                     ""Id"": ""1"",
                     ""Name"": ""TestGuide"",
-                    ""QR"": ""214678""
+                    ""QR"": ""4892579""
                 }
             ]
             ";
@@ -324,7 +318,7 @@ namespace SystemTests
 
             museum.LinesToRead = new List<string>
             {
-                "214678",  // QR code input
+                "4892579",  // QR code input
                 "v", // View visitors input
                 "b", // Back input
                 "l" // Log out input
