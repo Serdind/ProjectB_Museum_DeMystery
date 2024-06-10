@@ -29,9 +29,9 @@ public class PersonController
             }
             else if (option.ToLower() == "a" || option.ToLower() == "add tour")
             {
-                AdminOptions.BackOption();
                 while (true)
                 {
+                    AdminOptions.BackOption();
                     string timeString = TourInfo.Time();
 
                     if (timeString.ToLower() == "b" || timeString.ToLower() == "back")
@@ -54,6 +54,7 @@ public class PersonController
                     string language = string.Empty;
                     while (string.IsNullOrEmpty(language))
                     {
+                        AdminOptions.BackOption();
                         language = TourInfo.Language();
 
                         if (language.ToLower() == "b" || language.ToLower() == "back")

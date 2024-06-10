@@ -102,6 +102,7 @@ public class ProgramController
                 else if (option.ToLower() == "h" || option.ToLower() == "help")
                 {
                     MainMenu.Intro();
+                    ReservationMenu.HelpActive();
                 }
                 else if (option.ToLower() == "f" || option.ToLower() == "finish")
                 {

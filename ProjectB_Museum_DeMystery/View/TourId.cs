@@ -6,6 +6,7 @@ public class TourId : View
         IMuseum museum = Program.Museum;
         while (true)
         {
+            museum.WriteLine("");
             museum.WriteLine("Enter tour ID:");
             string input = museum.ReadLine();
 
@@ -20,9 +21,12 @@ public class TourId : View
             }
             else
             {
+                museum.WriteLine("");
                 museum.WriteLine("Invalid input. Please enter a valid numeric tour ID.");
                 museum.WriteLine("Press anything to continue...");
-                museum.ReadKey();        
+                museum.ReadKey();
+                museum.WriteLine("");
+                return 0;    
             }
         }
     }

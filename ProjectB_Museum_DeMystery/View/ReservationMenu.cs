@@ -4,6 +4,7 @@ public class ReservationMenu : View
     public static string Menu(string qr, Visitor visitor)
     {
         IMuseum museum = Program.Museum;
+        museum.WriteLine("");
         museum.WriteLine("Make reservation(R)");
 
         if (visitor.ReservationMade(qr))
@@ -19,6 +20,7 @@ public class ReservationMenu : View
     public static string Help()
     {
         IMuseum museum = Program.Museum;
+        museum.WriteLine("");
         museum.WriteLine("Do you want information about how to use this application first?");
         museum.WriteLine("Yes or Y to comfirm\nNo or N to decline\nBack or b to go back");
         return ReadLineString();
@@ -27,6 +29,7 @@ public class ReservationMenu : View
     public static void HelpActive()
     {
         IMuseum museum = Program.Museum;
+        museum.WriteLine("");
         museum.WriteLine("You can read the information at any time using this application with the Help(H) option.");
         museum.WriteLine("Press anything to continue...");
         museum.ReadKey();
@@ -37,6 +40,7 @@ public class ReservationMenu : View
     public static string Finish()
     {
         IMuseum museum = Program.Museum;
+        museum.WriteLine("");
         museum.WriteLine("Are you sure you are done? You haven't made a reservation yet.");
         museum.WriteLine("Yes or Y to comfirm\nNo or N to decline");
         return ReadLineString();

@@ -10,9 +10,11 @@ public class MessageTourReservation
                         $"Language: {tour.Language}\n" +
                         $"Name of guide: {tour.NameGuide}\n";
 
+        museum.WriteLine("");
         museum.WriteLine(message);
         museum.WriteLine("Press anything to continue...");
         museum.ReadKey();
+        museum.WriteLine("");
         
     }
 
@@ -25,11 +27,12 @@ public class MessageTourReservation
                         $"Language: {tour.Language}\n" +
                         $"Name of guide: {tour.NameGuide}\n";
                         
-        
+        museum.WriteLine("");
         museum.WriteLine("Here are the details of your reservation:\n");
         museum.WriteLine(message);
         museum.WriteLine("Press anything to continue...");
         museum.ReadKey();
+        museum.WriteLine("");
         
     }
 
@@ -42,19 +45,22 @@ public class MessageTourReservation
                         $"Language: {tour.Language}\n" +
                         $"Name of guide: {tour.NameGuide}\n";
 
-        
+        museum.WriteLine("");
         museum.WriteLine(message);
         museum.WriteLine("Press anything to continue...");
         museum.ReadKey();
+        museum.WriteLine("");
         
     }
 
     public static void TourAdded()
     {
         IMuseum museum = Program.Museum;
+        museum.WriteLine("");
         museum.WriteLine("Tour succesfully added.");
         museum.WriteLine("Press anything to continue...");
         museum.ReadKey();
+        museum.WriteLine("");
         
     }
 }

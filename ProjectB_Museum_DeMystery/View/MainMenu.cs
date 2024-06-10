@@ -4,15 +4,18 @@ public class MainMenu : View
     public static void Welcome()
     {
         IMuseum museum = Program.Museum;
+        museum.WriteLine("");
         museum.WriteLine("Welcome to The Depot!");
         museum.WriteLine("Press anything to continue...");
         museum.ReadKey();
+        museum.WriteLine("");
         
     }
 
     public static void Intro()
     {
         IMuseum museum = Program.Museum;
+        museum.WriteLine("");
         museum.WriteLine("Here are some tips to help you with the application.");
         museum.WriteLine("Press anything to continue...");
         museum.ReadKey();
@@ -50,6 +53,7 @@ public class MainMenu : View
         museum.WriteLine("Thank you for visiting The Depot!");
         museum.WriteLine("Press anything to continue...");
         museum.ReadKey();
+        museum.WriteLine("");
         
     }
 }
