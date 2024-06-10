@@ -128,6 +128,54 @@ public class TourTests
     }
 
     [TestMethod]
+    public void OverviewToursAfterTomorrowTest()
+    {
+        // Arrange
+        FakeMuseum museum = new FakeMuseum();
+        Program.Museum = museum;
+
+        DateTime dateTomorrow = DateTime.Today.AddDays(1).AddHours(23).AddMinutes(59);
+
+        string dateTomorrowString = dateTomorrow.ToString("yyyy-MM-ddTHH:mm:ss");
+
+        string filePath1 = Model<GuidedTour>.GetFileNameTours();
+
+        string toursJson = $@"
+        [
+            {{
+                ""ID"": ""1"",
+                ""Date"": ""{dateTomorrowString}"",
+                ""NameGuide"": ""TestGuide"",
+                ""MaxParticipants"": 13,
+                ""ReservedVisitors"": [],
+                ""Language"": ""English"",
+                ""Status"": true
+            }}
+        ]
+        ";
+
+        museum.Files[filePath1] = toursJson;
+
+        museum.LinesToRead = new List<string>
+        {
+            "a",
+            "l"
+        };
+
+        // Act
+        bool result = Tour.OverviewTours(true);
+
+        // Assert
+        Assert.IsTrue(result);
+
+        string renderedOutput = museum.GetRenderedOutput();
+        Debug.WriteLine("Rendered Output:");
+        Debug.WriteLine(renderedOutput);
+
+        Assert.IsTrue(renderedOutput.Contains($"{dateTomorrow.ToString("d-M-yyyy")}"));
+    }
+
+    [TestMethod]
     public void OverviewToursNoToursTest()
     {
         // Arrange

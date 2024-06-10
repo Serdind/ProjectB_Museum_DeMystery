@@ -19,6 +19,78 @@ public class VisitorTests
     }
 
     [TestMethod]
+    public void VistorLoginWithValidBarcodeTest()
+    {
+        // Arrange
+        FakeMuseum museum = new FakeMuseum();
+        Program.Museum = museum;
+
+        string filePath2 = Model<UniqueCodes>.GetFileNameUniqueCodes();
+
+        museum.Files[filePath2] = @"
+        [
+            ""139278"",
+            ""78643"",
+            ""124678""
+        ]
+        ";
+
+        string filePath3 = Model<Visitor>.GetFileNameVisitors();
+
+        museum.Files[filePath3] = "[]";
+
+        museum.LinesToRead = new List<string>
+        {
+            "78643",  // QR code input
+            "b" // Back input
+        };
+
+        // Act
+        ProgramController.Start();
+
+        // Assert
+        string writtenLines = museum.GetWrittenLinesAsString();
+        Debug.WriteLine(writtenLines);
+        Assert.IsTrue(writtenLines.Contains("Scan the barcode that is located on the ticket you bought with the given device. Press the button and hold the scanner of the device closely to the barcode:"));
+    }
+
+    [TestMethod]
+    public void VistorLoginWithInvalidBarcodeTest()
+    {
+        // Arrange
+        FakeMuseum museum = new FakeMuseum();
+        Program.Museum = museum;
+
+        string filePath2 = Model<UniqueCodes>.GetFileNameUniqueCodes();
+
+        museum.Files[filePath2] = @"
+        [
+            ""139278"",
+            ""78643"",
+            ""124678""
+        ]
+        ";
+
+        string filePath3 = Model<Visitor>.GetFileNameVisitors();
+
+        museum.Files[filePath3] = "[]";
+
+        museum.LinesToRead = new List<string>
+        {
+            "641223",  // QR code input
+            "b" // Back input
+        };
+
+        // Act
+        ProgramController.Start();
+
+        // Assert
+        string writtenLines = museum.GetWrittenLinesAsString();
+        Debug.WriteLine(writtenLines);
+        Assert.IsTrue(writtenLines.Contains("Code is not valid."));
+    }
+
+    [TestMethod]
     public void ReservationSuccesTest()
     {
         // Arrange
@@ -530,5 +602,56 @@ public class VisitorTests
         bool result = visitor.ViewReservationsMade("1567124");
         Assert.IsTrue(result);
         Assert.IsTrue(museum.LinesWritten.Contains("Reservation cancellation cancelled."));
+    }
+
+    [TestMethod]
+    public void OverviewToursWithRemainingSpotsTest()
+    {
+        // Arrange
+        FakeMuseum museum = new FakeMuseum();
+        Program.Museum = museum;
+
+        DateTime currentDate = DateTime.Today;
+        currentDate = new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, 23, 59, 0);
+
+        string currentDateString = currentDate.ToString("yyyy-MM-ddTHH:mm:ss");
+
+        string filePath1 = Model<GuidedTour>.GetFileNameTours();
+
+        string toursJson = $@"
+        [
+            {{
+                ""ID"": ""1"",
+                ""Date"": ""{currentDateString}"",
+                ""NameGuide"": ""TestGuide"",
+                ""MaxParticipants"": 13,
+                ""ReservedVisitors"": [],
+                ""Language"": ""English"",
+                ""Status"": true
+            }}
+        ]
+        ";
+
+        museum.Files[filePath1] = toursJson;
+
+        museum.LinesToRead = new List<string>
+        {
+            "t",
+            "l"
+        };
+
+        // Act
+        bool result = Tour.OverviewTours(true);
+
+        // Assert
+        Assert.IsTrue(result);
+
+        string renderedOutput = museum.GetRenderedOutput();
+        Debug.WriteLine("Rendered Output:");
+        Debug.WriteLine(renderedOutput);
+
+        Assert.IsTrue(renderedOutput.Contains(@"Remaini… │ Status │
+│    │          │       │           │          │           │ spots "));
+        Assert.IsTrue(renderedOutput.Contains("13"));
     }
 }

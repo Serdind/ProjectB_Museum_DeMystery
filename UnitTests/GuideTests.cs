@@ -20,7 +20,7 @@ public class GuideTests
     }
 
     [TestMethod]
-    public void AddVisistorToTourTest()
+    public void AddVisitorToTourTest()
     {
         // Arrange
         FakeMuseum museum = new FakeMuseum();
@@ -89,7 +89,7 @@ public class GuideTests
     }
 
     [TestMethod]
-    public void AddVisistorToTourNotFoundTest()
+    public void AddVisitorToTourNotFoundTest()
     {
         // Arrange
         FakeMuseum museum = new FakeMuseum();

@@ -37,12 +37,7 @@ public class ProgramController
         }
 
         if (loginStatus == "Visitor")
-        {
-            if (!Tour.OverviewTours(false))
-            {
-                Environment.Exit(1);
-            }
-            
+        {            
             bool visitorRunning = true;
             bool helpShown = false;
 

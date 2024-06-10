@@ -71,7 +71,7 @@ namespace SystemTests
         }
 
         [TestMethod]
-        public void AdminLoginAndOverviewToursFutureTest()
+        public void AdminLoginAndOverviewToursAfterTomorrowTest()
         {
             FakeMuseum museum = new FakeMuseum();
             Program.Museum = museum;
