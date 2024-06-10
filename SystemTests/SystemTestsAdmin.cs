@@ -1,5 +1,4 @@
 using System.Text.Json.Serialization;
-using Spectre.Console;
 using Newtonsoft.Json;
 using System.Globalization;
 using System.Diagnostics;
@@ -63,11 +62,10 @@ namespace SystemTests
             ProgramController.Start();
             
             // Assert
-            string renderedOutput = museum.GetRenderedOutput();
-            Debug.WriteLine("Rendered Output:");
-            Debug.WriteLine(renderedOutput);
+            string writtenLines = museum.GetWrittenLinesAsString();
+            Debug.WriteLine(writtenLines);
 
-            Assert.IsTrue(renderedOutput.Contains($"{currentDate.ToString("d-M-yyyy")}"));
+            Assert.IsTrue(writtenLines.Contains($"{currentDate.ToString("d-M-yyyy")}"));
         }
 
         [TestMethod]
@@ -123,11 +121,10 @@ namespace SystemTests
             ProgramController.Start();
             
             // Assert
-            string renderedOutput = museum.GetRenderedOutput();
-            Debug.WriteLine("Rendered Output:");
-            Debug.WriteLine(renderedOutput);
+            string writtenLines = museum.GetWrittenLinesAsString();
+            Debug.WriteLine(writtenLines);
 
-            Assert.IsTrue(renderedOutput.Contains($"{dateTomorrow.ToString("d-M-yyyy")}"));
+            Assert.IsTrue(writtenLines.Contains($"{dateTomorrow.ToString("d-M-yyyy")}"));
         }
 
         [TestMethod]
@@ -353,7 +350,7 @@ namespace SystemTests
             Assert.IsTrue(writtenLines.Contains("Language set to Dutch"));
 
             var tours = JsonConvert.DeserializeObject<List<GuidedTour>>(museum.Files[filePath1]);
-
+            
             Assert.AreEqual("Dutch", tours[0].Language);
             Assert.AreEqual("Dutch", tours[0].Language);
         }

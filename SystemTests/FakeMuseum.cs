@@ -1,5 +1,4 @@
 using System.Text.Json.Serialization;
-using Spectre.Console;
 using Newtonsoft.Json;
 using System.Globalization;
 using System.Diagnostics;
@@ -15,7 +14,6 @@ public class FakeMuseum : IMuseum
     private readonly Dictionary<string, int> _filesTimesRead = new();
     private readonly Dictionary<string, List<string>> _previousFiles = new();
 
-    private StringBuilder _renderedOutput = new StringBuilder();
 
     public DateTime Now
     {
@@ -161,22 +159,5 @@ public class FakeMuseum : IMuseum
     {
         _readKeyCount++;
         return new ConsoleKeyInfo('\0', ConsoleKey.Enter, false, false, false);
-    }
-
-    public void Render(Table table)
-    {
-        var originalConsoleOut = Console.Out;
-        var writer = new StringWriter();
-        Console.SetOut(writer);
-
-        AnsiConsole.Render(table);
-
-        Console.SetOut(originalConsoleOut);
-        _renderedOutput.Append(writer.ToString());
-    }
-
-    public string GetRenderedOutput()
-    {
-        return _renderedOutput.ToString();
     }
 }

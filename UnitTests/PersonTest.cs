@@ -1,5 +1,4 @@
 using NUnit.Framework.Internal;
-using Spectre.Console;
 using Newtonsoft.Json;
 using System.Globalization;
 using System.Diagnostics;

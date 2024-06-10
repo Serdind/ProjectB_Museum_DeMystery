@@ -1,4 +1,3 @@
-using Spectre.Console;
 using Newtonsoft.Json;
 using System.Globalization;
 using System.Diagnostics;
@@ -163,20 +162,14 @@ public static class Tour
             {
                 if (museum.FileExists(filePath))
                 {
-                    
                     string json = museum.ReadAllText(filePath);
                     var tours = JsonConvert.DeserializeObject<List<GuidedTour>>(json);
 
                     tours = tours.OrderBy(t => t.Date).ToList();
-                    var table = new Table().Border(TableBorder.Rounded);
-                    table.AddColumn("ID");
-                    table.AddColumn("Date");
-                    table.AddColumn("Time");
-                    table.AddColumn("Duration");
-                    table.AddColumn("Language");
-                    table.AddColumn("Guide");
-                    table.AddColumn("Remaining spots");
-                    table.AddColumn("Status");
+
+                    museum.WriteLine("+-----------+------------+----------+------------+---------+--------------+----------------+--------+");
+                    museum.WriteLine("| Tour ID   | Date       | Time     | Duration   | Language| Guide        | Remaining Spots| Status |");
+                    museum.WriteLine("+-----------+------------+----------+------------+---------+--------------+----------------+--------+");
 
                     foreach (var tour in tours)
                     {
@@ -186,19 +179,15 @@ public static class Tour
                             string dateOnly = tour.Date.ToShortDateString();
                             int remainingSpots = tour.MaxParticipants - tour.ReservedVisitors.Count;
                             string status = tour.Status ? "Active" : "Inactive";
-                            table.AddRow(
-                                tour.ID.ToString(),
-                                dateOnly,
-                                timeOnly,
-                                "40 minutes",
-                                tour.Language,
-                                tour.NameGuide,
-                                remainingSpots.ToString(),
-                                status
-                            );
+
+                            string tourInfo = $"| {tour.ID,-9} | {dateOnly,-10} | {timeOnly,-8} | 40 minutes  | {tour.Language,-7} | {tour.NameGuide,-12} | {remainingSpots,-14} | {status,-6} |";
+
+                            museum.WriteLine(tourInfo);
                         }
                     }
-                    museum.Render(table);
+
+                    museum.WriteLine("+-----------+------------+----------+------------+---------+--------------+----------------+--------+");
+
                     return true;
                 }
                 else
@@ -225,40 +214,28 @@ public static class Tour
                 string json = museum.ReadAllText(filePath);
                 var tours = JsonConvert.DeserializeObject<List<GuidedTour>>(json);
                 tours = tours.OrderBy(t => t.Date).ToList();
-                var table = new Table().Border(TableBorder.Rounded);
-                table.AddColumn("ID");
-                table.AddColumn("Date");
-                table.AddColumn("Time");
-                table.AddColumn("Duration");
-                table.AddColumn("Language");
-                table.AddColumn("Guide");
-                table.AddColumn("Remaining spots");
-                table.AddColumn("Status");
+                
                 bool anyToursToday = false;
                 foreach (var tour in tours)
                 {
-                    if (tour.Date.Date == currentDate.Date && tour.Date.TimeOfDay >= DateTime.Now.TimeOfDay && tour.Status)
+                    if (tour.Date.Date == museum.Today.Date && tour.Date.TimeOfDay >= DateTime.Now.TimeOfDay && tour.Status)
                     {
                         anyToursToday = true;
                         string timeOnly = tour.Date.ToString("HH:mm");
                         string dateOnly = tour.Date.ToShortDateString();
                         int remainingSpots = tour.MaxParticipants - tour.ReservedVisitors.Count;
                         string status = tour.Status ? "Active" : "Inactive";
-                        table.AddRow(
-                            tour.ID.ToString(),
-                            dateOnly,
-                            timeOnly,
-                            "40 minutes",
-                            tour.Language,
-                            tour.NameGuide,
-                            remainingSpots.ToString(),
-                            status
-                        );
+                        
+                        museum.WriteLine("+-----------+------------+----------+------------+---------+--------------+----------------+--------+");
+                        museum.WriteLine("| ID        | Date       | Time     | Duration   | Language| Guide        | Remaining spots| Status |");
+                        museum.WriteLine("+-----------+------------+----------+------------+---------+--------------+----------------+--------+");
+                        museum.WriteLine($"| {tour.ID,-9} | {dateOnly,-10} | {timeOnly,-8} | 40 minutes  | {tour.Language,-7} | {tour.NameGuide,-12} | {remainingSpots,-14} | {status,-6} |");
+                        museum.WriteLine("+-----------+------------+----------+------------+---------+--------------+----------------+--------+");
                     }
                 }
+                
                 if (anyToursToday)
                 {
-                    museum.Render(table);
                     return true;
                 }
                 else
@@ -270,8 +247,8 @@ public static class Tour
             else
             {
                 TourEmpty.Show();
+                return false;
             }
-            return false;
         }
     }
 
@@ -285,18 +262,14 @@ public static class Tour
 
         if (museum.FileExists(filePath))
         {
-            
             string json = museum.ReadAllText(filePath);
             var tours = JsonConvert.DeserializeObject<List<GuidedTour>>(json);
 
             tours = tours.OrderBy(t => t.Date).ToList();
-            var table = new Table().Border(TableBorder.Rounded);
-            table.AddColumn("Date");
-            table.AddColumn("Time");
-            table.AddColumn("Duration");
-            table.AddColumn("Language");
-            table.AddColumn("Guide");
-            table.AddColumn("Status");
+
+            museum.WriteLine("+------------+----------+------------+---------+--------------+--------+");
+            museum.WriteLine("| Date       | Time     | Duration   | Language| Guide        | Status |");
+            museum.WriteLine("+------------+----------+------------+---------+--------------+--------+");
 
             foreach (var tour in tours)
             {
@@ -306,18 +279,12 @@ public static class Tour
                     string dateOnly = tour.Date.ToShortDateString();
                     int remainingSpots = tour.MaxParticipants - tour.ReservedVisitors.Count;
                     string status = tour.Status ? "Active" : "Inactive";
-                    table.AddRow(
-                        dateOnly,
-                        timeOnly,
-                        "40 minutes",
-                        tour.Language,
-                        tour.NameGuide,
-                        status
-                    );
+
+                    museum.WriteLine($"| {dateOnly,-10} | {timeOnly,-8} | 40 minutes  | {tour.Language,-7} | {tour.NameGuide,-12} | {status,-6} |");
                 }
             }
 
-            museum.Render(table);
+            museum.WriteLine("+------------+----------+------------+---------+--------------+--------+");
             return true;
         }
         else
@@ -342,30 +309,20 @@ public static class Tour
 
             if (tomorrowTours.Any())
             {
-                var table = new Table().Border(TableBorder.Rounded);
-                table.AddColumn("Time");
-                table.AddColumn("Duration");
-                table.AddColumn("Language");
-                table.AddColumn("Guide");
-                table.AddColumn("Status");
+                museum.WriteLine("+----------+------------+------------+------------+--------+");
+                museum.WriteLine("| Time     | Duration   | Language   | Guide      | Status |");
+                museum.WriteLine("+----------+------------+------------+------------+--------+");
 
                 foreach (var tour in tomorrowTours)
                 {
                     string timeOnly = tour.Date.ToString("HH:mm");
-                    string dateOnly = tour.Date.ToShortDateString();
                     int remainingSpots = tour.MaxParticipants - tour.ReservedVisitors.Count;
                     string status = tour.Status ? "Active" : "Inactive";
 
-                    table.AddRow(
-                        timeOnly,
-                        "40 minutes",
-                        tour.Language,
-                        tour.NameGuide,
-                        status
-                    );
+                    museum.WriteLine($"| {timeOnly,-8} | 40 minutes | {tour.Language,-10} | {tour.NameGuide,-10} | {status,-6} |");
                 }
 
-                museum.Render(table);
+                museum.WriteLine("+----------+------------+------------+------------+--------+");
                 return true;
             }
             else
@@ -523,19 +480,16 @@ public static class Tour
 
             if (visitors.Any())
             {
-                var table = new Table().Border(TableBorder.Rounded);
-                table.AddColumn("ID");
-                table.AddColumn("Qr");
+                museum.WriteLine("+-----+---------------------+");
+                museum.WriteLine("| ID  | QR                  |");
+                museum.WriteLine("+-----+---------------------+");
 
                 foreach (var visitor in visitors)
                 {
-                    table.AddRow(
-                        visitor.Id.ToString(),
-                        visitor.QR.ToString()
-                    );
+                    museum.WriteLine($"| {visitor.Id,-4} | {visitor.QR,-20} |");
                 }
 
-                museum.Render(table);
+                museum.WriteLine("+-----+---------------------+");
                 return true;
             }
             else
@@ -594,11 +548,6 @@ public static class Tour
             string jsonData = museum.ReadAllText(filePath);
             List<GuidedTour> toursFile = JsonConvert.DeserializeObject<List<GuidedTour>>(jsonData);
 
-            var table = new Table().LeftAligned();
-            table.AddColumn("Time");
-            table.AddColumn("Language");
-            table.AddColumn("Status");
-
             foreach (var tour in toursFile)
             {
                 if (tour.Date.Date == selectedDate.Date)
@@ -611,16 +560,14 @@ public static class Tour
                         string timeOnly = tour.Date.ToString("HH:mm");
                         string status = tour.Status ? "Active" : "Inactive";
 
-                        table.AddRow(
-                            timeOnly,
-                            tour.Language,
-                            status
-                        );
+                        museum.WriteLine("+--------+------------+--------+");
+                        museum.WriteLine("| Time   | Language   | Status |");
+                        museum.WriteLine("+--------+------------+--------+");
+                        museum.WriteLine($"| {timeOnly,-7} | {tour.Language,-10} | {status,-6} |");
+                        museum.WriteLine("+--------+------------+--------+");
                     }
                 }
             }
-
-            museum.Render(table);
         }
     }
 }

@@ -1,5 +1,4 @@
 using System.Text.Json.Serialization;
-using Spectre.Console;
 using Newtonsoft.Json;
 using System.Globalization;
 
@@ -66,10 +65,5 @@ public class RealMuseum : IMuseum
     public ConsoleKeyInfo ReadKey()
     {
         return Console.ReadKey();
-    }
-
-    public void Render(Table table)
-    {
-        AnsiConsole.Render(table);
     }
 }

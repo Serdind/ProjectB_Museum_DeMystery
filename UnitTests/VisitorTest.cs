@@ -646,12 +646,10 @@ public class VisitorTests
         // Assert
         Assert.IsTrue(result);
 
-        string renderedOutput = museum.GetRenderedOutput();
-        Debug.WriteLine("Rendered Output:");
-        Debug.WriteLine(renderedOutput);
+        string writtenLines = museum.GetWrittenLinesAsString();
+        Debug.WriteLine(writtenLines);
 
-        Assert.IsTrue(renderedOutput.Contains(@"Remaini… │ Status │
-│    │          │       │           │          │           │ spots "));
-        Assert.IsTrue(renderedOutput.Contains("13"));
+        Assert.IsTrue(writtenLines.Contains("Remaining Spots"));
+        Assert.IsTrue(writtenLines.Contains("13"));
     }
 }

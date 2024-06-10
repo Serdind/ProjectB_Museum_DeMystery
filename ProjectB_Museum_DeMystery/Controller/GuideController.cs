@@ -1,5 +1,4 @@
 using System.Text.Json.Serialization;
-using Spectre.Console;
 using Newtonsoft.Json;
 
 public class GuideController
@@ -168,36 +167,34 @@ public class GuideController
 
             List<GuidedTour> guideTours = toursFile.FindAll(tour => tour.NameGuide == guide.Name && tour.Date.Date == today);
 
-            var table = new Table().LeftAligned();
-            table.AddColumn("ID");
-            table.AddColumn("Date");
-            table.AddColumn("Time");
-            table.AddColumn("StartingPoint");
-            table.AddColumn("EndPoint");
-            table.AddColumn("Language");
-            table.AddColumn("Remaining spots");
-
-            foreach (var tour in guideTours)
+            if (guideTours.Any())
             {
-                if (tour.Date.Date == today.Date && tour.Date.TimeOfDay >= DateTime.Now.TimeOfDay && tour.Status)
+                museum.WriteLine("+-----+------------+--------+----------------+----------+---------+----------------+");
+                museum.WriteLine("| ID  | Date       | Time   | Starting Point | End Point| Language| Remaining spots|");
+                museum.WriteLine("+-----+------------+--------+----------------+----------+---------+----------------+");
+
+                foreach (var tour in guideTours)
                 {
-                    string timeOnly = tour.Date.ToString("HH:mm");
-                    string dateOnly = tour.Date.ToShortDateString();
-                    int remainingSpots = tour.MaxParticipants - tour.ReservedVisitors.Count;
+                    if (tour.Date.Date == today.Date && tour.Date.TimeOfDay >= DateTime.Now.TimeOfDay && tour.Status)
+                    {
+                        string timeOnly = tour.Date.ToString("HH:mm");
+                        string dateOnly = tour.Date.ToShortDateString();
+                        int remainingSpots = tour.MaxParticipants - tour.ReservedVisitors.Count;
 
-                    table.AddRow(
-                        tour.ID.ToString(),
-                        dateOnly,
-                        timeOnly,
-                        GuidedTour.StartingPoint,
-                        GuidedTour.EndPoint,
-                        tour.Language,
-                        remainingSpots.ToString()
-                    );
+                        museum.WriteLine($"| {tour.ID,-4} | {dateOnly,-10} | {timeOnly,-6} | {GuidedTour.StartingPoint,-14} | {GuidedTour.EndPoint,-9} | {tour.Language,-7} | {remainingSpots,-14} |");
+                    }
                 }
-            }
 
-            AnsiConsole.Render(table);
+                museum.WriteLine("+-----+------------+--------+----------------+----------+---------+----------------+");
+            }
+            else
+            {
+                TourInfo.NoToursToday();
+            }
+        }
+        else
+        {
+            TourEmpty.Show();
         }
     }
 }

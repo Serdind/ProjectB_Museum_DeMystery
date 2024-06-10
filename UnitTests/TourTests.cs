@@ -1,6 +1,5 @@
 using NUnit.Framework.Internal;
 using Newtonsoft.Json;
-using Spectre.Console;
 using System.Diagnostics;
 using System.Text;
 
@@ -120,11 +119,10 @@ public class TourTests
         // Assert
         Assert.IsTrue(result);
 
-        string renderedOutput = museum.GetRenderedOutput();
-        Debug.WriteLine("Rendered Output:");
-        Debug.WriteLine(renderedOutput);
+        string writtenLines = museum.GetWrittenLinesAsString();
+        Debug.WriteLine(writtenLines);
 
-        Assert.IsTrue(renderedOutput.Contains($"{currentDate.ToString("d-M-yyyy")}"));
+        Assert.IsTrue(writtenLines.Contains($"{currentDate.ToString("d-M-yyyy")}"));
     }
 
     [TestMethod]
@@ -168,11 +166,10 @@ public class TourTests
         // Assert
         Assert.IsTrue(result);
 
-        string renderedOutput = museum.GetRenderedOutput();
-        Debug.WriteLine("Rendered Output:");
-        Debug.WriteLine(renderedOutput);
+        string writtenLines = museum.GetWrittenLinesAsString();
+        Debug.WriteLine(writtenLines);
 
-        Assert.IsTrue(renderedOutput.Contains($"{dateTomorrow.ToString("d-M-yyyy")}"));
+        Assert.IsTrue(writtenLines.Contains($"{dateTomorrow.ToString("d-M-yyyy")}"));
     }
 
     [TestMethod]

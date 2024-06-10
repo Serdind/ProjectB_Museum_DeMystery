@@ -2,7 +2,7 @@ using Microsoft.VisualStudio.TestPlatform.TestHost;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.IO;
-using Spectre.Console;
+using .Console;
 using Newtonsoft.Json;
 using System.Globalization;
 using System.Diagnostics;

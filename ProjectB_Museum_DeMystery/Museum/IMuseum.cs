@@ -1,5 +1,4 @@
 using System.Text.Json.Serialization;
-using Spectre.Console;
 using Newtonsoft.Json;
 using System.Globalization;
 
@@ -26,6 +25,4 @@ public interface IMuseum
     DateTime MinValue { get; }
 
     ConsoleKeyInfo ReadKey();
-
-    void Render(Table table);
 }
