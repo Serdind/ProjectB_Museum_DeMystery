@@ -552,5 +552,138 @@ namespace SystemTests
             Debug.WriteLine(writtenLines);
             Assert.IsTrue(writtenLines.Contains("Insert (Back or B) if you want to go back"));
         }
+
+        [TestMethod]
+        public void VistorLoginAndCheckTimeTest()
+        {
+            // Arrange
+            FakeMuseum museum = new FakeMuseum();
+            Program.Museum = museum;
+
+            DateTime currentDate = DateTime.Today;
+            currentDate = new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, 23, 59, 0);
+
+            string currentDateString = currentDate.ToString("yyyy-MM-ddTHH:mm:ss");
+
+            string filePath1 = Model<GuidedTour>.GetFileNameTours();
+
+            string toursJson = $@"
+            [
+                {{
+                    ""ID"": ""1"",
+                    ""Name"": ""Tour 1"",
+                    ""Date"": ""{currentDateString}"",
+                    ""NameGuide"": ""TestGuide"",
+                    ""MaxParticipants"": 13,
+                    ""ReservedVisitors"": [],
+                    ""Language"": ""English"",
+                    ""Status"": true
+                }}
+            ]
+            ";
+
+            museum.Files[filePath1] = toursJson;
+
+            string filePath2 = Model<UniqueCodes>.GetFileNameUniqueCodes();
+
+            museum.Files[filePath2] = @"
+            [
+                ""139278"",
+                ""78643"",
+                ""124678""
+            ]
+            ";
+
+            string filePath3 = Model<Visitor>.GetFileNameVisitors();
+
+            museum.Files[filePath3] = @"[]";
+
+            museum.LinesToRead = new List<string>
+            {
+                "78643",  // QR code input
+                "n", // No help needed
+                "r", // Make reservation input
+                "b", // No input
+                "f", // Finish input
+                "y" // Yes input
+            };
+
+            // Act
+            ProgramController.Start();
+
+            // Assert
+            string writtenLines = museum.GetWrittenLinesAsString();
+            Debug.WriteLine(writtenLines);
+            Assert.IsTrue(writtenLines.Contains("Duration"));
+        }
+
+        [TestMethod]
+        public void VistorLoginAndCheckInformationTest()
+        {
+            // Arrange
+            FakeMuseum museum = new FakeMuseum();
+            Program.Museum = museum;
+
+            DateTime currentDate = DateTime.Today;
+            currentDate = new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, 23, 59, 0);
+
+            string currentDateString = currentDate.ToString("yyyy-MM-ddTHH:mm:ss");
+
+            string filePath1 = Model<GuidedTour>.GetFileNameTours();
+
+            string toursJson = $@"
+            [
+                {{
+                    ""ID"": ""1"",
+                    ""Name"": ""Tour 1"",
+                    ""Date"": ""{currentDateString}"",
+                    ""NameGuide"": ""TestGuide"",
+                    ""MaxParticipants"": 13,
+                    ""ReservedVisitors"": [],
+                    ""Language"": ""English"",
+                    ""Status"": true
+                }}
+            ]
+            ";
+
+            museum.Files[filePath1] = toursJson;
+
+            string filePath2 = Model<UniqueCodes>.GetFileNameUniqueCodes();
+
+            museum.Files[filePath2] = @"
+            [
+                ""139278"",
+                ""78643"",
+                ""124678""
+            ]
+            ";
+
+            string filePath3 = Model<Visitor>.GetFileNameVisitors();
+
+            museum.Files[filePath3] = @"[]";
+
+            museum.LinesToRead = new List<string>
+            {
+                "78643",  // QR code input
+                "n", // No help needed
+                "r", // Make reservation input
+                "b", // No input
+                "f", // Finish input
+                "y" // Yes input
+            };
+
+            // Act
+            ProgramController.Start();
+
+            // Assert
+            string writtenLines = museum.GetWrittenLinesAsString();
+            Debug.WriteLine(writtenLines);
+            Assert.IsTrue(writtenLines.Contains("Date"));
+            Assert.IsTrue(writtenLines.Contains("Time"));
+            Assert.IsTrue(writtenLines.Contains("Duration"));
+            Assert.IsTrue(writtenLines.Contains("Language"));
+            Assert.IsTrue(writtenLines.Contains("Guide"));
+            Assert.IsTrue(writtenLines.Contains("Remaining spots"));
+        }
     }
 }

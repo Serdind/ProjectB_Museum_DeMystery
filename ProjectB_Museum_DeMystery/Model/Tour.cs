@@ -214,8 +214,13 @@ public static class Tour
                 string json = museum.ReadAllText(filePath);
                 var tours = JsonConvert.DeserializeObject<List<GuidedTour>>(json);
                 tours = tours.OrderBy(t => t.Date).ToList();
-                
+
                 bool anyToursToday = false;
+                
+                museum.WriteLine("+-----------+------------+----------+------------+---------+--------------+----------------+");
+                museum.WriteLine("| ID        | Date       | Time     | Duration   | Language| Guide        | Remaining spots|");
+                museum.WriteLine("+-----------+------------+----------+------------+---------+--------------+----------------+");
+                
                 foreach (var tour in tours)
                 {
                     if (tour.Date.Date == museum.Today.Date && tour.Date.TimeOfDay >= DateTime.Now.TimeOfDay && tour.Status)
@@ -224,16 +229,13 @@ public static class Tour
                         string timeOnly = tour.Date.ToString("HH:mm");
                         string dateOnly = tour.Date.ToShortDateString();
                         int remainingSpots = tour.MaxParticipants - tour.ReservedVisitors.Count;
-                        string status = tour.Status ? "Active" : "Inactive";
-                        
-                        museum.WriteLine("+-----------+------------+----------+------------+---------+--------------+----------------+--------+");
-                        museum.WriteLine("| ID        | Date       | Time     | Duration   | Language| Guide        | Remaining spots| Status |");
-                        museum.WriteLine("+-----------+------------+----------+------------+---------+--------------+----------------+--------+");
-                        museum.WriteLine($"| {tour.ID,-9} | {dateOnly,-10} | {timeOnly,-8} | 40 minutes  | {tour.Language,-7} | {tour.NameGuide,-12} | {remainingSpots,-14} | {status,-6} |");
-                        museum.WriteLine("+-----------+------------+----------+------------+---------+--------------+----------------+--------+");
+
+                        museum.WriteLine($"| {tour.ID,-9} | {dateOnly,-10} | {timeOnly,-8} | 40 minutes  | {tour.Language,-7} | {tour.NameGuide,-12} | {remainingSpots,-14} |");
                     }
                 }
                 
+                museum.WriteLine("+-----------+------------+----------+------------+---------+--------------+----------------+");
+
                 if (anyToursToday)
                 {
                     return true;

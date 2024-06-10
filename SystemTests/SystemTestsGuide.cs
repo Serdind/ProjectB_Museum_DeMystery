@@ -2,7 +2,6 @@ using Microsoft.VisualStudio.TestPlatform.TestHost;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.IO;
-using .Console;
 using Newtonsoft.Json;
 using System.Globalization;
 using System.Diagnostics;
@@ -276,6 +275,68 @@ namespace SystemTests
             string writtenLines = museum.GetWrittenLinesAsString();
             Debug.WriteLine(writtenLines);
             Assert.IsTrue(writtenLines.Contains(message));
+        }
+
+        [TestMethod]
+        public void GuideLoginAndGoOutOfViewVisitorsTest()
+        {
+            // Arrange
+            FakeMuseum museum = new FakeMuseum();
+            Program.Museum = museum;
+
+            DateTime currentDate = DateTime.Today;
+            currentDate = new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, 23, 59, 0);
+
+            string currentDateString = currentDate.ToString("yyyy-MM-ddTHH:mm:ss");
+
+            string filePath1 = Model<GuidedTour>.GetFileNameTours();
+
+            string toursJson = @"
+            [
+                {
+                    ""ID"": ""1"",
+                    ""Date"": """ + currentDateString + @""",
+                    ""NameGuide"": ""TestGuide"",
+                    ""MaxParticipants"": 13,
+                    ""ReservedVisitors"": [],
+                    ""Language"": ""English"",
+                    ""Status"": true
+                }
+            ]";
+
+            museum.Files[filePath1] = toursJson;
+
+            string filePath2 = Model<Guide>.GetFileNameGuides();
+
+            museum.Files[filePath2] = @"
+            [
+                {
+                    ""Id"": ""1"",
+                    ""Name"": ""TestGuide"",
+                    ""QR"": ""214678""
+                }
+            ]
+            ";
+
+            string filePath3 = Model<Visitor>.GetFileNameVisitors();
+
+            museum.Files[filePath3] = "[]";
+
+            museum.LinesToRead = new List<string>
+            {
+                "214678",  // QR code input
+                "v", // View visitors input
+                "b", // Back input
+                "l" // Log out input
+            };
+
+            // Act
+            ProgramController.Start();
+
+            // Assert
+            string writtenLines = museum.GetWrittenLinesAsString();
+            Debug.WriteLine(writtenLines);
+            Assert.IsTrue(writtenLines.Contains("Insert (Back or B) if you want to go back"));
         }
     }
 }
