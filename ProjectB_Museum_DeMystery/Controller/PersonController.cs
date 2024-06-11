@@ -116,7 +116,9 @@ public class PersonController
 
                     if (DateTime.TryParseExact(newTimeInput, "HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out newTime))
                     {
-                        var toursWithSameTime = tours.Where(t => t.Date.TimeOfDay == newTime.TimeOfDay).ToList();
+                        var toursWithSameTime = tours
+                            .Where(t => t.Date.TimeOfDay == newTime.TimeOfDay && t.Date.Date > DateTime.Today)
+                            .ToList();
 
                         if (toursWithSameTime.Count > 0)
                         {
@@ -128,19 +130,16 @@ public class PersonController
                                 string newTimeInput1 = newTimeInput;
                                 bool timeChanged = false;
 
-                                
                                 Tour.SelectedTour(newTimeInput, selectedDate);
 
                                 string change = EditTour.EditOptions();
 
                                 if (change.ToLower() == "t" || change.ToLower() == "time")
                                 {
-                                    
                                     DateTime newTime1;
 
                                     while (true)
                                     {
-                                        
                                         AdminOptions.BackOption();
                                         Tour.SelectedTour(newTimeInput, selectedDate);
                                         newTimeInput1 = EditTour.NewTime();
@@ -175,7 +174,6 @@ public class PersonController
                                 {
                                     while (true)
                                     {
-                                        
                                         AdminOptions.BackOption();
                                         Tour.SelectedTour(newTimeInput, selectedDate);
                                         string language = TourInfo.Language();
@@ -185,7 +183,7 @@ public class PersonController
                                             break;
                                         }
 
-                                        if (language.ToLower() == string.Empty)
+                                        if (string.IsNullOrEmpty(language))
                                         {
                                             AdminOptions.Empty();
                                             continue;
@@ -206,7 +204,6 @@ public class PersonController
                                 {
                                     while (true)
                                     {
-                                        
                                         Tour.SelectedTour(newTimeInput, selectedDate);
                                         bool newStatus = !toursWithSameTime.First().Status;
 
