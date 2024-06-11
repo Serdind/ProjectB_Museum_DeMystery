@@ -270,8 +270,7 @@ namespace SystemTests
 
             var tours = JsonConvert.DeserializeObject<List<GuidedTour>>(museum.Files[filePath1]);
 
-            Assert.AreEqual(false, tours[0].Status);
-            Assert.AreEqual(false, tours[0].Status);
+            Assert.AreEqual(false, tours[1].Status);
         }
 
         [TestMethod]
@@ -351,8 +350,7 @@ namespace SystemTests
 
             var tours = JsonConvert.DeserializeObject<List<GuidedTour>>(museum.Files[filePath1]);
             
-            Assert.AreEqual("Dutch", tours[0].Language);
-            Assert.AreEqual("Dutch", tours[0].Language);
+            Assert.AreEqual("Dutch", tours[1].Language);
         }
 
         [TestMethod]
