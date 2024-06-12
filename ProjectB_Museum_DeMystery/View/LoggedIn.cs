@@ -6,7 +6,7 @@ public class LoggedIn : View
         IMuseum museum = Program.Museum;
         museum.WriteLine("");
         museum.WriteLine($"Welcome visitor!");
-        museum.WriteLine($"Logged with barcode: {visitor.QR}");
+        museum.WriteLine($"Logged in with barcode: {visitor.QR}");
         museum.WriteLine("Press anything to continue...");
         museum.ReadKey();
         museum.WriteLine("");
