@@ -21,7 +21,7 @@ public class ReservationMenu : View
     {
         IMuseum museum = Program.Museum;
         museum.WriteLine("");
-        museum.WriteLine("Do you want information about how to use this application first?");
+        museum.WriteLine("Do you want any instructions about how to use this application first?");
         museum.WriteLine("Yes or Y to comfirm\nNo or N to decline\nBack or b to go back");
         return ReadLineString();
     }
