@@ -67,11 +67,11 @@ namespace SystemTests
 
             museum.LinesToRead = new List<string>
             {
-                "4892579",  // QR code input
+                "4892579",  // Barcode input
                 "v", // View visitors input
                 "1", // Tour id input
                 "a", // Add visitor input
-                "8752316", // Visitor qr input
+                "8752316", // Visitor barcode input
                 "b", // Back input
                 "b", // Back input
                 "b", // Back input
@@ -159,11 +159,11 @@ namespace SystemTests
 
             museum.LinesToRead = new List<string>
             {
-                "4892579",  // QR code input
+                "4892579",  // Barcode input
                 "v", // View visitors input
                 "1", // Tour id input
                 "r", // Remove visitor input
-                "8752316", // Visitor qr input
+                "8752316", // Visitor barcode input
                 "b", // Back input
                 "b", // Back input
                 "b", // Back input
@@ -249,8 +249,8 @@ namespace SystemTests
 
             museum.LinesToRead = new List<string>
             {
-                "4892579",  // QR code input
-                "s", // View visitors input
+                "4892579",  // Barcode input
+                "s", // Start tour input
                 "1", // Tour id input
                 "b", // Back input
                 "l" // Log out input
@@ -318,7 +318,7 @@ namespace SystemTests
 
             museum.LinesToRead = new List<string>
             {
-                "4892579",  // QR code input
+                "4892579",  // Barcode input
                 "v", // View visitors input
                 "b", // Back input
                 "l" // Log out input

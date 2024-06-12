@@ -4,7 +4,7 @@ public class UniqueCodes
 {
     private static Random random = new Random();
     
-    private const int SpecialCode = 8752316;
+    private const int SpecialCode = 1111;
     private const int ExcludedCode = 99999;
 
     public List<int> GenerateUniqueCodes(int count)

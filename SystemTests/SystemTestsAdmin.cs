@@ -51,7 +51,7 @@ namespace SystemTests
 
             museum.LinesToRead = new List<string>
             {
-                "6457823",  // QR code input
+                "6457823",  // Barcode input
                 "t", // Overview tours input
                 "t", // Tours from today input
                 "l" // Log out input
@@ -110,7 +110,7 @@ namespace SystemTests
 
             museum.LinesToRead = new List<string>
             {
-                "6457823",  // QR code input
+                "6457823",  // Barcode input
                 "t", // Overview tours input
                 "a", // Tours after today input
                 "l" // Log out input
@@ -171,8 +171,8 @@ namespace SystemTests
 
             museum.LinesToRead = new List<string>
             {
-                "6457823",  // QR code input
-                "a", // Tours input
+                "6457823",  // Barcode input
+                "a", // Add tour input
                 "20:00", // Time input
                 "Dutch", // Language input
                 "y", // Yes input
@@ -251,7 +251,7 @@ namespace SystemTests
 
             museum.LinesToRead = new List<string>
             {
-                "6457823",  // QR code input
+                "6457823",  // Barcode input
                 "e", // Tours input
                 currentDateTime.ToString("HH:mm"), // Date input
                 "s", // Status changed to inactive input
@@ -330,9 +330,9 @@ namespace SystemTests
 
             museum.LinesToRead = new List<string>
             {
-                "6457823",  // QR code input
-                "e", // Tours input
-                currentDateTime.ToString("HH:mm"), // Date input
+                "6457823",  // Barcode input
+                "e", // Edit tour input
+                currentDateTime.ToString("HH:mm"), // Time input
                 "l", // Language change input
                 "Dutch", // New language input
                 "b", // Back input
@@ -374,7 +374,7 @@ namespace SystemTests
 
             museum.LinesToRead = new List<string>
             {
-                "6457823",  // QR code input
+                "6457823",  // Barcode input
                 "l" // Log out input
             };
 
@@ -434,8 +434,8 @@ namespace SystemTests
 
             museum.LinesToRead = new List<string>
             {
-                "6457823",  // QR code input
-                "a", // View visitors input
+                "6457823",  // Barcode input
+                "a", // Add tour input
                 "b", // Back input
                 "l" // Log out input
             };

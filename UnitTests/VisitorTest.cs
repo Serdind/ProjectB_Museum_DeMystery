@@ -41,7 +41,7 @@ public class VisitorTests
 
         museum.LinesToRead = new List<string>
         {
-            "8752316",  // QR code input
+            "8752316",  // Barcode input
             "b" // Back input
         };
 
@@ -77,7 +77,7 @@ public class VisitorTests
 
         museum.LinesToRead = new List<string>
         {
-            "641223",  // QR code input
+            "641223",  // Barcode input
             "b" // Back input
         };
 
