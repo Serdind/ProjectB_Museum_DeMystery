@@ -13,7 +13,7 @@ public class QRVisitor : View
     {
         IMuseum museum = Program.Museum;
         museum.WriteLine("");
-        museum.WriteLine("Scan the barcode that is located on the ticket you bought with the given device. Press the button and hold the scanner of the device closely to the barcode:");
+        museum.WriteLine("Tip: Press the button and hold the scanner of the device closely to the barcode.\n\nScan the barcode that is located on the ticket you bought with the given device:");
         return ReadLineString();
     }
 }
