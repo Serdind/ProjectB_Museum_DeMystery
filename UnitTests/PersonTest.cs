@@ -8,6 +8,17 @@ namespace UnitTests;
 [TestClass]
 public class PersonTests
 {
+
+    [TestMethod]
+    public void PersonTest()
+    {
+        //Arrange
+        Person person = new Guide("TestPerson", "682374");
+        
+        //Assert
+        Assert.IsNotNull(person);
+    }
+
     [TestMethod]
     public void LoginTest()
     {

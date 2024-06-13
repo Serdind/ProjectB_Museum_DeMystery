@@ -4,7 +4,7 @@
     public static void Main()
     {
         var admins = new List<DepartmentHead>();
-        Tour.AddAdmin(new DepartmentHead("Frans", "99999"), admins);
+        Tour.AddAdmin(new DepartmentHead("Frans", "6457823"), admins);
         Tour.AddAdminToJSON(admins);
 
         Tour.AddAdmin(new DepartmentHead("Hans", "3489223"), admins);
@@ -14,7 +14,7 @@
         Tour.AddAdminToJSON(admins);
 
         var guides = new List<Guide>();
-        Tour.AddGuide(new Guide("Casper", "2"), guides);
+        Tour.AddGuide(new Guide("Casper", "4892579"), guides);
         Tour.AddGuideToJSON(guides);
 
         Tour.AddGuide(new Guide("Bas", "9412821"), guides);

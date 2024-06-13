@@ -8,23 +8,143 @@ namespace UnitTests;
 [TestClass]
 public class TourTests
 {    
+    
     [TestMethod]
-    public void UpdateToursTest()
+    public void UpdateToursTestFileExists()
     {
         // Arrange
         FakeMuseum museum = new FakeMuseum();
         Program.Museum = museum;
 
-        string filePath1 = Model<GuidedTour>.GetFileNameTours();
-        museum.Files[filePath1] = "[]";
+        string filePath = Model<GuidedTour>.GetFileNameTours();
+        List<GuidedTour> existingTours = new List<GuidedTour>
+        {
+            new GuidedTour(DateTime.Today.AddHours(10), "English", "Guide1"),
+            new GuidedTour(DateTime.Today.AddHours(14), "Spanish", "Guide2")
+        };
+        museum.WriteAllText(filePath, JsonConvert.SerializeObject(existingTours));
 
         // Act
         Tour.UpdateTours();
 
         // Assert
-        var tours = JsonConvert.DeserializeObject<List<GuidedTour>>(museum.ReadAllText(filePath1));
-        Assert.IsTrue(museum.Files.ContainsKey(filePath1));
+        var tours = JsonConvert.DeserializeObject<List<GuidedTour>>(museum.ReadAllText(filePath));
+        Assert.IsTrue(museum.Files.ContainsKey(filePath));
         Assert.IsNotNull(tours);
+        Assert.AreEqual(4, tours.Count);
+        Assert.AreEqual(DateTime.Today, tours[0].Date.Date);
+        Assert.AreEqual(DateTime.Today.AddDays(1), tours[2].Date.Date);
+    }
+
+    [TestMethod]
+    public void UpdateToursTestFileDoesNotExist()
+    {
+        // Arrange
+        FakeMuseum museum = new FakeMuseum();
+        Program.Museum = museum;
+
+        string filePath = Model<GuidedTour>.GetFileNameTours();
+
+        // Act
+        Tour.UpdateTours();
+
+        // Assert
+        var tours = JsonConvert.DeserializeObject<List<GuidedTour>>(museum.ReadAllText(filePath));
+        Assert.IsTrue(museum.Files.ContainsKey(filePath));
+        Assert.IsNotNull(tours);
+        Assert.AreEqual(2 * Tour.GenerateDefaultToursForDay(DateTime.Today).Count(), tours.Count);
+        Assert.AreEqual(DateTime.Today, tours[0].Date.Date);
+        Assert.AreEqual(DateTime.Today.AddDays(1), tours[Tour.GenerateDefaultToursForDay(DateTime.Today).Count()].Date.Date);
+    }
+
+    [TestMethod]
+    public void GenerateDefaultToursForDayTest()
+    {
+        // Arrange
+        DateTime testDate = new DateTime(2023, 6, 13);
+
+        // Act
+        List<GuidedTour> tours = Tour.GenerateDefaultToursForDay(testDate);
+
+        // Assert
+        Assert.IsNotNull(tours);
+        Assert.AreEqual(9, tours.Count);
+
+        Assert.AreEqual(new DateTime(2023, 6, 13, 10, 40, 0), tours[0].Date);
+        Assert.AreEqual("English", tours[0].Language);
+        Assert.AreEqual("Casper", tours[0].NameGuide);
+
+        Assert.AreEqual(new DateTime(2023, 6, 13, 11, 20, 0), tours[1].Date);
+        Assert.AreEqual("Dutch", tours[1].Language);
+        Assert.AreEqual("Bas", tours[1].NameGuide);
+
+        Assert.AreEqual(new DateTime(2023, 6, 13, 12, 0, 0), tours[2].Date);
+        Assert.AreEqual("English", tours[2].Language);
+        Assert.AreEqual("Rick", tours[2].NameGuide);
+
+        Assert.AreEqual(new DateTime(2023, 6, 13, 13, 40, 0), tours[3].Date);
+        Assert.AreEqual("Dutch", tours[3].Language);
+        Assert.AreEqual("Casper", tours[3].NameGuide);
+
+        Assert.AreEqual(new DateTime(2023, 6, 13, 14, 0, 0), tours[4].Date);
+        Assert.AreEqual("English", tours[4].Language);
+        Assert.AreEqual("Bas", tours[4].NameGuide);
+
+        Assert.AreEqual(new DateTime(2023, 6, 13, 15, 40, 0), tours[5].Date);
+        Assert.AreEqual("Dutch", tours[5].Language);
+        Assert.AreEqual("Rick", tours[5].NameGuide);
+
+        Assert.AreEqual(new DateTime(2023, 6, 13, 16, 20, 0), tours[6].Date);
+        Assert.AreEqual("English", tours[6].Language);
+        Assert.AreEqual("Casper", tours[6].NameGuide);
+
+        Assert.AreEqual(new DateTime(2023, 6, 13, 16, 0, 0), tours[7].Date);
+        Assert.AreEqual("Dutch", tours[7].Language);
+        Assert.AreEqual("Bas", tours[7].NameGuide);
+
+        Assert.AreEqual(new DateTime(2023, 6, 13, 17, 0, 0), tours[8].Date);
+        Assert.AreEqual("English", tours[8].Language);
+        Assert.AreEqual("Rick", tours[8].NameGuide);
+    }
+
+    [TestMethod]
+    public void ToursExistForTimeAndLanguageTestTourExists()
+    {
+        // Arrange
+        List<GuidedTour> tours = new List<GuidedTour>
+        {
+            new GuidedTour(new DateTime(2023, 6, 13, 10, 40, 0), "English", "Casper"),
+            new GuidedTour(new DateTime(2023, 6, 13, 11, 20, 0), "Dutch", "Bas"),
+            new GuidedTour(new DateTime(2023, 6, 13, 12, 0, 0), "English", "Rick")
+        };
+        DateTime testTime = new DateTime(2023, 6, 13, 10, 40, 0);
+        string testLanguage = "English";
+
+        // Act
+        bool result = Tour.ToursExistForTimeAndLanguage(testTime, testLanguage, tours);
+
+        // Assert
+        Assert.IsTrue(result);
+    }
+
+    [TestMethod]
+    public void ToursExistForTimeAndLanguageTestTourDoesNotExist()
+    {
+        // Arrange
+        List<GuidedTour> tours = new List<GuidedTour>
+        {
+            new GuidedTour(new DateTime(2023, 6, 13, 10, 40, 0), "English", "Casper"),
+            new GuidedTour(new DateTime(2023, 6, 13, 11, 20, 0), "Dutch", "Bas"),
+            new GuidedTour(new DateTime(2023, 6, 13, 12, 0, 0), "English", "Rick")
+        };
+        DateTime testTime = new DateTime(2023, 6, 13, 13, 0, 0);
+        string testLanguage = "Spanish";
+
+        // Act
+        bool result = Tour.ToursExistForTimeAndLanguage(testTime, testLanguage, tours);
+
+        // Assert
+        Assert.IsFalse(result);
     }
 
     [TestMethod]
@@ -126,7 +246,7 @@ public class TourTests
     }
 
     [TestMethod]
-    public void OverviewToursAfterTomorrowTest()
+    public void OverviewToursAfterTodayTest()
     {
         // Arrange
         FakeMuseum museum = new FakeMuseum();
@@ -194,6 +314,69 @@ public class TourTests
 
         // Assert
         Assert.IsTrue(museum.GetWrittenLinesAsString().Contains("No tours available for today."));
+    }
+
+    [TestMethod]
+    public void OverviewToursTomorrowFileExists()
+    {
+        // Arrange
+        FakeMuseum museum = new FakeMuseum();
+        Program.Museum = museum;
+
+        string filePath = Model<GuidedTour>.GetFileNameTours();
+        List<GuidedTour> tours = new List<GuidedTour>
+        {
+            new GuidedTour(DateTime.Today.AddDays(1).AddHours(10), "English", "Casper"),
+            new GuidedTour(DateTime.Today.AddDays(1).AddHours(12), "Dutch", "Bas"),
+        };
+        museum.WriteAllText(filePath, JsonConvert.SerializeObject(tours));
+
+        // Act
+        bool result = Tour.OverviewToursTomorrow();
+
+        // Assert
+        Assert.IsTrue(result);
+        Assert.IsTrue(museum.GetWrittenLinesAsString().Contains($"{DateTime.Today.AddDays(1).ToShortDateString(),-10}"));
+        Assert.IsTrue(museum.GetWrittenLinesAsString().Contains($"{DateTime.Today.AddDays(1).ToShortDateString(),-10}"));
+    }
+
+    [TestMethod]
+    public void OverviewToursTomorrowFileDoesNotExist()
+    {
+        // Arrange
+        FakeMuseum museum = new FakeMuseum();
+        Program.Museum = museum;
+
+        string filePath = Model<GuidedTour>.GetFileNameTours();
+
+        // Act
+        bool result = Tour.OverviewToursTomorrow();
+
+        // Assert
+        Assert.IsFalse(result);
+        Assert.IsTrue(museum.LinesWritten.Count > 0);
+    }
+
+    [TestMethod]
+    public void OverviewToursEdit()
+    {
+        // Arrange
+        FakeMuseum museum = new FakeMuseum();
+        Program.Museum = museum;
+
+        string filePath = Model<GuidedTour>.GetFileNameTours();
+        List<GuidedTour> tours = new List<GuidedTour>
+        {
+            new GuidedTour(museum.Today.AddDays(1).AddHours(10), "English", "Casper"),
+            new GuidedTour(museum.Today.AddDays(1).AddHours(12), "Dutch", "Bas"),
+        };
+        museum.WriteAllText(filePath, JsonConvert.SerializeObject(tours));
+
+        // Act
+        Tour.OverviewToursEdit();
+
+        // Assert
+        Assert.IsFalse(museum.GetWrittenLinesAsString().Contains("Date"));
     }
 
     [TestMethod]
@@ -529,7 +712,7 @@ public class TourTests
     }
 
     [TestMethod]
-    public void OverviewVisitorsTour_FileExistsWithVisitorsForTour_VisitorsDisplayed()
+    public void OverviewVisitorsTourTest()
     {
         // Arrange
         FakeMuseum museum = new FakeMuseum();
@@ -570,5 +753,79 @@ public class TourTests
         // Assert
         Assert.IsTrue(museum.FileExists(filePath1));
         Assert.AreEqual("[]", museum.ReadAllText(filePath1));
+    }
+
+    [TestMethod]
+    public void ClearVisitorFileIfNewDay_ClearsFileOnNewDay()
+    {
+        // Arrange
+        FakeMuseum museum = new FakeMuseum();
+        Program.Museum = museum;
+
+        string visitorFilePath = Model<Visitor>.GetFileNameVisitors();
+
+        Tour.lastCheckDate = DateTime.Today.AddDays(-1);
+
+        // Act
+        Tour.ClearVisitorFileIfNewDay();
+
+        // Assert
+        Assert.IsTrue(museum.FileExists(visitorFilePath));
+        Assert.AreEqual("[]", museum.ReadAllText(visitorFilePath));
+        Assert.AreEqual(DateTime.Today, Tour.lastCheckDate);
+    }
+
+    [TestMethod]
+    public void ToursExistForTimeNoneTest()
+    {
+        // Arrange
+        DateTime timeToCheck = new DateTime(2024, 6, 13, 10, 30, 0);
+        List<GuidedTour> tours = new List<GuidedTour>();
+        
+        // Act
+        bool result = Tour.ToursExistForTime(timeToCheck, tours);
+
+        // Assert
+        Assert.IsFalse(result);
+    }
+
+    [TestMethod]
+    public void SelectedTourTest()
+    {
+        // Arrange
+        FakeMuseum museum = new FakeMuseum();
+        Program.Museum = museum;
+
+        DateTime currentDate = DateTime.Today;
+        currentDate = new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, 23, 59, 0);
+
+        string currentDateString = currentDate.ToString("yyyy-MM-ddTHH:mm:ss");
+
+        string filePath1 = Model<GuidedTour>.GetFileNameTours();
+
+        string toursJson = $@"
+        [
+            {{
+                ""ID"": ""1"",
+                ""Name"": ""Tour 1"",
+                ""Date"": ""{currentDateString}"",
+                ""NameGuide"": ""TestGuide"",
+                ""MaxParticipants"": 13,
+                ""ReservedVisitors"": [],
+                ""Language"": ""English"",
+                ""Status"": true
+            }}
+        ]
+        ";
+
+        museum.Files[filePath1] = toursJson;
+
+        string timeToCheck = "23:59";
+        
+        // Act
+        Tour.SelectedTour(timeToCheck, currentDate);
+
+        // Assert
+        Assert.IsTrue(museum.GetWrittenLinesAsString().Contains(timeToCheck));
     }
 }

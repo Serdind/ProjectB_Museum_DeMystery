@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 public static class Tour
 {
-    private static DateTime lastCheckDate = DateTime.MinValue;
+    public static DateTime lastCheckDate = DateTime.MinValue;
 
     
 
@@ -67,7 +67,7 @@ public static class Tour
         }
     }
 
-    private static List<GuidedTour> GenerateDefaultToursForDay(DateTime date)
+    public static List<GuidedTour> GenerateDefaultToursForDay(DateTime date)
     {
         return new List<GuidedTour>
         {
@@ -516,12 +516,14 @@ public static class Tour
         }
     }
 
-    private static void ClearVisitorFileIfNewDay()
+    public static void ClearVisitorFileIfNewDay()
     {
         DateTime today = DateTime.Today;
-        if (lastCheckDate.Date != today)
+        
+        if (lastCheckDate == DateTime.MinValue || lastCheckDate.Date != today)
         {
             string visitorFilePath = Model<Visitor>.GetFileNameVisitors();
+            
             CreateEmptyJsonFile(visitorFilePath);
 
             lastCheckDate = today;

@@ -4,8 +4,6 @@ using System.Globalization;
 
 public class Person
 {
-    
-    
     [JsonPropertyName("QR")]
     public string QR;
 
