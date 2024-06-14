@@ -49,14 +49,7 @@
     "Date": "2024-06-14T15:40:00",
     "Language": "Dutch",
     "NameGuide": "Rick",
-    "ReservedVisitors": [
-      {
-        "dateAdded": "2024-06-14T12:56:49.2816727+02:00",
-        "Id": 1,
-        "TourId": 6,
-        "QR": "8752316"
-      }
-    ],
+    "ReservedVisitors": [],
     "Status": true,
     "MaxParticipants": 13
   },
