@@ -57,7 +57,8 @@ namespace SystemTests
 
             museum.Files[filePath3] = @"
             [
-                ""8752316""
+                ""8752316"",
+                ""122718""
             ]
             ";
 
@@ -72,6 +73,7 @@ namespace SystemTests
                 "1", // Tour id input
                 "a", // Add visitor input
                 "8752316", // Visitor barcode input
+                "122718", // Visitor barcode input
                 "b", // Back input
                 "b", // Back input
                 "b", // Back input
