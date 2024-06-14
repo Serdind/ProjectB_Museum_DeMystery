@@ -4,14 +4,10 @@ using System.Diagnostics;
 
 public static class Tour
 {
-    public static DateTime lastCheckDate = DateTime.MinValue;
-
-    
-
     public static void UpdateTours()
     {
         IMuseum museum = Program.Museum;
-        ClearVisitorFileIfNewDay();
+        ClearOldVisitors();
 
         string filePath = Model<GuidedTour>.GetFileNameTours();
 
@@ -516,17 +512,20 @@ public static class Tour
         }
     }
 
-    public static void ClearVisitorFileIfNewDay()
+    public static void ClearOldVisitors()
     {
-        DateTime today = DateTime.Today;
-        
-        if (lastCheckDate == DateTime.MinValue || lastCheckDate.Date != today)
-        {
-            string visitorFilePath = Model<Visitor>.GetFileNameVisitors();
-            
-            CreateEmptyJsonFile(visitorFilePath);
+        IMuseum museum = Program.Museum;
+        string filePath = Model<Visitor>.GetFileNameVisitors();
 
-            lastCheckDate = today;
+        if (museum.FileExists(filePath))
+        {
+            string json = museum.ReadAllText(filePath);
+            var visitors = JsonConvert.DeserializeObject<List<Visitor>>(json);
+
+            var today = DateTime.Today;
+            visitors = visitors.Where(v => v.dateAdded.Date == today).ToList();
+
+            SaveVisitorToFile(visitors);
         }
     }
 

@@ -1,7 +1,7 @@
 using NUnit.Framework.Internal;
 using Newtonsoft.Json;
 using System.Diagnostics;
-using System.Text;
+using System.Globalization;
 
 namespace UnitTests;
 
@@ -756,23 +756,40 @@ public class TourTests
     }
 
     [TestMethod]
-    public void ClearVisitorFileIfNewDay_ClearsFileOnNewDay()
+    public void ClearVisitorFileIfNewDay()
     {
         // Arrange
         FakeMuseum museum = new FakeMuseum();
         Program.Museum = museum;
 
+        DateTime currentDate = DateTime.Today;
+        currentDate = new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, 23, 59, 0);
+
+        string yesterdayDateString = currentDate.AddDays(-1).ToString("yyyy-MM-ddTHH:mm:ss");
+
         string visitorFilePath = Model<Visitor>.GetFileNameVisitors();
 
-        Tour.lastCheckDate = DateTime.Today.AddDays(-1);
+        string initialJson = $@"
+        [
+            {{
+                ""dateAdded"": ""{yesterdayDateString}"",
+                ""Id"": 1,
+                ""QR"": ""523523"",
+                ""TourId"": 1
+            }}
+        ]";
+
+        museum.WriteAllText(visitorFilePath, initialJson);
 
         // Act
-        Tour.ClearVisitorFileIfNewDay();
+        Tour.ClearOldVisitors();
 
         // Assert
         Assert.IsTrue(museum.FileExists(visitorFilePath));
-        Assert.AreEqual("[]", museum.ReadAllText(visitorFilePath));
-        Assert.AreEqual(DateTime.Today, Tour.lastCheckDate);
+        string updatedJson = museum.ReadAllText(visitorFilePath);
+        List<Visitor> updatedVisitors = JsonConvert.DeserializeObject<List<Visitor>>(updatedJson);
+
+        Assert.AreEqual(0, updatedVisitors.Count);
     }
 
     [TestMethod]

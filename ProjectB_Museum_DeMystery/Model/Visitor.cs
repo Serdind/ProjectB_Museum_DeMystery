@@ -2,7 +2,8 @@ using System.Text.Json.Serialization;
 using Newtonsoft.Json;
 public class Visitor : Person
 {
-    
+    [JsonPropertyName("DateAdded")]
+    public DateTime dateAdded;
     private static int lastId = 1;
     [JsonPropertyName("Id")]
     public int Id;
@@ -11,6 +12,7 @@ public class Visitor : Person
 
     public Visitor(int tourId, string qr) : base(qr)
     {
+        dateAdded = DateTime.Now;
         Id = lastId++;
         TourId = tourId;
     }
