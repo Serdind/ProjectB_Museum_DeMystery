@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using Newtonsoft.Json;
+
 public class Visitor : Person
 {
     [JsonPropertyName("DateAdded")]
@@ -26,7 +27,6 @@ public class Visitor : Person
             MaxReservation.Show();
             return false;
         }
-        
 
         DateTime currentDate = museum.Now;
         string filePath = Model<GuidedTour>.GetFileNameTours();
@@ -83,13 +83,13 @@ public class Visitor : Person
     public bool ReservateByGuide(int tourID, Visitor visitor)
     {
         IMuseum museum = Program.Museum;
-        
+
         if (ReservationMade(visitor.QR))
         {
             MaxReservation.GuideShow();
             return false;
         }
-        
+
         DateTime currentDate = museum.Now;
         string filePath = Model<GuidedTour>.GetFileNameTours();
 
@@ -184,4 +184,21 @@ public class Visitor : Person
         visitorController.ReservationCancel(tours, visitors, visitor);
         visitor.TourId = 0;
     }
+    public void cancelreservation2(Visitor visitor)
+    {
+        List<GuidedTour> tours = Tour.LoadToursFromFile();
+        List<Visitor> visitors = Tour.LoadVisitorsFromFile();
+        VisitorController visitorController = new VisitorController();
+
+        if (!ReservationMade(visitor.QR))
+        {
+            NoReservationMade.Show();
+            return;
+        }
+        ViewReservationsMade(visitor.QR);
+        visitorController.ReservationCancel2(tours, visitors, visitor);
+        visitor.TourId = 0;
+    }
+
+    
 }

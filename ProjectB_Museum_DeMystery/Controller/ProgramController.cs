@@ -104,6 +104,17 @@ public class ProgramController
                     MainMenu.Intro();
                     ReservationMenu.HelpActive();
                 }
+
+
+                else if (option.ToLower() == "b" || option.ToLower() == "rebook reservation")
+                {
+                    //logic to rebook reservation
+
+                    RebookReservation(visitor);
+
+                }
+
+
                 else if (option.ToLower() == "f" || option.ToLower() == "finish")
                 {
                     if (!visitor.ReservationMade(qr))
@@ -145,6 +156,17 @@ public class ProgramController
             Guide guide = guides.FirstOrDefault(v => v.QR == qr);
 
             guide.ViewTours(guide.Name, guide);
+        }
+    }
+
+    public static void RebookReservation(Visitor visitor)
+    {
+        visitor.CancelReservation(visitor);
+
+        if (!visitor.ReservationMade(visitor.QR))
+        {
+            TourController tourController = new TourController();
+            tourController.ReservateTour(visitor);
         }
     }
 }

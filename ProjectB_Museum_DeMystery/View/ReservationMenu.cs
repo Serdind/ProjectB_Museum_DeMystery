@@ -1,6 +1,6 @@
+
 public class ReservationMenu : View
 {
-    
     public static string Menu(string qr, Visitor visitor)
     {
         IMuseum museum = Program.Museum;
@@ -11,6 +11,7 @@ public class ReservationMenu : View
         {
             museum.WriteLine("My reservations(M)");
             museum.WriteLine("Cancel reservation(C)");
+            museum.WriteLine("Rebook reservation(B)"); // Nieuwe optie voor herboeken
         }
         museum.WriteLine("Help(H)");
         museum.WriteLine("Finish(F)");
@@ -22,7 +23,7 @@ public class ReservationMenu : View
         IMuseum museum = Program.Museum;
         museum.WriteLine("");
         museum.WriteLine("Do you want any instructions about how to use this application first?");
-        museum.WriteLine("Yes or Y to comfirm\nNo or N to decline\nBack or b to go back");
+        museum.WriteLine("Yes or Y to confirm\nNo or N to decline\nBack or b to go back");
         return ReadLineString();
     }
 
@@ -34,7 +35,6 @@ public class ReservationMenu : View
         museum.WriteLine("Press anything to continue...");
         museum.ReadKey();
         museum.WriteLine("");
-        
     }
 
     public static string Finish()
@@ -42,7 +42,8 @@ public class ReservationMenu : View
         IMuseum museum = Program.Museum;
         museum.WriteLine("");
         museum.WriteLine("Are you sure you are done? You haven't made a reservation yet.");
-        museum.WriteLine("Yes or Y to comfirm\nNo or N to decline");
+        museum.WriteLine("Yes or Y to confirm\nNo or N to decline");
         return ReadLineString();
     }
+    
 }
