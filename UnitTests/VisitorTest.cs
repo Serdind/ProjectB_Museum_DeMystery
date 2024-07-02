@@ -753,7 +753,7 @@ namespace UnitTests
 
             Assert.IsFalse(tour1.ReservedVisitors.Any(v => v.QR == "123456"), "Visitor is still in Tour 1.");
             Assert.IsTrue(tour2.ReservedVisitors.Any(v => v.QR == "123456"), "Visitor is not in Tour 2.");
-            Assert.IsTrue(museum.LinesWritten.Contains(expectedSuccessMessage), "Success message missing or incorrect.");
+            Assert.IsTrue(museum.LinesWritten.Contains(expectedSuccessMessage));
         }
     }
 }
