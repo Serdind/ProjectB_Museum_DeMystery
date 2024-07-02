@@ -663,5 +663,89 @@ namespace SystemTests
             Assert.IsTrue(writtenLines.Contains("Guide"));
             Assert.IsTrue(writtenLines.Contains("Remaining spots"));
         }
+        [TestMethod]
+        public void VistorLoginAndRebookReservationTest()
+        {
+            // Arrange
+            FakeMuseum museum = new FakeMuseum();
+            Program.Museum = museum;
+
+            DateTime currentDate = DateTime.Today;
+            currentDate = new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, 23, 59, 0);
+            string currentDateString = currentDate.ToString("yyyy-MM-ddTHH:mm:ss");
+
+            string filePathTours = Model<GuidedTour>.GetFileNameTours();
+            string toursJson = $@"
+            [
+                {{
+                    ""ID"": ""1"",
+                    ""Name"": ""Tour 1"",
+                    ""Date"": ""{currentDateString}"",
+                    ""NameGuide"": ""TestGuide"",
+                    ""MaxParticipants"": 13,
+                    ""ReservedVisitors"": [],
+                    ""Language"": ""English"",
+                    ""Status"": true
+                }},
+                {{
+                    ""ID"": ""2"",
+                    ""Name"": ""Tour 2"",
+                    ""Date"": ""{currentDateString}"",
+                    ""NameGuide"": ""TestGuide"",
+                    ""MaxParticipants"": 13,
+                    ""ReservedVisitors"": [],
+                    ""Language"": ""English"",
+                    ""Status"": true
+                }}
+            ]
+            ";
+            museum.Files[filePathTours] = toursJson;
+
+            string filePathUniqueCodes = Model<UniqueCodes>.GetFileNameUniqueCodes();
+            museum.Files[filePathUniqueCodes] = @"
+            [
+                ""8752316""
+            ]
+            ";
+
+            string filePathVisitors = Model<Visitor>.GetFileNameVisitors();
+            museum.Files[filePathVisitors] = @"
+            [
+                {
+                    ""Id"": 1,
+                    ""QR"": ""8752316"",
+                    ""TourId"": 1
+                }
+            ]";
+
+            Visitor visitor = new Visitor(0, "8752316");
+
+            museum.LinesToRead = new List<string>
+            {
+                "8752316",  // Barcode input
+                "n", // No help needed input
+                "b", // Rebook reservation input
+                "y", // Yes to confirm cancellation
+                "2", // New tour ID input
+                "f"  // Finish input
+            };
+
+            // Act
+            ProgramController.Start();
+
+            // Assert
+            string dateOnly = currentDate.ToString("d");
+            string timeOnly = currentDate.ToString("HH:mm");
+            string message = $"Reservation successful. You have reserved the following tour:\n" +
+                             $"Date: {dateOnly}\n" +
+                             $"Time: {timeOnly}\n" +
+                             $"Duration: 40 minutes\n" +
+                             $"Language: English\n" +
+                             $"Name of guide: TestGuide\n";
+
+            string writtenLines = museum.GetWrittenLinesAsString();
+            Debug.WriteLine(writtenLines);
+            Assert.IsTrue(writtenLines.Contains(message), "Rebooking success message missing.");
+        }
     }
 }
