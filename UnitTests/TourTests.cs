@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Globalization;
 
+
 namespace UnitTests;
 
 [TestClass]
@@ -844,5 +845,50 @@ public class TourTests
 
         // Assert
         Assert.IsTrue(museum.GetWrittenLinesAsString().Contains(timeToCheck));
+    }
+        
+    [TestMethod]
+    public void KoppelGidsenTest()
+    {
+        // Arrange
+        FakeMuseum museum = new FakeMuseum();
+        Program.Museum = museum;
+
+        string toursFilePath = Model<GuidedTour>.GetFileNameTours();
+        string guidesFilePath = Model<Guide>.GetFileNameGuides();
+
+        List<GuidedTour> tours = new List<GuidedTour>
+        {
+            new GuidedTour(DateTime.Today.AddHours(10), "English", "Casper"),
+            new GuidedTour(DateTime.Today.AddHours(11), "Dutch", "Bas"),
+            new GuidedTour(DateTime.Today.AddHours(12), "English", "Rick")
+        };
+        museum.WriteAllText(toursFilePath, JsonConvert.SerializeObject(tours));
+
+        List<Guide> guides = new List<Guide>
+        {
+            new Guide("Casper", "4892579"),
+            new Guide("Bas", "9412821"),
+            new Guide("Rick", "421627")
+        };
+        museum.WriteAllText(guidesFilePath, JsonConvert.SerializeObject(guides));
+
+        museum.LinesToRead = new List<string>
+        {
+            "1", // Select first tour
+            "2", // Select second guide
+            "2", // Stop linking guides
+            "l"  //  logging out
+        };
+
+        // Act
+        Tour.KoppelGidsen();
+
+        // Assert
+        var updatedTours = JsonConvert.DeserializeObject<List<GuidedTour>>(museum.ReadAllText(toursFilePath));
+        Assert.IsNotNull(updatedTours);
+        Assert.AreEqual("Bas", updatedTours[0].NameGuide); // Verify that the first tour's guide is updated
+        Assert.AreEqual("Bas", updatedTours[1].NameGuide); // Verify that the second tour's guide is not changed
+        Assert.AreEqual("Rick", updatedTours[2].NameGuide); // Verify that the third tour's guide is not changed
     }
 }

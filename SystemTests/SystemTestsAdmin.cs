@@ -448,5 +448,78 @@ namespace SystemTests
             Debug.WriteLine(writtenLines);
             Assert.IsTrue(writtenLines.Contains("Insert (Back or B) if you want to go back"));
         }
+       
+        [TestMethod]
+        public void AdminLoginAndKoppelGidsenTest()
+        {
+            // Arrange
+            FakeMuseum museum = new FakeMuseum();
+            Program.Museum = museum;
+
+            DateTime currentDate = DateTime.Today;
+            currentDate = new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, 23, 59, 0);
+
+            string currentDateString = currentDate.ToString("yyyy-MM-ddTHH:mm:ss");
+
+            string filePath1 = Model<GuidedTour>.GetFileNameTours();
+
+            string toursJson = @"
+            [
+                {
+                    ""ID"": ""1"",
+                    ""Date"": """ + currentDateString + @""",
+                    ""NameGuide"": ""TestGuide"",
+                    ""MaxParticipants"": 13,
+                    ""ReservedVisitors"": [],
+                    ""Language"": ""English"",
+                    ""Status"": true
+                }
+            ]";
+
+            museum.Files[filePath1] = toursJson;
+
+            string filePath2 = Model<DepartmentHead>.GetFileNameAdmins();
+
+            museum.Files[filePath2] = @"
+            [
+                {
+                    ""Id"": ""1"",
+                    ""Name"": ""TestAdmin"",
+                    ""QR"": ""6457823""
+                }
+            ]
+            ";
+            string filePath3 = Model<Guide>.GetFileNameGuides();
+
+            museum.Files[filePath3] = @"
+            [
+                {
+                    ""Id"": ""1"",
+                    ""Name"": ""TestGuide"",
+                    ""QR"": ""4892579""
+                }
+            ]
+            ";
+
+            museum.LinesToRead = new List<string>
+            {
+                "6457823", // qr for login
+                "k", // select function
+                "1", // Select first tour
+                "2", // Select second guide
+                "2", // Stop linking guides
+                "l" // logout
+            };
+
+            // Act
+            ProgramController.Start();
+
+            // Assert
+            var updatedTours = JsonConvert.DeserializeObject<List<GuidedTour>>(museum.ReadAllText(filePath1));
+            Assert.IsNotNull(updatedTours);
+            Assert.AreEqual("Bas", updatedTours[0].NameGuide); // Verify that the first tour's guide is updated
+            Assert.IsNull(updatedTours[1].NameGuide); // Verify that the second tour's guide is not changed
+            Assert.IsNull(updatedTours[2].NameGuide); // Verify that the third tour's guide is not changed
+        }
     }
 }

@@ -5,7 +5,7 @@ public class AdminOptions : View
     {
         IMuseum museum = Program.Museum;
         museum.WriteLine("");
-        museum.WriteLine("Overview tours(T)\nAdd tour (A)\nEdit tour (E)\nLog out (L)");
+        museum.WriteLine("Overview tours(T)\nAdd tour (A)\nEdit tour (E)\nLink guides (K)\nLog out (L)");
         museum.WriteLine("");
         return ReadLineString();
     }
