@@ -7,8 +7,6 @@ using System.Linq;
 
 public class PersonController
 {
-    
-
     public void AdminMenu()
     {
         IMuseum museum = Program.Museum;
@@ -242,6 +240,10 @@ public class PersonController
                         TourInfo.InvalidTime();
                     }
                 }
+            }
+            else if (option.ToLower() == "k" || option.ToLower() == "link guides")
+            {
+                Tour.KoppelGidsen();
             }
             else if (option.ToLower() == "l" || option.ToLower() == "log out")
             {
