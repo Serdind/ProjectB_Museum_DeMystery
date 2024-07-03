@@ -1,6 +1,8 @@
 using Newtonsoft.Json;
 using System.Globalization;
 using System.Diagnostics;
+using System.Collections.Generic;
+using System.Linq;
 
 public static class Tour
 {
@@ -95,35 +97,7 @@ public static class Tour
     public static void SaveToursToFile(string filePath, List<GuidedTour> tours)
     {
         IMuseum museum = Program.Museum;
-        List<GuidedTour> existingTours;
-        if (museum.FileExists(filePath))
-        {
-            string existingJson = museum.ReadAllText(filePath);
-            existingTours = JsonConvert.DeserializeObject<List<GuidedTour>>(existingJson);
-        }
-        else
-        {
-            existingTours = new List<GuidedTour>();
-        }
-
-        List<GuidedTour> updatedTours = new List<GuidedTour>(existingTours);
-
-        foreach (var tour in tours)
-        {
-            var existingTour = updatedTours.FirstOrDefault(t => t.ID == tour.ID);
-            if (existingTour != null)
-            {
-                existingTour.Date = tour.Date;
-                existingTour.Language = tour.Language;
-                existingTour.Status = tour.Status;
-            }
-            else
-            {
-                updatedTours.Add(tour);
-            }
-        }
-
-        string updatedJson = JsonConvert.SerializeObject(updatedTours, Formatting.Indented);
+        string updatedJson = JsonConvert.SerializeObject(tours, Formatting.Indented);
         museum.WriteAllText(filePath, updatedJson);
     }
 
@@ -135,7 +109,6 @@ public static class Tour
 
         if (edit)
         {
-            
             string selection;
 
             while (true)
@@ -176,7 +149,7 @@ public static class Tour
                             int remainingSpots = tour.MaxParticipants - tour.ReservedVisitors.Count;
                             string status = tour.Status ? "Active" : "Inactive";
 
-                            string tourInfo = $"| {tour.ID,-9} | {dateOnly,-10} | {timeOnly,-8} | 40 minutes  | {tour.Language,-7} | {tour.NameGuide,-12} | {remainingSpots,-14} | {status,-6} |";
+                            string tourInfo = $"| {tour.ID,-9} | {dateOnly,-10} | {timeOnly,-8} | 40 minutes  | {tour.Language,-7} | {tour.NameGuide ?? "None",-12} | {remainingSpots,-14} | {status,-6} |";
 
                             museum.WriteLine(tourInfo);
                         }
@@ -212,11 +185,11 @@ public static class Tour
                 tours = tours.OrderBy(t => t.Date).ToList();
 
                 bool anyToursToday = false;
-                
+
                 museum.WriteLine("+-----------+------------+----------+------------+---------+--------------+----------------+");
                 museum.WriteLine("| ID        | Date       | Time     | Duration   | Language| Guide        | Remaining spots|");
                 museum.WriteLine("+-----------+------------+----------+------------+---------+--------------+----------------+");
-                
+
                 foreach (var tour in tours)
                 {
                     if (tour.Date.Date == museum.Today.Date && tour.Date.TimeOfDay >= DateTime.Now.TimeOfDay && tour.Status)
@@ -226,10 +199,10 @@ public static class Tour
                         string dateOnly = tour.Date.ToShortDateString();
                         int remainingSpots = tour.MaxParticipants - tour.ReservedVisitors.Count;
 
-                        museum.WriteLine($"| {tour.ID,-9} | {dateOnly,-10} | {timeOnly,-8} | 40 minutes  | {tour.Language,-7} | {tour.NameGuide,-12} | {remainingSpots,-14} |");
+                        museum.WriteLine($"| {tour.ID,-9} | {dateOnly,-10} | {timeOnly,-8} | 40 minutes  | {tour.Language,-7} | {tour.NameGuide ?? "None",-12} | {remainingSpots,-14} |");
                     }
                 }
-                
+
                 museum.WriteLine("+-----------+------------+----------+------------+---------+--------------+----------------+");
 
                 if (anyToursToday)
@@ -278,7 +251,7 @@ public static class Tour
                     int remainingSpots = tour.MaxParticipants - tour.ReservedVisitors.Count;
                     string status = tour.Status ? "Active" : "Inactive";
 
-                    museum.WriteLine($"| {dateOnly,-10} | {timeOnly,-8} | 40 minutes  | {tour.Language,-7} | {tour.NameGuide,-12} | {status,-6} |");
+                    museum.WriteLine($"| {dateOnly,-10} | {timeOnly,-8} | 40 minutes  | {tour.Language,-7} | {tour.NameGuide ?? "None",-12} | {status,-6} |");
                 }
             }
 
@@ -317,7 +290,7 @@ public static class Tour
                     int remainingSpots = tour.MaxParticipants - tour.ReservedVisitors.Count;
                     string status = tour.Status ? "Active" : "Inactive";
 
-                    museum.WriteLine($"| {timeOnly,-8} | 40 minutes | {tour.Language,-10} | {tour.NameGuide,-10} | {status,-6} |");
+                    museum.WriteLine($"| {timeOnly,-8} | 40 minutes | {tour.Language,-10} | {tour.NameGuide ?? "None",-10} | {status,-6} |");
                 }
 
                 museum.WriteLine("+----------+------------+------------+------------+--------+");
@@ -352,7 +325,7 @@ public static class Tour
     public static void AddAdminToJSON(List<DepartmentHead> admins)
     {
         string filePath = Model<DepartmentHead>.GetFileNameAdmins();
-        SaveAdminToFile(filePath,admins);
+        SaveAdminToFile(filePath, admins);
     }
 
     public static void AddAdmin(DepartmentHead departmentHead, List<DepartmentHead> admins)
@@ -418,7 +391,7 @@ public static class Tour
             return new List<Guide>();
         }
     }
-    
+
     public static void AddVisitorToJSON(int tourId, string qr)
     {
         List<Visitor> existingVisitors = LoadVisitorsFromFile();
@@ -468,12 +441,12 @@ public static class Tour
     {
         IMuseum museum = Program.Museum;
         string filePath = Model<Visitor>.GetFileNameVisitors();
-        
+
         if (museum.FileExists(filePath))
         {
             string json = museum.ReadAllText(filePath);
             var visitors = JsonConvert.DeserializeObject<List<Visitor>>(json);
-            
+
             visitors = visitors.Where(v => v.TourId == tourID).OrderBy(t => t.TourId).ToList();
 
             if (visitors.Any())
@@ -572,5 +545,101 @@ public static class Tour
                 }
             }
         }
+    }
+
+    public static void KoppelGidsen()
+    {
+        IMuseum museum = Program.Museum;
+        museum.WriteLine("Link guides to today's tours:");
+
+        List<GuidedTour> tours = LoadToursFromFile();
+        List<Guide> guides = LoadGuidesFromFile();
+        DateTime today = DateTime.Today;
+
+        var todaysTours = tours.Where(t => t.Date.Date == today).ToList();
+
+        // Check if there are any tours today
+        if (todaysTours.Count == 0)
+        {
+            museum.WriteLine("No tours available for today.");
+            museum.WriteLine("Press Enter to return to the menu.");
+            museum.ReadLine();
+            return;
+        }
+
+        bool continueLinking = true;
+        while (continueLinking)
+        {
+            // Display tours and let the admin select one
+            while (true)
+            {
+                museum.WriteLine("Select a tour to link a guide:");
+                for (int i = 0; i < todaysTours.Count; i++)
+                {
+                    var tour = todaysTours[i];
+                    museum.WriteLine($"{i + 1}. Tour: {tour.ID} | Starts at: {tour.Date.ToShortTimeString()}, Guide: {tour.NameGuide ?? "None"}");
+                }
+
+                string tourIndexInput = museum.ReadLine();
+                if (int.TryParse(tourIndexInput, out int tourIndex) && tourIndex > 0 && tourIndex <= todaysTours.Count)
+                {
+                    var selectedTour = todaysTours[tourIndex - 1];
+
+                    // Display guides and let the admin select one
+                    museum.WriteLine("Select a guide to link to this tour:");
+                    for (int i = 0; i < guides.Count; i++)
+                    {
+                        museum.WriteLine($"{i + 1}. {guides[i].Name} (QR: {guides[i].QR})");
+                    }
+
+                    string guideIndexInput = museum.ReadLine();
+                    if (int.TryParse(guideIndexInput, out int guideIndex) && guideIndex > 0 && guideIndex <= guides.Count)
+                    {
+                        var selectedGuide = guides[guideIndex - 1];
+                        selectedTour.NameGuide = selectedGuide.Name;
+                        museum.WriteLine($"Guide {selectedGuide.Name} linked to the tour at {selectedTour.Date.ToShortTimeString()}.");
+                        SaveToursToFile(Model<GuidedTour>.GetFileNameTours(), tours);
+                    }
+                    else
+                    {
+                        museum.WriteLine("Invalid guide selection. Guide not linked.");
+                    }
+
+                    break;
+                }
+                else
+                {
+                    museum.WriteLine("Invalid tour selection. Please try again.");
+                }
+            }
+
+            // Ask if the admin wants to link another guide or stop
+            while (true)
+            {
+                museum.WriteLine("Type '1' to link another guide, or '2' to stop.");
+                string choice = museum.ReadLine();
+                if (choice == "1")
+                {
+                    break; // Continue linking
+                }
+                else if (choice == "2")
+                {
+                    continueLinking = false;
+                    break; // Stop linking
+                }
+                else
+                {
+                    museum.WriteLine("Invalid choice. Please type '1' to continue or '2' to stop.");
+                }
+            }
+        }
+
+        museum.WriteLine("Guides linked to today's tours.\nPress Enter to return to the menu.");
+        museum.ReadLine();
+    }
+    private static bool IsValidGuideCode(string code)
+    {
+        List<Guide> guides = LoadGuidesFromFile();
+        return guides.Any(g => g.QR == code);
     }
 }
