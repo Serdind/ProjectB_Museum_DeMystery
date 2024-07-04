@@ -736,7 +736,7 @@ namespace SystemTests
             // Assert
             string dateOnly = currentDate.ToString("d");
             string timeOnly = currentDate.ToString("HH:mm");
-            string message = $"Reservation successful. You have reserved the following tour:\n" +
+            string message = $"Rebooking successful. You have reserved the following tour:\n" +
                              $"Date: {dateOnly}\n" +
                              $"Time: {timeOnly}\n" +
                              $"Duration: 40 minutes\n" +
