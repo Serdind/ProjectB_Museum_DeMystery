@@ -1,16 +1,16 @@
 [
   {
     "ID": 1,
-    "Date": "2024-06-14T10:40:00",
+    "Date": "2024-07-04T10:40:00",
     "Language": "English",
-    "NameGuide": "Casper",
+    "NameGuide": "Rick",
     "ReservedVisitors": [],
     "Status": true,
     "MaxParticipants": 13
   },
   {
     "ID": 2,
-    "Date": "2024-06-14T11:20:00",
+    "Date": "2024-07-04T11:20:00",
     "Language": "Dutch",
     "NameGuide": "Bas",
     "ReservedVisitors": [],
@@ -19,7 +19,7 @@
   },
   {
     "ID": 3,
-    "Date": "2024-06-14T12:00:00",
+    "Date": "2024-07-04T12:00:00",
     "Language": "English",
     "NameGuide": "Rick",
     "ReservedVisitors": [],
@@ -28,7 +28,7 @@
   },
   {
     "ID": 4,
-    "Date": "2024-06-14T13:40:00",
+    "Date": "2024-07-04T13:40:00",
     "Language": "Dutch",
     "NameGuide": "Casper",
     "ReservedVisitors": [],
@@ -37,25 +37,32 @@
   },
   {
     "ID": 5,
-    "Date": "2024-06-14T14:00:00",
+    "Date": "2024-07-04T14:00:00",
     "Language": "English",
-    "NameGuide": "Bas",
-    "ReservedVisitors": [],
-    "Status": true,
-    "MaxParticipants": 13
-  },
-  {
-    "ID": 6,
-    "Date": "2024-06-14T15:40:00",
-    "Language": "Dutch",
     "NameGuide": "Rick",
     "ReservedVisitors": [],
     "Status": true,
     "MaxParticipants": 13
   },
   {
+    "ID": 6,
+    "Date": "2024-07-04T15:40:00",
+    "Language": "Dutch",
+    "NameGuide": "Rick",
+    "ReservedVisitors": [
+      {
+        "dateAdded": "2024-07-04T12:49:16.6309349+02:00",
+        "Id": 1,
+        "TourId": 6,
+        "QR": "8752316"
+      }
+    ],
+    "Status": true,
+    "MaxParticipants": 13
+  },
+  {
     "ID": 7,
-    "Date": "2024-06-14T16:20:00",
+    "Date": "2024-07-04T16:20:00",
     "Language": "English",
     "NameGuide": "Casper",
     "ReservedVisitors": [],
@@ -64,7 +71,7 @@
   },
   {
     "ID": 8,
-    "Date": "2024-06-14T16:00:00",
+    "Date": "2024-07-04T16:00:00",
     "Language": "Dutch",
     "NameGuide": "Bas",
     "ReservedVisitors": [],
@@ -73,7 +80,7 @@
   },
   {
     "ID": 9,
-    "Date": "2024-06-14T17:00:00",
+    "Date": "2024-07-04T17:00:00",
     "Language": "English",
     "NameGuide": "Rick",
     "ReservedVisitors": [],
@@ -82,7 +89,7 @@
   },
   {
     "ID": 10,
-    "Date": "2024-06-15T10:40:00",
+    "Date": "2024-07-05T10:40:00",
     "Language": "English",
     "NameGuide": "Casper",
     "ReservedVisitors": [],
@@ -91,7 +98,7 @@
   },
   {
     "ID": 11,
-    "Date": "2024-06-15T11:20:00",
+    "Date": "2024-07-05T11:20:00",
     "Language": "Dutch",
     "NameGuide": "Bas",
     "ReservedVisitors": [],
@@ -100,7 +107,7 @@
   },
   {
     "ID": 12,
-    "Date": "2024-06-15T12:00:00",
+    "Date": "2024-07-05T12:00:00",
     "Language": "English",
     "NameGuide": "Rick",
     "ReservedVisitors": [],
@@ -109,7 +116,7 @@
   },
   {
     "ID": 13,
-    "Date": "2024-06-15T13:40:00",
+    "Date": "2024-07-05T13:40:00",
     "Language": "Dutch",
     "NameGuide": "Casper",
     "ReservedVisitors": [],
@@ -118,7 +125,7 @@
   },
   {
     "ID": 14,
-    "Date": "2024-06-15T14:00:00",
+    "Date": "2024-07-05T14:00:00",
     "Language": "English",
     "NameGuide": "Bas",
     "ReservedVisitors": [],
@@ -127,7 +134,7 @@
   },
   {
     "ID": 15,
-    "Date": "2024-06-15T15:40:00",
+    "Date": "2024-07-05T15:40:00",
     "Language": "Dutch",
     "NameGuide": "Rick",
     "ReservedVisitors": [],
@@ -136,7 +143,7 @@
   },
   {
     "ID": 16,
-    "Date": "2024-06-15T16:20:00",
+    "Date": "2024-07-05T16:20:00",
     "Language": "English",
     "NameGuide": "Casper",
     "ReservedVisitors": [],
@@ -145,7 +152,7 @@
   },
   {
     "ID": 17,
-    "Date": "2024-06-15T16:00:00",
+    "Date": "2024-07-05T16:00:00",
     "Language": "Dutch",
     "NameGuide": "Bas",
     "ReservedVisitors": [],
@@ -154,7 +161,7 @@
   },
   {
     "ID": 18,
-    "Date": "2024-06-15T17:00:00",
+    "Date": "2024-07-05T17:00:00",
     "Language": "English",
     "NameGuide": "Rick",
     "ReservedVisitors": [],
