@@ -558,7 +558,7 @@ public static class Tour
 
         var todaysTours = tours.Where(t => t.Date.Date == today).ToList();
 
-        // Check if there are any tours today
+        //checkt of er tours zijn voor vandaag
         if (todaysTours.Count == 0)
         {
             museum.WriteLine("No tours available for today.");
@@ -570,7 +570,7 @@ public static class Tour
         bool continueLinking = true;
         while (continueLinking)
         {
-            // Display tours and let the admin select one
+            //laat de tours zien
             while (true)
             {
                 museum.WriteLine("Select a tour to link a guide:");
@@ -585,7 +585,7 @@ public static class Tour
                 {
                     var selectedTour = todaysTours[tourIndex - 1];
 
-                    // Display guides and let the admin select one
+                    // laat de fuides zien
                     museum.WriteLine("Select a guide to link to this tour:");
                     for (int i = 0; i < guides.Count; i++)
                     {
@@ -613,19 +613,19 @@ public static class Tour
                 }
             }
 
-            // Ask if the admin wants to link another guide or stop
+            // Dit is meer als de admin nog een ander guide wil linken 
             while (true)
             {
                 museum.WriteLine("Type '1' to link another guide, or '2' to stop.");
                 string choice = museum.ReadLine();
                 if (choice == "1")
                 {
-                    break; // Continue linking
+                    break;  
                 }
                 else if (choice == "2")
                 {
                     continueLinking = false;
-                    break; // Stop linking
+                    break; 
                 }
                 else
                 {

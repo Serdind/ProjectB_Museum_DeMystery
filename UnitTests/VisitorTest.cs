@@ -713,7 +713,7 @@ namespace UnitTests
             var tour2 = tours.FirstOrDefault(t => t.ID == 2);
 
             Debug.WriteLine("Tour 1 Reserved Visitors:");
-            if (tour1 != null) // Added null check for tour1
+            if (tour1 != null) 
             {
                 foreach (var v in tour1.ReservedVisitors)
                 {

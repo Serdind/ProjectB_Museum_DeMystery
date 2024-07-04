@@ -5,7 +5,7 @@ public class CancelReservationConfirmation : View
     {
         IMuseum museum = Program.Museum;
         museum.WriteLine("");
-        museum.WriteLine("Are you sure you want to cancel your reservation?\nYes or Y to comfirm\nNo or N to decline");
+        museum.WriteLine("Are you sure you want to rebook your reservation?\nYes or Y to comfirm\nNo or N to decline");
         return ReadLineString();
     }
 

@@ -722,12 +722,12 @@ namespace SystemTests
 
             museum.LinesToRead = new List<string>
             {
-                "8752316",  // Barcode input
-                "n", // No help needed input
-                "b", // Rebook reservation input
-                "y", // Yes to confirm cancellation
-                "2", // New tour ID input
-                "f"  // Finish input
+                "8752316",  
+                "n", 
+                "b", 
+                "y", 
+                "2", 
+                "f"  
             };
 
             // Act
