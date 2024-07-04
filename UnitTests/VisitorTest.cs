@@ -744,7 +744,7 @@ namespace UnitTests
                 Debug.WriteLine(line);
             }
 
-            var expectedSuccessMessage = $"Reservation successful. You have reserved the following tour:\n" +
+            var expectedSuccessMessage = $"Rebooking successful. You have reserved the following tour:\n" +
                                          $"Date: {tour2.Date.ToShortDateString()}\n" +
                                          $"Time: {tour2.Date.ToString("HH:mm")}\n" +
                                          $"Duration: 40 minutes\n" +

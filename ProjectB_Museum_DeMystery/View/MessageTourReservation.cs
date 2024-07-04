@@ -3,7 +3,7 @@ public class MessageTourReservation
     public static void ShowMessage(GuidedTour tour)
     {
         IMuseum museum = Program.Museum;
-        string message = $"Rebooking  successful. You have reserved the following tour:\n" +
+        string message = $"Rebooking successful. You have reserved the following tour:\n" +
                         $"Date: {tour.Date.ToShortDateString()}\n" +
                         $"Time: {tour.Date.ToString("HH:mm")}\n" +
                         $"Duration: 40 minutes\n" +
